@@ -52,13 +52,27 @@ So are you ready to join **THE PLAYZ TO PLAY?**
 
 ## Getting started
 
+#### Start Application
 ```bash
 docker-compose build --pull --no-cache
 docker-compose up -d
-docker exec 
 ```
 
+#### Front-end initialisation
+```bash
+docker exec playz_php_1 npm install
+
+//For one scss compilation :
+docker exec playz_php_1 npm run dev
+
+OR
+
+//For constent scss compilation :
+docker exec playz_php_1 npm run watch
 ```
+
+#### Configuration
+```text
 # URL
 http://127.0.0.1
 
