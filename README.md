@@ -55,6 +55,7 @@ So are you ready to join **THE PLAYZ TO PLAY?**
 ```bash
 docker-compose build --pull --no-cache
 docker-compose up -d
+docker exec 
 ```
 
 ```
