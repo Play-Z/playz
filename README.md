@@ -30,6 +30,7 @@ So are you ready to join **THE PLAYZ TO PLAY?**
 
 ## Technologies in use
 - [Symfony 5.3.9](https://symfony.com/doc/5.2/index.html)
+- [Tailwind CSS](https://tailwindcss.com/docs)
 - [Php-8.0](https://www.php.net/manual-lookup.php?pattern=php+unit&scope=quickref)
 - [Docker](https://docs.docker.com/)
 - [Git](https://git-scm.com/doc)
@@ -41,9 +42,8 @@ So are you ready to join **THE PLAYZ TO PLAY?**
 
 - [Docker](https://docs.docker.com/engine/install/)
 - [Docker-Compose](https://docs.docker.com/compose/install/)
-- [Php-8.0](https://linuxize.com/post/how-to-install-php-8-on-ubuntu-20-04/)
-- Git (With configured [SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) and [GPG](https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key) Keys)
-- [Git Flow](https://www.atlassian.com/fr/git/tutorials/comparing-workflows/gitflow-workflow#:~:text=git%2Dflow%20est%20un%20outil,ex%C3%A9cuter%20brew%20install%20git%2Dflow%20.)
+- Git (With configured [SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) and [GPG](https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key) Keys for signed commits)
+- Knowledge of [Git Flow](https://www.atlassian.com/fr/git/tutorials/comparing-workflows/gitflow-workflow#:~:text=git%2Dflow%20est%20un%20outil,ex%C3%A9cuter%20brew%20install%20git%2Dflow%20.)
 
 #### Optional
 
@@ -52,17 +52,62 @@ So are you ready to join **THE PLAYZ TO PLAY?**
 
 ## Getting started
 
+#### Start Application
 ```bash
 docker-compose build --pull --no-cache
 docker-compose up -d
 ```
 
+#### Front-end initialisation
+```bash
+docker exec playz_php_1 npm install
+
+//For one scss compilation :
+docker exec playz_php_1 npm run dev
+
+OR
+
+//For constent scss compilation :
+docker exec playz_php_1 npm run watch
 ```
+
+#### Configuration
+```text
 # URL
-https://127.0.0.1
+http://127.0.0.1
 
 # Env DB
 DATABASE_URL="postgresql://postgres:password@db:5432/db?serverVersion=13&charset=utf8"
+```
+
+## Useful commands
+```
+# List all existing commands 
+docker-compose exec php bin/console
+# Delete browser cache
+docker-compose exec php bin/console cache:clear
+# Creating a blank file
+docker-compose exec php bin/console make:controller
+docker-compose exec php bin/console make:form
+# Creation of a complete CRUD
+docker-compose exec php bin/console make:crud
+```
+
+## Database management
+
+#### Entity creation commands
+```
+docker-compose exec php bin/console make:entity
+```
+Document on relationships between entities
+https://symfony.com/doc/current/doctrine/associations.html
+
+#### Updating the database
+```
+# See the requests that will be played with force
+docker-compose exec php bin/console doctrine:schema:update --dump-sql
+# Execute DB requests
+docker-compose exec php bin/console doctrine:schema:update --force
 ```
 
 ## Contact
