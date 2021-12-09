@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier {{ game.name }}{% endblock %}
+
+{% block body %}
+    <h1>Modification de {{ game.name }}</h1>
+
+    {{ include('game/_form.html.twig', {'button_label': 'Sauvegarder'}) }}
+
+    <a href="{{ path('game_index') }}">Retour</a>
+
+    {{ include('game/_delete_form.html.twig') }}
+{% endblock %}
