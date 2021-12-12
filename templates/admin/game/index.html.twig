@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Jeux{% endblock %}
+
+{% block body %}
+    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Jeux</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Logo</th>
+            <th>Nom</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for game in games %}
+            <tr>
+                <td><img src="{{ game.logo }}" width="64" height="auto"></td>
+                <td>{{ game.name }}</td>
+                <td>{{ game.description }}</td>
+                <td>
+                    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('game_show', {'id': game.id}) }}">Afficher</a>
+                    <a class="text-red-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('game_edit', {'id': game.id}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucun jeux trouvés !</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('game_new') }}">Créer un jeu</a>
+
+{% endblock %}

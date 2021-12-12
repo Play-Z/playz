@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\admin\game;
 
 use App\Entity\Game;
 use App\Form\GameType;
@@ -16,7 +16,7 @@ class GameController extends AbstractController
     #[Route('/', name: 'game_index', methods: ['GET'])]
     public function index(GameRepository $gameRepository): Response
     {
-        return $this->render('game/index.html.twig', [
+        return $this->render('admin/game/index.html.twig', [
             'games' => $gameRepository->findAll(),
         ]);
     }
@@ -36,7 +36,7 @@ class GameController extends AbstractController
             return $this->redirectToRoute('game_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('game/new.html.twig', [
+        return $this->renderForm('admin/game/new.html.twig', [
             'game' => $game,
             'form' => $form,
         ]);
@@ -45,7 +45,7 @@ class GameController extends AbstractController
     #[Route('/{id}', name: 'game_show', methods: ['GET'])]
     public function show(Game $game): Response
     {
-        return $this->render('game/show.html.twig', [
+        return $this->render('admin/game/show.html.twig', [
             'game' => $game,
         ]);
     }
@@ -62,7 +62,7 @@ class GameController extends AbstractController
             return $this->redirectToRoute('game_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('game/edit.html.twig', [
+        return $this->renderForm('admin/game/edit.html.twig', [
             'game' => $game,
             'form' => $form,
         ]);
