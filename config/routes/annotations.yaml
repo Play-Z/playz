@@ -1,6 +1,21 @@
-controllers:
+controllers_home:
     resource: ../../src/Controller
     type: annotation
+
+controllers_admin:
+    resource: ../../src/Controller/admin
+    type: annotation
+    prefix: '/admin'
+
+controllers_tournament:
+    resource: ../../src/Controller/tournament
+    type: annotation
+    prefix: '/tournament'
+
+controllers_play:
+    resource: ../../src/Controller/play
+    type: annotation
+    prefix: '/play'
 
 kernel:
     resource: ../../src/Kernel.php
