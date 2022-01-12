@@ -60,21 +60,24 @@ docker-compose up -d
 
 #### Front-end initialisation
 ```bash
-docker exec playz_php_1 npm install
+docker-compose exec php npm install
 
 //For one scss compilation :
-docker exec playz_php_1 npm run dev
+docker-compose exec php npm run dev
 
 OR
 
 //For constent scss compilation :
-docker exec playz_php_1 npm run watch
+docker-compose exec php npm run watch
 ```
 
 #### Configuration
 ```text
 # URL
 http://127.0.0.1
+
+#MAIL SMTP
+MAILER_DSN=smtp://mailcatcher:1025
 
 # Env DB
 DATABASE_URL="postgresql://postgres:password@db:5432/db?serverVersion=13&charset=utf8"
@@ -83,21 +86,21 @@ DATABASE_URL="postgresql://postgres:password@db:5432/db?serverVersion=13&charset
 ## Useful commands
 ```
 # List all existing commands 
-docker-compose exec php bin/console
+docker-compose exec php php bin/console
 # Delete browser cache
-docker-compose exec php bin/console cache:clear
+docker-compose exec php php bin/console cache:clear
 # Creating a blank file
-docker-compose exec php bin/console make:controller
-docker-compose exec php bin/console make:form
+docker-compose exec php php bin/console make:controller
+docker-compose exec php php bin/console make:form
 # Creation of a complete CRUD
-docker-compose exec php bin/console make:crud
+docker-compose exec php php bin/console make:crud
 ```
 
 ## Database management
 
 #### Entity creation commands
 ```
-docker-compose exec php bin/console make:entity
+docker-compose exec php php bin/console make:entity
 ```
 Document on relationships between entities
 https://symfony.com/doc/current/doctrine/associations.html
@@ -105,9 +108,9 @@ https://symfony.com/doc/current/doctrine/associations.html
 #### Updating the database
 ```
 # See the requests that will be played with force
-docker-compose exec php bin/console doctrine:schema:update --dump-sql
+docker-compose exec php php bin/console doctrine:schema:update --dump-sql
 # Execute DB requests
-docker-compose exec php bin/console doctrine:schema:update --force
+docker-compose exec php php bin/console doctrine:schema:update --force
 ```
 
 ## Contact
