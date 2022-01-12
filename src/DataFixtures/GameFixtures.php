@@ -4,9 +4,10 @@ namespace App\DataFixtures;
 
 use App\Entity\Game;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class GameFixtures extends Fixture
+class GameFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -17,11 +18,18 @@ class GameFixtures extends Fixture
             $object = (new Game())
                 ->setName($faker->word)
                 ->setDescription($faker->word)
-                ->setLogo($faker->imageUrl($width = 640, $height = 480, 'cats'));
+                ->setCreatedBy($this->getReference(UserFixtures::USER_USER));
 
             $manager->persist($object);
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+            UserFixtures::class
+        ];
     }
 }
