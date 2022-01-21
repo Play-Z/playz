@@ -28,7 +28,7 @@ class Game
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Assert\Unique()
+     * @Assert\Unique(groups="string")
      * @Assert\NotBlank()
      * @Assert\NotNull()
      * @Assert\Length(
