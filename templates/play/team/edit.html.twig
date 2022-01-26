@@ -1,0 +1,13 @@
+{% extends 'baseTemplate/play-base.html.twig' %}
+
+{% block title %}Modifier {{ team.name }}{% endblock %}
+
+{% block body %}
+    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Modification de l'équipe {{ team.name|capitalize }}</h1>
+
+    {{ include('play/team/_form.html.twig', {'button_label': 'Sauvegarder'}) }}
+
+    <a href="{{ path('team_index') }}">Retour</a>
+
+    {{ include('play/team/_delete_form.html.twig') }}
+{% endblock %}

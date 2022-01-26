@@ -13,12 +13,12 @@ class GameFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = \Faker\Factory::create('fr_FR');
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 10; $i++) {
 
             $object = (new Game())
                 ->setName($faker->word)
                 ->setDescription($faker->word)
-                ->setCreatedBy($this->getReference(UserFixtures::USER_USER));
+                ->setCreatedBy($this->getReference(UserFixtures::USER_ADMIN));
 
             $manager->persist($object);
         }
