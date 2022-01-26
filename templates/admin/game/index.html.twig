@@ -16,7 +16,7 @@
         <tbody>
         {% for game in games %}
             <tr>
-                <td><img src="{{ game.logo }}" width="64" height="auto"></td>
+                <td><img src="{{ game.imageFile }}" width="64" height="auto" alt="Logo de {{ game.name }}"></td>
                 <td>{{ game.name }}</td>
                 <td>{{ game.description }}</td>
                 <td>

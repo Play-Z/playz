@@ -6,6 +6,7 @@ use App\Entity\Game;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class GameType extends AbstractType
 {
@@ -24,12 +25,13 @@ class GameType extends AbstractType
                     'placeholder' => 'Description du jeu...'
                 )
             ))
-            ->add('logo', null, array(
-                'label' => false,
-                'attr' => array(
-                    'placeholder' => 'URL du logo'
-                )
-            ))
+            ->add('imageFile', VichImageType::class, [
+                'required' => false,
+                'allow_delete' => true,
+                'download_uri' => true,
+                'image_uri' => true,
+                'asset_helper' => true,
+            ])
         ;
     }
 

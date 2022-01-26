@@ -2,15 +2,23 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\BlameableTrait;
+use App\Entity\Traits\VichUploadTrait;
 use App\Repository\GameRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=GameRepository::class)
+ * @Vich\Uploadable()
  */
 class Game
 {
+    use VichUploadTrait;
+    use BlameableTrait;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -20,7 +28,7 @@ class Game
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Assert\Unique()
+     * @Assert\Unique(groups="string")
      * @Assert\NotBlank()
      * @Assert\NotNull()
      * @Assert\Length(
@@ -31,20 +39,34 @@ class Game
     private $name;
 
     /**
+     * @var string|null
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
+
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Image(
-     *     minWidth = 32,
-     *     maxWidth = 64,
-     *     minHeight = 32,
-     *     maxHeight = 64
-     * )
+     * @var \DateTime $createdAt
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
      */
-    private $logo;
+    private $createdAt;
+
+    /**
+     * @var \DateTime $updatedAt
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     *
+     */
+    private $updatedAt;
 
     public function getId(): ?int
     {
@@ -75,15 +97,32 @@ class Game
         return $this;
     }
 
-    public function getLogo(): ?string
+    /**
+     * @return string|null
+     */
+    public function getSlug(): ?string
     {
-        return $this->logo;
+        return $this->slug;
     }
 
-    public function setLogo(?string $logo): self
+    /**
+     * @param string|null $slug
+     * @return Game
+     */
+    public function setSlug(?string $slug): Game
     {
-        $this->logo = $logo;
-
+        $this->slug = $slug;
         return $this;
     }
+
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
 }

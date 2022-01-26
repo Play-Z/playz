@@ -113,6 +113,58 @@ docker-compose exec php php bin/console doctrine:schema:update --dump-sql
 docker-compose exec php php bin/console doctrine:schema:update --force
 ```
 
+#### Création des dataFixtures
+
+https://symfony.com/bundles/DoctrineFixturesBundle/current/index.html
+
+Utilisation avec FakerBundle : https://github.com/fzaninotto/Faker#seeding-the-generator
+
+#### Commande pour exécuter les datasFixtures
+
+```
+docker-compose exec php php bin/console doctrine:fixtures:load
+```
+
+## Gestion des formulaires
+
+https://symfony.com/doc/current/reference/forms/types.html
+
+## Gestion de l'authentification
+
+https://symfony.com/doc/current/components/security/authentication.html
+
+#### Commande pour générer l'auth
+
+```
+docker-compose exec php php bin/console make:user
+docker-compose exec php php bin/console doctrine:schema:update --force
+docker-compose exec php php bin/console make:auth
+// Puis aller dans votre le fichier "custom authenticator" pour choisir la route de redirection après connexion (ligne 54).
+```
+
+## Sécurité
+
+#### Contrôle d'accèss par role
+https://symfony.com/doc/current/security.html#securing-controllers-and-other-code
+
+####Validation des formulaires avec les Assert
+https://symfony.com/doc/current/validation.html
+
+####Création de test d'accessibilité avec les voters
+https://symfony.com/doc/current/security/voters.html
+
+## Gestion des messages flash
+https://symfony.com/doc/current/controller.html#flash-messages
+
+## Bundle d'aide
+
+#### Gedmo
+https://symfony.com/bundles/StofDoctrineExtensionsBundle/current/index.html
+https://github.com/doctrine-extensions/DoctrineExtensions/tree/main/doc
+
+#### Vich Uploader
+https://github.com/dustin10/VichUploaderBundle/blob/master/docs/generating_urls.md
+
 ## Contact
 
 - Antoine SAUNIER
