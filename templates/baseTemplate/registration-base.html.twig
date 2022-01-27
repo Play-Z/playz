@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+
+<nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-800">
+    <div class="container mx-auto flex flex-wrap items-center justify-between">
+        <a href="/" class="flex">
+            <h1>PlayZ</h1>
+        </a>
+    </div>
+</nav>
+{% block content %}{% endblock %}
+</body>
+</html>

@@ -20,8 +20,8 @@
                 <td>{{ game.name }}</td>
                 <td>{{ game.description }}</td>
                 <td>
-                    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('game_show', {'id': game.id}) }}">Afficher</a>
-                    <a class="text-red-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('game_edit', {'id': game.id}) }}">Modifier</a>
+                    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('game_show', {'slug': game.slug}) }}">Afficher</a>
+                    <a class="text-red-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('game_edit', {'slug': game.slug}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}

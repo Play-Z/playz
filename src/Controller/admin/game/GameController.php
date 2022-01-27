@@ -42,7 +42,7 @@ class GameController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'game_show', methods: ['GET'])]
+    #[Route('/{slug}', name: 'game_show', methods: ['GET'])]
     public function show(Game $game): Response
     {
         return $this->render('admin/game/show.html.twig', [
@@ -50,7 +50,7 @@ class GameController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'game_edit', methods: ['GET','POST'])]
+    #[Route('/{slug}/edit', name: 'game_edit', methods: ['GET','POST'])]
     public function edit(Request $request, Game $game): Response
     {
         $form = $this->createForm(GameType::class, $game);
@@ -68,7 +68,7 @@ class GameController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'game_delete', methods: ['POST'])]
+    #[Route('/{slug}', name: 'game_delete', methods: ['POST'])]
     public function delete(Request $request, Game $game): Response
     {
         if ($this->isCsrfTokenValid('delete'.$game->getId(), $request->request->get('_token'))) {

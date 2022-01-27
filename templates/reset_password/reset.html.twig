@@ -1,12 +1,12 @@
-{% extends 'baseTemplate/base.html.twig' %}
+{% extends 'baseTemplate/registration-base.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+{% set page_title = 'Mot de passe oublié' %}
 
-{% block body %}
-    <h1>Reset your password</h1>
+{% block content %}
+    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Reset your password</h1>
 
     {{ form_start(resetForm) }}
         {{ form_row(resetForm.plainPassword) }}
-        <button class="btn btn-primary">Reset password</button>
+        <button class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Reset password</button>
     {{ form_end(resetForm) }}
 {% endblock %}

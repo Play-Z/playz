@@ -4,11 +4,10 @@ namespace App\DataFixtures;
 
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserFixtures extends Fixture implements DependentFixtureInterface
+class UserFixtures extends Fixture
 {
     const USER_ADMIN = 'ADMIN';
     const USER_USER = 'USER';
@@ -23,32 +22,25 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $admin = (new User())
+            ->setUsername('Admin')
             ->setEmail('admin@admin')
             ->setRoles(['ROLE_ADMIN'])
             ->setIsVerified(true)
-            ->setTeam($this->getReference(TeamFixtures::USER_ADMIN_TEAM))
         ;
         $admin->setPassword($this->userPasswordHasher->hashPassword($admin, 'test'));
         $manager->persist($admin);
         $this->setReference(self::USER_ADMIN, $admin);
 
         $player = (new User())
+            ->setUsername('Player')
             ->setEmail('player@player')
             ->setRoles(['ROLE_USER'])
             ->setIsVerified(true)
-            ->setTeam($this->getReference(TeamFixtures::USER_USER_TEAM))
         ;
         $player->setPassword($this->userPasswordHasher->hashPassword($player, 'test'));
         $manager->persist($player);
         $this->setReference(self::USER_USER, $player);
 
         $manager->flush();
-    }
-
-    public function getDependencies()
-    {
-        return [
-            TeamFixtures::class
-        ];
     }
 }

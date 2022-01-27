@@ -5,6 +5,8 @@ namespace App\Controller\play\team;
 use App\Entity\Team;
 use App\Form\TeamType;
 use App\Repository\TeamRepository;
+use App\Security\Voter\TeamVoter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +24,7 @@ class TeamController extends AbstractController
     }
 
     #[Route('/new', name: 'team_new', methods: ['GET','POST'])]
+    #[IsGranted('ROLE_USER')]
     public function new(Request $request): Response
     {
         $team = new Team();
@@ -29,7 +32,6 @@ class TeamController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $team->setName(strtolower($form->get('name')->getData()));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($team);
             $entityManager->flush();
@@ -43,7 +45,7 @@ class TeamController extends AbstractController
         ]);
     }
 
-    #[Route('/{name}', name: 'team_show', methods: ['GET'])]
+    #[Route('/{slug}', name: 'team_show', methods: ['GET'])]
     public function show(Team $team): Response
     {
         return $this->render('play/team/show.html.twig', [
@@ -51,7 +53,8 @@ class TeamController extends AbstractController
         ]);
     }
 
-    #[Route('/{name}/edit', name: 'team_edit', methods: ['GET','POST'])]
+    #[Route('/{slug}/edit', name: 'team_edit', methods: ['GET','POST'])]
+    #[IsGranted(TeamVoter::EDIT, 'team')]
     public function edit(Request $request, Team $team): Response
     {
         $form = $this->createForm(TeamType::class, $team);
@@ -69,10 +72,10 @@ class TeamController extends AbstractController
         ]);
     }
 
-    #[Route('/{name}', name: 'team_delete', methods: ['POST'])]
+    #[Route('/{slug}', name: 'team_delete', methods: ['POST'])]
     public function delete(Request $request, Team $team): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$team->getName(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$team->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($team);
             $entityManager->flush();

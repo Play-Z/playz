@@ -3,7 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Team;
+use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,6 +16,17 @@ class TeamType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('members', EntityType::class, [
+                // looks for choices from this entity
+                'class' => User::class,
+
+                // uses the User.username property as the visible option string
+                'choice_label' => 'email',
+
+                // used to render a select box, check boxes or radios
+                 'multiple' => true,
+                 'expanded' => true,
+            ])
             ->add('description')
             ->add('logo')
         ;

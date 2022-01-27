@@ -7,7 +7,9 @@ use App\Repository\TeamRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TeamRepository::class)
@@ -26,8 +28,21 @@ class Team
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 50
+     * )
      */
     private $name;
+
+    /**
+     * @var string|null
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -45,23 +60,17 @@ class Team
     private $isVerified = false;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="team")
+     * @ORM\Column(type="boolean")
      */
-    private $users;
+    private $public = false;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="teams")
      */
     private $members;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $public;
-
     public function __construct()
     {
-        $this->users = new ArrayCollection();
         $this->members = new ArrayCollection();
     }
 
@@ -79,6 +88,24 @@ class Team
     {
         $this->name = $name;
 
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string|null $slug
+     * @return Team
+     */
+    public function setSlug(?string $slug): Team
+    {
+        $this->slug = $slug;
         return $this;
     }
 
@@ -114,36 +141,6 @@ class Team
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setTeam($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getTeam() === $this) {
-                $user->setTeam(null);
-            }
-        }
 
         return $this;
     }

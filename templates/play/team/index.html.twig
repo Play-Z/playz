@@ -19,12 +19,12 @@
         {% for team in teams %}
             <tr>
                 <td>{{ team.logo }}</td>
-                <td>{{ team.name|capitalize }}</td>
+                <td>{{ team.name }}</td>
                 <td>{{ team.description }}</td>
                 <td>{{ team.isVerified ? 'Oui' : 'Non' }}</td>
                 <td>
-                    <a href="{{ path('team_show', {'name': team.name}) }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">show</a>
-                    <a href="{{ path('team_edit', {'name': team.name}) }}" class="text-yellow-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">edit</a>
+                    <a href="{{ path('team_show', {'slug': team.slug}) }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">show</a>
+                    <a href="{{ path('team_edit', {'slug': team.slug}) }}" class="text-yellow-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">edit</a>
                 </td>
             </tr>
         {% else %}

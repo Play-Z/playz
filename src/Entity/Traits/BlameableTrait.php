@@ -12,7 +12,7 @@ trait BlameableTrait
      * @var User
      *
      * @Gedmo\Blameable(on="create")
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="records")
+     * @ORM\ManyToOne(targetEntity=User::class)
      */
     private $createdBy;
 

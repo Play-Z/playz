@@ -52,6 +52,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $teams;
 
+    /**
+     * @ORM\Column(type="string", length=40)
+     */
+    private $username;
+
     public function __construct()
     {
         $this->teams = new ArrayCollection();
@@ -193,6 +198,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->teams->removeElement($team)) {
             $team->removeMember($this);
         }
+
+        return $this;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
 
         return $this;
     }

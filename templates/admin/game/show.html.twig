@@ -3,13 +3,13 @@
 {% block title %}Game{% endblock %}
 
 {% block body %}
-    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Game</h1>
+    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">{{ game.name }}</h1>
 
     <table class="table">
         <tbody>
         <tr>
             <th>Logo</th>
-            <td><img src="{{ game.logo }}" width="64" height="auto"></td>
+            <td><img src="{{ game.imageName }}" width="64" height="auto" alt="{{ game.imageName }}"></td>
         </tr>
         <tr>
             <th>Nom</th>
@@ -24,7 +24,7 @@
 
     <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('game_index') }}">Retour</a>
 
-    <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('game_edit', {'id': game.id}) }}">Modifier</a>
+    <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('game_edit', {'slug': game.slug}) }}">Modifier</a>
 
     {{ include('admin/game/_delete_form.html.twig') }}
 {% endblock %}

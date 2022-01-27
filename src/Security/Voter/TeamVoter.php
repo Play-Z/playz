@@ -6,7 +6,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class ExampleVoter extends Voter
+class TeamVoter extends Voter
 {
     const EDIT = 'edit';
     const VIEW = 'view';
@@ -15,8 +15,7 @@ class ExampleVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::EDIT, self::VIEW])
-            && $subject instanceof \App\Entity\Record;
+        return in_array($attribute, [self::EDIT, self::VIEW]) && $subject instanceof \App\Entity\Team;
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
@@ -28,7 +27,7 @@ class ExampleVoter extends Voter
 
         switch ($attribute) {
             case 'edit':
-                return in_array('ROLE_TOTO', $user->getRoles()) || $subject->getCreatedBy() === $user;
+                return in_array('ROLE_ADMIN', $user->getRoles()) || $subject->getCreatedBy() === $user;
                 break;
             case 'view':
                 // logic to determine if the user can VIEW
