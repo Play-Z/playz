@@ -1,0 +1,12 @@
+{% extends 'baseTemplate/admin-base.html.twig' %}
+{% form_theme form 'form/theme.html.twig' %}
+
+{% block title %}Nouveau Tournoi{% endblock %}
+
+{% block body %}
+    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Ajouter un tournoi</h1>
+
+    {{ include('tournament/tournament_crud/_form.html.twig') }}
+
+    <a href="{{ path('tournament_dashboard') }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Retour</a>
+{% endblock %}
