@@ -1,9 +1,9 @@
 {% extends 'baseTemplate/play-base.html.twig' %}
 {% form_theme form 'form/theme.html.twig' %}
 
-{% block title %} Nouvelle équipe {% endblock %}
+{% set page_title = 'Nouvelle d\'équipe' %}
 
-{% block body %}
+{% block content %}
     <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Creer une équipe</h1>
 
     {{ include('play/team/_form.html.twig') }}

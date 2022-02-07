@@ -10,12 +10,13 @@ class TeamVoter extends Voter
 {
     const EDIT = 'edit';
     const VIEW = 'view';
+    const DELETE = 'delete';
 
     protected function supports(string $attribute, $subject): bool
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::EDIT, self::VIEW]) && $subject instanceof \App\Entity\Team;
+        return in_array($attribute, [self::EDIT, self::VIEW], self::DELETE) && $subject instanceof \App\Entity\Team;
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
@@ -26,6 +27,7 @@ class TeamVoter extends Voter
         }
 
         switch ($attribute) {
+            case 'delete':
             case 'edit':
                 return in_array('ROLE_ADMIN', $user->getRoles()) || $subject->getCreatedBy() === $user;
                 break;

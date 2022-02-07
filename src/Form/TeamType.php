@@ -27,6 +27,7 @@ class TeamType extends AbstractType
                  'multiple' => true,
                  'expanded' => true,
             ])
+            ->add('public')
             ->add('description')
             ->add('logo')
         ;

@@ -73,11 +73,26 @@ class TeamController extends AbstractController
     }
 
     #[Route('/{slug}', name: 'team_delete', methods: ['POST'])]
+    #[IsGranted(TeamVoter::DELETE, 'team')]
     public function delete(Request $request, Team $team): Response
     {
         if ($this->isCsrfTokenValid('delete'.$team->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($team);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('team_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{slug}', name: 'team_join', methods: ['POST'])]
+    public function join(Team $team): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+
+        if ($team->getPublic() === true) {
+            $team->addMember($user);
             $entityManager->flush();
         }
 
