@@ -1,0 +1,50 @@
+{% extends 'baseTemplate/play-base.html.twig' %}
+
+{% block title %}Equipe {{ team.name }}{% endblock %}
+
+{% block content %}
+    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">{{ team.name }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Logo</th>
+                <td>{{ team.logo }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ team.name }}</td>
+            </tr>
+            <tr>
+                <th>IsVerified</th>
+                <td>{{ team.isVerified ? 'Oui' : 'Non' }}</td>
+            </tr>
+            <tr>
+                <th>Visibilité équipe</th>
+                <td>{{ team.public ? 'Publique' : 'Privée' }}</td>
+            </tr>
+            <tr>
+                <th>Membres</th>
+                <td>
+                    {% for member in team.members %}
+                        {{ member.username }},
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ team.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_index') }}">Retour</a>
+
+    {% if team.public and is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_join', {'slug': team.slug}) }}">Rejoindre</a>
+    {% endif %}
+
+    <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_edit', {'slug': team.slug}) }}">Modifier</a>
+
+    {{ include('play/team/_delete_form.html.twig') }}
+{% endblock %}

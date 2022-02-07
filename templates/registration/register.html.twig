@@ -1,21 +1,22 @@
-<!DOCTYPE html>
+{% extends 'baseTemplate/registration-base.html.twig' %}
 
-<title>Register</title>
+{% set page_title = 'Inscription' %}
 
-{% block body %}
+{% block content %}
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 
-    <h1>Register</h1>
+    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Inscription</h1>
 
     {{ form_start(registrationForm) }}
+        {{ form_row(registrationForm.username) }}
         {{ form_row(registrationForm.email) }}
         {{ form_row(registrationForm.plainPassword, {
             label: 'Password'
         }) }}
         {{ form_row(registrationForm.agreeTerms) }}
 
-        <button type="submit" class="btn">Register</button>
+        <button type="submit" class="btn bg-indigo-500 text-white active:bg-indigo-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">S'inscrire</button>
     {{ form_end(registrationForm) }}
 {% endblock %}
