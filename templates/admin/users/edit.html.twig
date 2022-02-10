@@ -1,12 +1,13 @@
-{% extends 'baseTemplate/admin-base.html.twig' %}
+<!DOCTYPE html>
 
-{% block title %}Modifier {{ user.username }}{% endblock %}
+<title>Edit User</title>
 
 {% block body %}
-    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Modification de {{ user.username }}</h1>
-   {{ include('admin/users/_form.html.twig', {'button_label': 'Update'}) }}
+    <h1>Edit User</h1>
 
-    <a href="{{ path('users_index') }}">Retour à la liste</a>
+    {{ include('users/_form.html.twig', {'button_label': 'Update'}) }}
 
-    {{ include('admin/users/_delete_form.html.twig') }}
+    <a href="{{ path('users_index') }}">back to list</a>
+
+    {{ include('users/_delete_form.html.twig') }}
 {% endblock %}

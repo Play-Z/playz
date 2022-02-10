@@ -1,9 +1,9 @@
-{% extends 'baseTemplate/admin-base.html.twig' %}
+<!DOCTYPE html>
 
-{% block title %}Utilisateurs{% endblock %}
+<title>User</title>
 
 {% block body %}
-    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">{{ user.username }}</h1>
+    <h1>User</h1>
 
     <table class="table">
         <tbody>
@@ -16,27 +16,27 @@
                 <td>{{ user.email }}</td>
             </tr>
             <tr>
+                <th>Roles</th>
+                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ user.password }}</td>
+            </tr>
+            <tr>
+                <th>IsVerified</th>
+                <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
                 <th>Username</th>
                 <td>{{ user.username }}</td>
             </tr>
-{#            <tr>#}
-{#                <th>Roles</th>#}
-{#                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Password</th>#}
-{#                <td>{{ user.password }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>IsVerified</th>#}
-{#                <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>#}
-{#            </tr>#}
         </tbody>
     </table>
 
-    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('users_index') }}">Retour</a>
+    <a href="{{ path('users_index') }}">back to list</a>
 
-    <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('users_edit', {'id': user.id}) }}">Modifier</a>
+    <a href="{{ path('users_edit', {'id': user.id}) }}">edit</a>
 
-    {{ include('admin/users/_delete_form.html.twig') }}
+    {{ include('users/_delete_form.html.twig') }}
 {% endblock %}
