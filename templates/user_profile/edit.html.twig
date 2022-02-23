@@ -1,0 +1,12 @@
+{% extends 'baseTemplate/play-base.html.twig' %}
+
+{% set page_title = 'Modification du profil de ' ~ user.username %}
+
+{% block content %}
+    <h1>Modification profil de {{ user.username }}</h1>
+
+    {{ include('user_profile/_form.html.twig', {'button_label': 'Sauvegarder'}) }}
+
+    <a href="{{ path('user_profile_show', {'slug': user.slug}) }}">Annuler</a>
+
+{% endblock %}
