@@ -1,6 +1,6 @@
 {% extends 'baseTemplate/admin-base.html.twig' %}
 
-{% block title %}Users{% endblock %}
+{% block title %}Utilisateurs{% endblock %}
 
 {% block body %}
     <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">{{ user.username }}</h1>
@@ -12,17 +12,17 @@
                 <td>{{ user.id }}</td>
             </tr>
             <tr>
-                <th>Username</th>
-                <td>{{ user.username }}</td>
-            </tr>
-            <tr>
                 <th>Email</th>
                 <td>{{ user.email }}</td>
             </tr>
             <tr>
-                <th>Roles</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                <th>Username</th>
+                <td>{{ user.username }}</td>
             </tr>
+{#            <tr>#}
+{#                <th>Roles</th>#}
+{#                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>#}
+{#            </tr>#}
 {#            <tr>#}
 {#                <th>Password</th>#}
 {#                <td>{{ user.password }}</td>#}
