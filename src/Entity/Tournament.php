@@ -46,8 +46,10 @@ class Tournament
      */
     private $status;
 
-
-
+    /**
+     * @ORM\ManyToMany(targetEntity=TournamentTeam::class, inversedBy="tournaments")
+     */
+    private $equipes;
     /**
      * @ORM\OneToMany(targetEntity=TournamentMatch::class, mappedBy="tournaments")
      */
@@ -60,11 +62,36 @@ class Tournament
 
 
 
+
     public function __construct()
     {
         $this->tournamentMatches = new ArrayCollection();
         $this->setStatus(false) ;
 
+    }
+
+    /**
+     * @return Collection|TournamentTeam[]
+     */
+    public function getEquipes(): Collection
+    {
+        return $this->equipes;
+    }
+
+    public function addEquipes(TournamentTeam $equipes): self
+    {
+        if (!$this->equipes->contains($equipes)) {
+            $this->equipes[] = $equipes;
+        }
+
+        return $this;
+    }
+
+    public function removeEquipes(TournamentTeam $equipes): self
+    {
+        $this->equipes->removeElement($equipes);
+
+        return $this;
     }
 
     public function getId(): ?int

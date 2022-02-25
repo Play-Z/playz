@@ -24,10 +24,7 @@ class TournamentMatch
      */
     private $name;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=TournamentTeam::class, inversedBy="tournamentMatches")
-     */
-    private $equipes;
+
 
     /**
      * @ORM\ManyToOne(targetEntity=Tournament::class, inversedBy="tournamentMatches",cascade={"persist"})
@@ -72,29 +69,7 @@ class TournamentMatch
         return $this;
     }
 
-    /**
-     * @return Collection|TournamentTeam[]
-     */
-    public function getEquipes(): Collection
-    {
-        return $this->equipes;
-    }
 
-    public function addEquipe(TournamentTeam $equipe): self
-    {
-        if (!$this->equipes->contains($equipe)) {
-            $this->equipes[] = $equipe;
-        }
-
-        return $this;
-    }
-
-    public function removeEquipe(TournamentTeam $equipe): self
-    {
-        $this->equipes->removeElement($equipe);
-
-        return $this;
-    }
 
     public function getTournaments(): ?Tournament
     {

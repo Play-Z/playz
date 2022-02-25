@@ -9,12 +9,13 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    {% if tournaments|length > 0 %}
+        {%  for tournament in tournaments %}
+            <p>{{ tournament.name }}</p>
+        {% endfor %}
+    {% else %}
+        <p>No tournament available</p>
+    {% endif %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/src/Controller/PlayDashboardController.php'|file_link(0) }}">src/Controller/PlayController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/templates/play_dashboard/index.html.twig'|file_link(0) }}">templates/play/index.html.twig</a></code></li>
-    </ul>
 </div>
 {% endblock %}
