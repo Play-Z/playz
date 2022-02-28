@@ -18,10 +18,11 @@ class TournamentType extends AbstractType
             ->add('name')
             ->add('max_team_participant',ChoiceType::class, [
                 'choices'=> [
-                    2=>2,
                     4=>4,
                     8=>8,
-                    16=>16
+                    16=>16,
+                    32=>32,
+                    64=>64
                 ]
             ])
             ->add('max_team_players',ChoiceType::class, [

@@ -13,13 +13,12 @@ class PlayDashboardController extends AbstractController
     #[Route('/', name: 'play_dashboard')]
     public function index(TournamentRepository $tournamentRepository): Response
     {
-
         return $this->render('play/play_dashboard/index.html.twig', [
             'tournaments'=>$tournamentRepository->findAll(),
         ]);
     }
 
-    #[Route('/tournament/{tournament_id}', name:'play_tournament')]
+    #[Route('/tournament/{id}', name:'play_tournament')]
     public function showInscription(Tournament $tournament): Response
     {
         return $this->render('play/tournament/show.html.twig',[

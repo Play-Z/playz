@@ -48,7 +48,7 @@ class TournamentDashboardController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         if($isCallFromrecursive == false) {
-            $total_match = ( $max_team * 2 ) - 2 ;
+            $total_match =  $max_team   - 2 ;
 
 
             $finalMatch = new TournamentMatch('Finale',$tournament);
