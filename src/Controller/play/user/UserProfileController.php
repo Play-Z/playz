@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\play\user;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\UserRepository;
 use App\Security\Voter\UserProfileVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,24 +12,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/user/profile')]
+#[Route('/user')]
 class UserProfileController extends AbstractController
 {
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    #[Route('/', name: 'connected_user_profile_show', methods: ['GET'])]
-    public function showConnected()
+    #[Route('/', name: 'index_user_profile', methods: ['GET'])]
+    public function index(UserRepository $userRepository)
     {
-        /** @var User $user */
-        $user = $this->getUser();
-
-
-        return $this->redirectToRoute('user_profile_show', ['slug' => $user->getSlug()]);
+        return $this->render('play/user/index.html.twig', [
+            'users' => $userRepository->findAll(),
+        ]);
     }
 
     #[Route('/{slug}', name: 'user_profile_show', methods: ['GET'])]
     public function show(User $user): Response
     {
-        return $this->render('user_profile/show.html.twig', [
+        return $this->render('play/user/show.html.twig', [
             'user' => $user,
         ]);
     }
@@ -46,7 +44,7 @@ class UserProfileController extends AbstractController
             return $this->redirectToRoute('user_profile_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('user_profile/edit.html.twig', [
+        return $this->renderForm('play/user/edit.html.twig', [
             'user' => $user,
             'form' => $form,
         ]);
