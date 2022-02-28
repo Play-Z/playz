@@ -23,7 +23,7 @@ class UserFixtures extends Fixture
     {
         $admin = (new User())
             ->setUsername('Admin')
-            ->setEmail('admin@admin')
+            ->setEmail('admin@playz.com')
             ->setRoles(['ROLE_ADMIN'])
             ->setIsVerified(true)
             ->setNewsletter(false)
@@ -40,7 +40,7 @@ class UserFixtures extends Fixture
 
         $player = (new User())
             ->setUsername('Player')
-            ->setEmail('player@player')
+            ->setEmail('player@playz.com')
             ->setRoles(['ROLE_USER'])
             ->setIsVerified(true)
             ->setNewsletter(false)
