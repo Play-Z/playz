@@ -3,7 +3,7 @@
 {% set page_title = 'Profil ' ~ user.username %}
 
 {% block content %}
-    <h1>User</h1>
+    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">{{ user.username }}</h1>
 
     <table class="table">
         <tbody>
@@ -49,7 +49,7 @@
     </table>
 
     {% if is_granted('edit', user) %}
-    <a href="{{ path('user_profile_edit', {'slug': user.slug}) }}">Modifier</a>
+    <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('user_profile_edit', {'slug': user.slug}) }}">Modifier</a>
     {% endif %}
 
 {% endblock %}
