@@ -11,6 +11,7 @@
                 <th>Username</th>
                 <td>{{ user.username }}</td>
             </tr>
+            {% if user.team %}
             <tr>
                 <th>Equipe</th>
                 <td>{{ user.team.name }}</td>
@@ -21,6 +22,7 @@
                     {% endfor %}
                 </td>
             </tr>
+            {% endif %}
             <tr>
                 <th>Prénom</th>
                 <td>{{ user.firstname }}</td>

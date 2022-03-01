@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -62,11 +60,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $isVerified = false;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Team::class, mappedBy="members")
-     */
-    private $teams;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
@@ -104,10 +97,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    private $newsletter;
+    private $newsletter = false;
 
     /**
      * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="users")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $team;
 

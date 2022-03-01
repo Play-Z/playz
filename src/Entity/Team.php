@@ -71,6 +71,7 @@ class Team
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="team")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $users;
 

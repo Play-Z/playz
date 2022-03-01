@@ -85,9 +85,11 @@ class TeamController extends AbstractController
         return $this->redirectToRoute('team_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{slug}', name: 'team_join', methods: ['POST'])]
+    #[Route('/{slug}/join', name: 'team_join', methods: ['GET', 'POST'])]
     public function join(Team $team): Response
     {
+        dump('bonjour');
+
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getUser();
 
