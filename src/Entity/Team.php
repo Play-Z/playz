@@ -69,9 +69,16 @@ class Team
      */
     private $members;
 
+    /**
+     * @ORM\OneToMany(targetEntity=TournamentTeam::class, mappedBy="teams")
+     */
+    private $tournamentTeams;
+
+
     public function __construct()
     {
         $this->members = new ArrayCollection();
+        $this->tournamentTeams = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -180,4 +187,36 @@ class Team
 
         return $this;
     }
+
+    /**
+     * @return Collection|TournamentTeam[]
+     */
+    public function getTournamentTeams(): Collection
+    {
+        return $this->tournamentTeams;
+    }
+
+    public function addTournamentTeam(TournamentTeam $tournamentTeam): self
+    {
+        if (!$this->tournamentTeams->contains($tournamentTeam)) {
+            $this->tournamentTeams[] = $tournamentTeam;
+            $tournamentTeam->setTeams($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTournamentTeam(TournamentTeam $tournamentTeam): self
+    {
+        if ($this->tournamentTeams->removeElement($tournamentTeam)) {
+            // set the owning side to null (unless already changed)
+            if ($tournamentTeam->getTeams() === $this) {
+                $tournamentTeam->setTeams(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }
