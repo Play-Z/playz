@@ -92,7 +92,7 @@ class TeamController extends AbstractController
         $user = $this->getUser();
 
         if ($team->getPublic() === true) {
-            $team->addMember($user);
+            $team->addUser($user);
             $entityManager->flush();
         }
 

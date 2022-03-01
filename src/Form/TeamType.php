@@ -15,12 +15,12 @@ class TeamType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('members', EntityType::class, [
+            ->add('users', EntityType::class, [
                 // looks for choices from this entity
                 'class' => User::class,
 
                 // uses the User.username property as the visible option string
-                'choice_label' => 'email',
+                'choice_label' => 'username',
 
                 // used to render a select box, check boxes or radios
                  'multiple' => true,

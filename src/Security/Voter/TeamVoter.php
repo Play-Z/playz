@@ -2,6 +2,8 @@
 
 namespace App\Security\Voter;
 
+use App\Entity\Team;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -22,21 +24,30 @@ class TeamVoter extends Voter
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
+
         if (!$user instanceof UserInterface) {
             return false;
         }
 
+        $targetTeam = $subject;
+
         switch ($attribute) {
-            case 'delete':
-            case 'edit':
-                return in_array('ROLE_ADMIN', $user->getRoles()) || $subject->getCreatedBy() === $user;
-                break;
-            case 'view':
-                // logic to determine if the user can VIEW
-                // return true or false
-                break;
+            case self::VIEW:
+                return $this->canView($targetTeam, $user);
+            case self::EDIT:
+                return $this->canEdit($targetTeam, $user);
         }
 
         return false;
+    }
+
+    private function canView(Team $targetTeam, User $user)
+    {
+        return $this->canEdit($targetTeam, $user);
+    }
+
+    private function canEdit(Team $targetUser, User $user)
+    {
+        return in_array('ROLE_ADMIN', $user->getRoles()) || $user->getTeam() === $targetUser;
     }
 }
