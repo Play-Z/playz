@@ -65,20 +65,20 @@ class Team
     private $public = false;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="teams")
-     */
-    private $members;
-
-    /**
      * @ORM\OneToMany(targetEntity=TournamentTeam::class, mappedBy="teams")
      */
     private $tournamentTeams;
 
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="team")
+     */
+    private $users;
+
 
     public function __construct()
     {
-        $this->members = new ArrayCollection();
         $this->tournamentTeams = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -152,30 +152,6 @@ class Team
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getMembers(): Collection
-    {
-        return $this->members;
-    }
-
-    public function addMember(User $member): self
-    {
-        if (!$this->members->contains($member)) {
-            $this->members[] = $member;
-        }
-
-        return $this;
-    }
-
-    public function removeMember(User $member): self
-    {
-        $this->members->removeElement($member);
-
-        return $this;
-    }
-
     public function getPublic(): ?bool
     {
         return $this->public;
@@ -212,6 +188,36 @@ class Team
             // set the owning side to null (unless already changed)
             if ($tournamentTeam->getTeams() === $this) {
                 $tournamentTeam->setTeams(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getTeam() === $this) {
+                $user->setTeam(null);
             }
         }
 

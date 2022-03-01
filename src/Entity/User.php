@@ -106,10 +106,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $newsletter;
 
-    public function __construct()
-    {
-        $this->teams = new ArrayCollection();
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="users")
+     */
+    private $team;
 
     public function getId(): ?int
     {
@@ -230,33 +230,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Team[]
-     */
-    public function getTeams(): Collection
-    {
-        return $this->teams;
-    }
-
-    public function addTeam(Team $team): self
-    {
-        if (!$this->teams->contains($team)) {
-            $this->teams[] = $team;
-            $team->addMember($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTeam(Team $team): self
-    {
-        if ($this->teams->removeElement($team)) {
-            $team->removeMember($this);
-        }
-
-        return $this;
-    }
-
     public function setUsername(string $username): self
     {
         $this->username = $username;
@@ -356,6 +329,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNewsletter(bool $newsletter): self
     {
         $this->newsletter = $newsletter;
+
+        return $this;
+    }
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): self
+    {
+        $this->team = $team;
 
         return $this;
     }

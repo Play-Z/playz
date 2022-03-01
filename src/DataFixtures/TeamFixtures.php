@@ -19,7 +19,7 @@ class TeamFixtures extends Fixture implements DependentFixtureInterface
             ->setName('Team1')
             ->setDescription('La team 1')
             ->setCreatedBy($this->getReference(UserFixtures::USER_ADMIN))
-            ->addMember($this->getReference(UserFixtures::USER_ADMIN))
+            ->addUser($this->getReference(UserFixtures::USER_ADMIN))
         ;
         $manager->persist($team1);
         $this->setReference(self::USER_ADMIN_TEAM, $team1);
@@ -28,7 +28,7 @@ class TeamFixtures extends Fixture implements DependentFixtureInterface
             ->setName('Team2')
             ->setDescription('La team 2')
             ->setCreatedBy($this->getReference(UserFixtures::USER_USER))
-            ->addMember($this->getReference(UserFixtures::USER_USER))
+            ->addUser($this->getReference(UserFixtures::USER_USER))
         ;
         $manager->persist($team2);
         $this->setReference(self::USER_USER_TEAM, $team2);

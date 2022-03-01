@@ -23,8 +23,8 @@
                 <td>{{ team.logo }}</td>
                 <td>{{ team.name }}</td>
                 <td>
-                        {% for member in team.members %}
-                            {{ member.username }},
+                        {% for user in team.users %}
+                            {{ user.username }},
                         {% endfor %}
                 </td>
                 <td>{{ team.description }}</td>

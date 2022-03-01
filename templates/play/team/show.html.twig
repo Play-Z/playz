@@ -26,8 +26,8 @@
             <tr>
                 <th>Membres</th>
                 <td>
-                    {% for member in team.members %}
-                        {{ member.username }},
+                    {% for user in team.users %}
+                        {{ user.username }},
                     {% endfor %}
                 </td>
             </tr>
