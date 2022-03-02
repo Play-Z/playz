@@ -17,7 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Team
 {
-    use BlameableTrait;
 
     /**
      * @ORM\Id
@@ -75,6 +74,22 @@ class Team
      */
     private $users;
 
+    /**
+     * @var User
+     *
+     * @Gedmo\Blameable(on="create")
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=true, unique=true)
+     */
+    private $createdBy;
+
+    /**
+     * @var User|null
+     *
+     * @Gedmo\Blameable(on="update")
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $updatedBy;
 
     public function __construct()
     {
@@ -225,5 +240,40 @@ class Team
         return $this;
     }
 
+    /**
+     * @return User
+     */
+    public function getCreatedBy(): User
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @param User $createdBy
+     * @return self
+     */
+    public function setCreatedBy(User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+        return $this;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getUpdatedBy(): ?User
+    {
+        return $this->updatedBy;
+    }
+
+    /**
+     * @param User|null $updatedBy
+     * @return self
+     */
+    public function setUpdatedBy(?User $updatedBy): self
+    {
+        $this->updatedBy = $updatedBy;
+        return $this;
+    }
 
 }
