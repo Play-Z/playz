@@ -40,8 +40,10 @@
 
     <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_index') }}">Retour</a>
 
-    {% if app.user.team is null and team.public and is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-        <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_join', {'slug': team.slug}) }}">Rejoindre</a>
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        {% if app.user.team is null and team.public %}
+            <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_join', {'slug': team.slug}) }}">Rejoindre</a>
+        {% endif %}
     {% endif %}
 
     {% if is_granted('edit', team) %}
