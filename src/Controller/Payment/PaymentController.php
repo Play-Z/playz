@@ -11,6 +11,12 @@ class PaymentController extends AbstractController
     #[Route('/payment', name: 'payment')]
     public function index(): Response
     {
-        return $this->render('payment/index.html.twig');
+
+        $priceMonth = 15;
+        $priceYear = 80;
+        return $this->render('payment/index.html.twig',[
+            'priceMonth' => $priceMonth,
+            'priceYear' => $priceYear,
+        ]);
     }
 }
