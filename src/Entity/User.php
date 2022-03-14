@@ -336,9 +336,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($team->getUsers()->isEmpty()){
             $team->setCreatedBy($this);
-            $this->setRoles(['ROLE_TEAM_CREATOR_' . strtoupper(str_replace('-', '_', $team->getSlug()))]);
+            $this->setRoles(array('ROLE_TEAM_CREATOR'));
         }
         $this->team = $team;
+        $this->setRoles(array('ROLE_TEAM_MEMBER'));
 
         return $this;
     }

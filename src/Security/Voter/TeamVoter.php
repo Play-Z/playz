@@ -48,12 +48,12 @@ class TeamVoter extends Voter
         return $this->canEdit($targetTeam, $user);
     }
 
-    private function canEdit(Team $targetUser, User $user)
+    private function canEdit(Team $targetTeam, User $user)
     {
-        return in_array('ROLE_ADMIN', $user->getRoles()) || $user->getTeam() === $targetUser;
+        return in_array('ROLE_ADMIN', $user->getRoles()) || $targetTeam->getCreatedBy() === $user && in_array('ROLE_TEAM_CREATOR', $user->getRoles());
     }
 
-    private function canDelete(Team $targetUser, User $user){
-        return in_array('ROLE_ADMIN', $user->getRoles()) || $user->getTeam() === $targetUser;
+    private function canDelete(Team $targetTeam, User $user){
+        return in_array('ROLE_ADMIN', $user->getRoles()) || $targetTeam->getCreatedBy() === $user && in_array('ROLE_TEAM_CREATOR', $user->getRoles());
     }
 }
