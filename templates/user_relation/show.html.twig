@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<title>UserRelation</title>
+
+{% block body %}
+    <h1>UserRelation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user_relation.id }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ user_relation.status }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('user_relation_index') }}">back to list</a>
+
+    <a href="{{ path('user_relation_edit', {'id': user_relation.id}) }}">edit</a>
+
+    {{ include('user_relation/_delete_form.html.twig') }}
+{% endblock %}

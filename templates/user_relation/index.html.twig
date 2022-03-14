@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<title>UserRelation index</title>
+
+{% block body %}
+    <h1>UserRelation index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Status</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user_relation in user_relations %}
+            <tr>
+                <td>{{ user_relation.id }}</td>
+                <td>{{ user_relation.status }}</td>
+                <td>
+                    <a href="{{ path('user_relation_show', {'id': user_relation.id}) }}">show</a>
+                    <a href="{{ path('user_relation_edit', {'id': user_relation.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('user_relation_new') }}">Create new</a>
+{% endblock %}

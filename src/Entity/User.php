@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -104,6 +106,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $team;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=UserRelation::class, mappedBy="relatingUser")
+     */
+    private $userRelations;
+
+    public function __construct()
+    {
+        $this->userRelations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -340,6 +352,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
         $this->team = $team;
         $this->setRoles(array('ROLE_TEAM_MEMBER'));
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserRelation[]
+     */
+    public function getUserRelations(): Collection
+    {
+        return $this->userRelations;
+    }
+
+    public function addUserRelation(UserRelation $userRelation): self
+    {
+        if (!$this->userRelations->contains($userRelation)) {
+            $this->userRelations[] = $userRelation;
+            $userRelation->addRelatingUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserRelation(UserRelation $userRelation): self
+    {
+        if ($this->userRelations->removeElement($userRelation)) {
+            $userRelation->removeRelatingUser($this);
+        }
 
         return $this;
     }
