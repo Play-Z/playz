@@ -22,24 +22,24 @@ class UserRelation
     /**
      * @ORM\Column(type="string", length=30)
      */
-    private $status;
+    private $status = "pending";
 
     /**
-     * @ORM\JoinTable(name="relating_user")
+     * @ORM\JoinTable(name="sender_user")
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="userRelations")
      */
-    private $relatingUser;
+    private $sender;
 
     /**
-     * @ORM\JoinTable(name="related_user")
+     * @ORM\JoinTable(name="recipient_user")
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="userRelations")
      */
-    private $relatedUser;
+    private $recipient;
 
     public function __construct()
     {
-        $this->relatingUser = new ArrayCollection();
-        $this->relatedUser = new ArrayCollection();
+        $this->sender = new ArrayCollection();
+        $this->recipient = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -62,23 +62,23 @@ class UserRelation
     /**
      * @return Collection|User[]
      */
-    public function getRelatingUser(): Collection
+    public function getSender(): Collection
     {
-        return $this->relatingUser;
+        return $this->sender;
     }
 
-    public function addRelatingUser(User $relatingUser): self
+    public function addSender(User $sender): self
     {
-        if (!$this->relatingUser->contains($relatingUser)) {
-            $this->relatingUser[] = $relatingUser;
+        if (!$this->sender->contains($sender)) {
+            $this->sender[] = $sender;
         }
 
         return $this;
     }
 
-    public function removeRelatingUser(User $relatingUser): self
+    public function removeSender(User $sender): self
     {
-        $this->relatingUser->removeElement($relatingUser);
+        $this->sender->removeElement($sender);
 
         return $this;
     }
@@ -86,23 +86,23 @@ class UserRelation
     /**
      * @return Collection|User[]
      */
-    public function getRelatedUser(): Collection
+    public function getRecipient(): Collection
     {
-        return $this->relatedUser;
+        return $this->recipient;
     }
 
-    public function addRelatedUser(User $relatedUser): self
+    public function addRecipient(User $recipient): self
     {
-        if (!$this->relatedUser->contains($relatedUser)) {
-            $this->relatedUser[] = $relatedUser;
+        if (!$this->recipient->contains($recipient)) {
+            $this->recipient[] = $recipient;
         }
 
         return $this;
     }
 
-    public function removeRelatedUser(User $relatedUser): self
+    public function removeRecipient(User $recipient): self
     {
-        $this->relatedUser->removeElement($relatedUser);
+        $this->recipient->removeElement($recipient);
 
         return $this;
     }
