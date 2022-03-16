@@ -25,22 +25,16 @@ class UserRelation
     private $status = "pending";
 
     /**
-     * @ORM\JoinTable(name="sender_user")
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="userRelations")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sendedUserRelations")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $sender;
 
     /**
-     * @ORM\JoinTable(name="recipient_user")
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="userRelations")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="receivedUserRelations")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $recipient;
-
-    public function __construct()
-    {
-        $this->sender = new ArrayCollection();
-        $this->recipient = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -59,50 +53,26 @@ class UserRelation
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getSender(): Collection
+    public function getSender(): ?User
     {
         return $this->sender;
     }
 
-    public function addSender(User $sender): self
+    public function setSender(?User $sender): self
     {
-        if (!$this->sender->contains($sender)) {
-            $this->sender[] = $sender;
-        }
+        $this->sender = $sender;
 
         return $this;
     }
 
-    public function removeSender(User $sender): self
-    {
-        $this->sender->removeElement($sender);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getRecipient(): Collection
+    public function getRecipient(): ?User
     {
         return $this->recipient;
     }
 
-    public function addRecipient(User $recipient): self
+    public function setRecipient(?User $recipient): self
     {
-        if (!$this->recipient->contains($recipient)) {
-            $this->recipient[] = $recipient;
-        }
-
-        return $this;
-    }
-
-    public function removeRecipient(User $recipient): self
-    {
-        $this->recipient->removeElement($recipient);
+        $this->recipient = $recipient;
 
         return $this;
     }

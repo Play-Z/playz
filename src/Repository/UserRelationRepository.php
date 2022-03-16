@@ -19,32 +19,36 @@ class UserRelationRepository extends ServiceEntityRepository
         parent::__construct($registry, UserRelation::class);
     }
 
-    // /**
-    //  * @return UserRelation[] Returns an array of UserRelation objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return UserRelation[] Returns an array of UserRelation objects
+     */
+    public function findAllFriends($user)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            '
+                SELECT us
+                FROM App\Entity\UserRelation r
+                INNER JOIN r.sender us
+                WHERE r.status = :accepted AND r.sender = :user OR r.recipient = :user
+                '
+        )->setParameters(['user' => $user, 'accepted' => 'accepted']);
+
+        return $query->getResult();
+    }
+
+    /**
+     * @return UserRelation[] Returns an array of UserRelation objects
+     */
+    public function findAllRelationByUser($sender, $recipient)
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('u.sender = :sender AND u.recipient = :recipient')
+            ->orWhere('u.sender = :recipient AND u.recipient = :sender')
+            ->setParameters(['sender' => $sender, 'recipient' => $recipient])
             ->getQuery()
             ->getResult()
-        ;
+            ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?UserRelation
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

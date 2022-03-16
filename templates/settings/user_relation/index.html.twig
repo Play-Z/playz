@@ -1,35 +1,43 @@
-<!DOCTYPE html>
+{% extends 'baseTemplate/settings-base.html.twig' %}
 
-<title>UserRelation index</title>
+{% block title %}Amis{% endblock %}
 
 {% block body %}
     <h1>UserRelation index</h1>
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Status</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Utilisateur</th>
+            <th>Statut</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for user_relation in user_relations %}
             <tr>
-                <td>{{ user_relation.id }}</td>
-                <td>{{ user_relation.status }}</td>
+                {% if user_relation.status == 'accepted' %}
+                    {% if app.user == user_relation.sender %}
+                        <td>{{ user_relation.sender.username }}</td>
+                    {% else %}
+                        <td>{{ user_relation.recipient.username }}</td>
+                    {% endif %}
+                    <td>Ami</td>
+                {% elseif user_relation.status == 'blocked' %}
+                    <td>{{ user_relation.recipient.username }}</td>
+                    <td>Bloquer</td>
+                {% endif %}
+
                 <td>
-                    <a href="{{ path('user_relation_show', {'id': user_relation.id}) }}">show</a>
-                    <a href="{{ path('user_relation_edit', {'id': user_relation.id}) }}">edit</a>
+                    {{ include('settings/user_relation/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="3">Vous n'avez pas encore d'amis</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('user_relation_new') }}">Create new</a>
 {% endblock %}

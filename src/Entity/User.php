@@ -108,13 +108,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $team;
 
     /**
-     * @ORM\ManyToMany(targetEntity=UserRelation::class, mappedBy="relatingUser")
+     * @ORM\OneToMany(targetEntity=UserRelation::class, mappedBy="sender")
      */
-    private $userRelations;
+    private $sendedUserRelations;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserRelation::class, mappedBy="recipient")
+     */
+    private $receivedUserRelations;
 
     public function __construct()
     {
-        $this->userRelations = new ArrayCollection();
+        $this->sendedUserRelations = new ArrayCollection();
+        $this->receivedUserRelations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -359,25 +365,58 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection|UserRelation[]
      */
-    public function getUserRelations(): Collection
+    public function getSendedUserRelations(): Collection
     {
-        return $this->userRelations;
+        return $this->sendedUserRelations;
     }
 
-    public function addUserRelation(UserRelation $userRelation): self
+    public function addSendedUserRelation(UserRelation $sendedUserRelation): self
     {
-        if (!$this->userRelations->contains($userRelation)) {
-            $this->userRelations[] = $userRelation;
-            $userRelation->addRelatingUser($this);
+        if (!$this->sendedUserRelations->contains($sendedUserRelation)) {
+            $this->sendedUserRelations[] = $sendedUserRelation;
+            $sendedUserRelation->setSender($this);
         }
 
         return $this;
     }
 
-    public function removeUserRelation(UserRelation $userRelation): self
+    public function removeSendedUserRelation(UserRelation $sendedUserRelation): self
     {
-        if ($this->userRelations->removeElement($userRelation)) {
-            $userRelation->removeRelatingUser($this);
+        if ($this->sendedUserRelations->removeElement($sendedUserRelation)) {
+            // set the owning side to null (unless already changed)
+            if ($sendedUserRelation->getSender() === $this) {
+                $sendedUserRelation->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserRelation[]
+     */
+    public function getReceivedUserRelations(): Collection
+    {
+        return $this->receivedUserRelations;
+    }
+
+    public function addReceivedUserRelation(UserRelation $receivedUserRelation): self
+    {
+        if (!$this->receivedUserRelations->contains($receivedUserRelation)) {
+            $this->receivedUserRelations[] = $receivedUserRelation;
+            $receivedUserRelation->setRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedUserRelation(UserRelation $receivedUserRelation): self
+    {
+        if ($this->receivedUserRelations->removeElement($receivedUserRelation)) {
+            // set the owning side to null (unless already changed)
+            if ($receivedUserRelation->getRecipient() === $this) {
+                $receivedUserRelation->setRecipient(null);
+            }
         }
 
         return $this;
