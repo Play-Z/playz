@@ -34,6 +34,9 @@ class TeamController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            if (!in_array('ROLE_ADMIN',$user->getRoles())){
+                $user->setRoles((array('ROLE_TEAM_CREATOR')));
+            }
             $team->addUser($user);
             $entityManager->persist($team);
             $entityManager->flush();
@@ -90,12 +93,13 @@ class TeamController extends AbstractController
     #[Route('/{slug}/join', name: 'team_join', methods: ['GET', 'POST'])]
     public function join(Team $team): Response
     {
-        dump('bonjour');
-
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getUser();
 
         if ($team->getPublic() === true) {
+            if (!in_array('ROLE_ADMIN',$user->getRoles())){
+                $user->setRoles((array('ROLE_TEAM_MEMBER')));
+            }
             $team->addUser($user);
             $entityManager->flush();
         }

@@ -50,7 +50,7 @@
     <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_edit', {'slug': team.slug}) }}">Modifier</a>
     {% endif %}
 
-    {% if is_granted('edit', team) %}
+    {% if is_granted('delete', team) %}
         {{ include('play/team/_delete_form.html.twig') }}
     {% endif %}
 {% endblock %}
