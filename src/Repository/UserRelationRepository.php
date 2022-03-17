@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\UserRelation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -20,7 +21,7 @@ class UserRelationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return UserRelation[] Returns an array of UserRelation objects
+     * @return User[] Returns an array of User objects
      */
     public function findAllFriends($user)
     {
@@ -28,14 +29,27 @@ class UserRelationRepository extends ServiceEntityRepository
 
         $query = $entityManager->createQuery(
             '
-                SELECT us
-                FROM App\Entity\UserRelation r
-                INNER JOIN r.sender us
-                WHERE r.status = :accepted AND r.sender = :user OR r.recipient = :user
+                SELECT ur, s, r
+                FROM App\Entity\UserRelation ur
+                INNER JOIN ur.recipient s
+                INNER JOIN ur.sender r 
+                WHERE(s.id = :userId AND ur.status = :accepted) OR (r.id = :userId AND ur.status = :accepted)
                 '
-        )->setParameters(['user' => $user, 'accepted' => 'accepted']);
+        )->setParameters(['userId' => $user, 'accepted' => 'accepted']);
 
         return $query->getResult();
+
+//        return $this->createQueryBuilder('ru')
+//            ->select(array('u'))
+//            ->from(UserRelation::class,'u')
+//            ->innerJoin('u.sender', 's', 'WITH', 's = u.sender')
+//            ->innerJoin('u.recipient', 'r', 'WITH', 'r = u.recipient')
+//            ->andWhere('u.sender = :user OR u.recipient = :user')
+//            ->andWhere('u.status = :accepted')
+//            ->setParameters(['user' => $user, 'accepted' => 'accepted'])
+//            ->getQuery()
+//            ->getResult()
+//            ;
     }
 
     /**

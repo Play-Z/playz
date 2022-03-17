@@ -27,12 +27,14 @@ class TeamController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function new(Request $request): Response
     {
+        $user = $this->getUser();
         $team = new Team();
         $form = $this->createForm(TeamType::class, $team);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $team->addUser($user);
             $entityManager->persist($team);
             $entityManager->flush();
 
