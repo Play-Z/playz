@@ -94,6 +94,8 @@ docker-compose exec php php bin/console make:controller
 docker-compose exec php php bin/console make:form
 # Creation of a complete CRUD
 docker-compose exec php php bin/console make:crud
+# Create user automatically (-a => is admin)
+docker-compose exec php bin/console createUser (-a) "your email" "your password"
 ```
 
 ## Database management
