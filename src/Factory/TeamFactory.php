@@ -40,6 +40,8 @@ final class TeamFactory extends ModelFactory
         return [
             'name' => self::faker()->company(),
             'emplacement' => 10,
+            'public' => self::faker()->boolean(),
+            'is_verified' =>self::faker()->boolean(),
             'description' => self::faker()->sentence,
         ];
     }

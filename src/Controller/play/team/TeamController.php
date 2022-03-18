@@ -3,6 +3,7 @@
 namespace App\Controller\play\team;
 
 use App\Entity\Team;
+use App\Entity\User;
 use App\Form\EditTeamType;
 use App\Form\TeamType;
 use App\Service\TeamService;
@@ -36,10 +37,7 @@ class TeamController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            if (!in_array('ROLE_ADMIN',$user->getRoles())){
-                $user->setRoles((array('ROLE_TEAM_CREATOR')));
-            }
-            $team->addUser($user);
+            $team->setCreatedBy($user);
             $entityManager->persist($team);
             $entityManager->flush();
 
@@ -113,9 +111,37 @@ class TeamController extends AbstractController
                     'error',
                     "Impossible de rejoindre l'équipe car il n'y a plus de place"
                 );
-                return $this->redirectToRoute('team_show', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('team_show', ['slug' => $team->getSlug()], Response::HTTP_SEE_OTHER);
             }
         }
+
+        $this->addFlash(
+            'success',
+            "Vous avez bien rejoins l'équipe."
+        );
+        return $this->redirectToRoute('team_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{slug}/leave', name: 'team_leave', methods: ['GET', 'POST'])]
+    public function leave(Team $team): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+
+        if ($user->getTeam() === $team) {
+            $user->setTeam(null);
+            $entityManager->flush();
+            $this->addFlash(
+                'success',
+                "Vous avez bien quitté l'équipe."
+            );
+            return $this->redirectToRoute('team_show', ['slug' => $team->getSlug()], Response::HTTP_SEE_OTHER);
+        }
+
+        $this->addFlash(
+            'error',
+            "Vous ne pouvez pas quitter cette équipe car vous n'en faites pas parti."
+        );
 
         return $this->redirectToRoute('team_index', [], Response::HTTP_SEE_OTHER);
     }

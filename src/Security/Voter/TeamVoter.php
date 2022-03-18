@@ -11,14 +11,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class TeamVoter extends Voter
 {
     const EDIT = 'edit';
-    const VIEW = 'view';
     const DELETE = 'delete';
 
     protected function supports(string $attribute, $subject): bool
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::EDIT, self::VIEW, self::DELETE]) && $subject instanceof \App\Entity\Team;
+        return in_array($attribute, [self::EDIT, self::DELETE]) && $subject instanceof \App\Entity\Team;
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
@@ -32,8 +31,6 @@ class TeamVoter extends Voter
         $targetTeam = $subject;
 
         switch ($attribute) {
-            case self::VIEW:
-                return $this->canView($targetTeam, $user);
             case self::EDIT:
                 return $this->canEdit($targetTeam, $user);
             case self::DELETE:
@@ -41,11 +38,6 @@ class TeamVoter extends Voter
         }
 
         return false;
-    }
-
-    private function canView(Team $targetTeam, User $user)
-    {
-        return $this->canEdit($targetTeam, $user);
     }
 
     private function canEdit(Team $targetTeam, User $user)

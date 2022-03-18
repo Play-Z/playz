@@ -352,7 +352,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setTeam(?Team $team): self
     {
-        $team->setCreatedBy($this);
         $this->team = $team;
 
         return $this;

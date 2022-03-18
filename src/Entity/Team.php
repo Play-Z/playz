@@ -259,6 +259,10 @@ class Team
      */
     public function setCreatedBy(User $createdBy): self
     {
+        if (!in_array('ROLE_ADMIN',$createdBy->getRoles())){
+            $createdBy->setRoles((array('ROLE_TEAM_CREATOR')));
+        }
+        $createdBy->setTeam($this);
         $this->createdBy = $createdBy;
         return $this;
     }
