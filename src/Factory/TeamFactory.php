@@ -39,6 +39,7 @@ final class TeamFactory extends ModelFactory
     {
         return [
             'name' => self::faker()->company(),
+            'emplacement' => 10,
             'description' => self::faker()->sentence,
         ];
     }

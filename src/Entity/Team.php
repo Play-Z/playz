@@ -91,6 +91,11 @@ class Team
      */
     private $updatedBy;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $emplacement = 10;
+
     public function __construct()
     {
         $this->tournamentTeams = new ArrayCollection();
@@ -276,4 +281,15 @@ class Team
         return $this;
     }
 
+    public function getEmplacement(): ?int
+    {
+        return $this->emplacement;
+    }
+
+    public function setEmplacement(int $emplacement): self
+    {
+        $this->emplacement = $emplacement;
+
+        return $this;
+    }
 }
