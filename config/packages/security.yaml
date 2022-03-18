@@ -1,6 +1,9 @@
 security:
     role_hierarchy:
-        ROLE_LEADER : ROLE_USER
+        ROLE_TEAM_MEMBER : ROLE_USER
+        ROLE_TEAM_CREATOR : ROLE_TEAM_MEMBER
+        ROLE_TOURNAMENT_MANAGER : ROLE_USER
+        ROLE_TOURNAMENT_ARBITER : ROLE_USER
         ROLE_ADMIN : [ROLE_LEADER, ROLE_TOURNAMENT_ARBITER, ROLE_TOURNAMENT_MANAGER]
 
     # https://symfony.com/doc/current/security/authenticator_manager.html
@@ -43,3 +46,4 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
+         - { path: ^/settings, roles: ROLE_USER }

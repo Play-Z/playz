@@ -1,0 +1,33 @@
+{% extends 'baseTemplate/settings-base.html.twig' %}
+
+{% block title %}Demandes d'amis{% endblock %}
+
+{% block body %}
+    <h1>Demande d'amis</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Utilisateur</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user_relation in user_relations %}
+            <tr>
+                <td>{{ user_relation.sender.username }}</td>
+                <td>
+                    <a href="{{ path('user_relation_accept', {'id': user_relation.id}) }}">Accepter</a>
+                    <a href="{{ path('user_relation_decline', {'id': user_relation.id}) }}">Refuser</a>
+                    <a href="{{ path('user_relation_block', {'id': user_relation.id}) }}">Bloquer l'utilisateur</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Aucune demande d'amis</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

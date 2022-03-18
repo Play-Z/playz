@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Entity\Traits\BlameableTrait;
 use App\Entity\Traits\VichUploadTrait;
 use App\Repository\GameRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -68,9 +70,14 @@ class Game
      */
     private $updatedAt;
 
-    public function getId(): ?int
+    /**
+     * @ORM\OneToMany(targetEntity=Tournament::class, mappedBy="game")
+     */
+    private $tournaments;
+
+    public function __construct()
     {
-        return $this->id;
+        $this->tournaments = new ArrayCollection();
     }
 
     public function getName(): ?string
@@ -124,5 +131,37 @@ class Game
     {
         return $this->updatedAt;
     }
+
+    /**
+     * @return Collection|Tournament[]
+     */
+    public function getTournaments(): Collection
+    {
+        return $this->tournaments;
+    }
+
+    public function addTournament(Tournament $tournament): self
+    {
+        if (!$this->tournaments->contains($tournament)) {
+            $this->tournaments[] = $tournament;
+            $tournament->setGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTournament(Tournament $tournament): self
+    {
+        if ($this->tournaments->removeElement($tournament)) {
+            // set the owning side to null (unless already changed)
+            if ($tournament->getGame() === $this) {
+                $tournament->setGame(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 
 }

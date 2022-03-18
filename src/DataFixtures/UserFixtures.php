@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
+use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -21,11 +22,19 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+
         $admin = (new User())
             ->setUsername('Admin')
-            ->setEmail('admin@admin')
+            ->setEmail('admin@playz.com')
             ->setRoles(['ROLE_ADMIN'])
             ->setIsVerified(true)
+            ->setNewsletter(false)
+            ->setLastname('Playz')
+            ->setFirstname('Admin')
+            ->setCountry('France')
+            ->setOrganization('PlayZ')
+            ->setOrganizationPosition('CEO')
+            ->setDescription('Hi ! I am the CEO of playz')
         ;
         $admin->setPassword($this->userPasswordHasher->hashPassword($admin, 'test'));
         $manager->persist($admin);
@@ -33,9 +42,16 @@ class UserFixtures extends Fixture
 
         $player = (new User())
             ->setUsername('Player')
-            ->setEmail('player@player')
+            ->setEmail('player@playz.com')
             ->setRoles(['ROLE_USER'])
             ->setIsVerified(true)
+            ->setNewsletter(false)
+            ->setLastname('Player')
+            ->setFirstname('Player')
+            ->setCountry('France')
+            ->setOrganization('PlayZ')
+            ->setOrganizationPosition('Moderator')
+            ->setDescription('Hi ! I am one of the moderator of the playz team !')
         ;
         $player->setPassword($this->userPasswordHasher->hashPassword($player, 'test'));
         $manager->persist($player);

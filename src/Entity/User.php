@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -43,23 +44,83 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=40)
+     */
+    private string $username;
+
+    /**
+     * @var string|null
+     * @Gedmo\Slug(fields={"username"})
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $isVerified = false;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Team::class, mappedBy="members")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $teams;
+    private $description;
 
     /**
-     * @ORM\Column(type="string", length=40)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $username;
+    private $country;
+
+    /**
+     * @ORM\Column(type="string", length=30, nullable=true)
+     */
+    private $firstname;
+
+    /**
+     * @ORM\Column(type="string", length=30, nullable=true)
+     */
+    private $lastname;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $timezone;
+
+    /**
+     * @ORM\Column(type="string", length=40, nullable=true)
+     */
+    private $organization;
+
+    /**
+     * @ORM\Column(type="string", length=30, nullable=true)
+     */
+    private $organization_position;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $newsletter = false;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="users")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $team;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserRelation::class, mappedBy="sender")
+     */
+    private $sendedUserRelations;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserRelation::class, mappedBy="recipient")
+     */
+    private $receivedUserRelations;
 
     public function __construct()
     {
-        $this->teams = new ArrayCollection();
+        $this->sendedUserRelations = new ArrayCollection();
+        $this->receivedUserRelations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -90,11 +151,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * @return string|null
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string|null $slug
+     * @return User
+     */
+    public function setSlug(?string $slug): User
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
      * @deprecated since Symfony 5.3, use getUserIdentifier instead
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     /**
@@ -163,6 +242,109 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?string $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(?string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(?string $lastname): self
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getTimezone(): ?string
+    {
+        return $this->timezone;
+    }
+
+    public function setTimezone(?string $timezone): self
+    {
+        $this->timezone = $timezone;
+
+        return $this;
+    }
+
+    public function getOrganization(): ?string
+    {
+        return $this->organization;
+    }
+
+    public function setOrganization(?string $organization): self
+    {
+        $this->organization = $organization;
+
+        return $this;
+    }
+
+    public function getOrganizationPosition(): ?string
+    {
+        return $this->organization_position;
+    }
+
+    public function setOrganizationPosition(?string $organization_position): self
+    {
+        $this->organization_position = $organization_position;
+
+        return $this;
+    }
+
+    public function getNewsletter(): ?bool
+    {
+        return $this->newsletter;
+    }
+
+    public function setNewsletter(bool $newsletter): self
+    {
+        $this->newsletter = $newsletter;
+
+        return $this;
+    }
+
     public function getTeam(): ?Team
     {
         return $this->team;
@@ -170,41 +352,68 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setTeam(?Team $team): self
     {
+        $team->setCreatedBy($this);
         $this->team = $team;
 
         return $this;
     }
 
     /**
-     * @return Collection|Team[]
+     * @return Collection|UserRelation[]
      */
-    public function getTeams(): Collection
+    public function getSendedUserRelations(): Collection
     {
-        return $this->teams;
+        return $this->sendedUserRelations;
     }
 
-    public function addTeam(Team $team): self
+    public function addSendedUserRelation(UserRelation $sendedUserRelation): self
     {
-        if (!$this->teams->contains($team)) {
-            $this->teams[] = $team;
-            $team->addMember($this);
+        if (!$this->sendedUserRelations->contains($sendedUserRelation)) {
+            $this->sendedUserRelations[] = $sendedUserRelation;
+            $sendedUserRelation->setSender($this);
         }
 
         return $this;
     }
 
-    public function removeTeam(Team $team): self
+    public function removeSendedUserRelation(UserRelation $sendedUserRelation): self
     {
-        if ($this->teams->removeElement($team)) {
-            $team->removeMember($this);
+        if ($this->sendedUserRelations->removeElement($sendedUserRelation)) {
+            // set the owning side to null (unless already changed)
+            if ($sendedUserRelation->getSender() === $this) {
+                $sendedUserRelation->setSender(null);
+            }
         }
 
         return $this;
     }
 
-    public function setUsername(string $username): self
+    /**
+     * @return Collection|UserRelation[]
+     */
+    public function getReceivedUserRelations(): Collection
     {
-        $this->username = $username;
+        return $this->receivedUserRelations;
+    }
+
+    public function addReceivedUserRelation(UserRelation $receivedUserRelation): self
+    {
+        if (!$this->receivedUserRelations->contains($receivedUserRelation)) {
+            $this->receivedUserRelations[] = $receivedUserRelation;
+            $receivedUserRelation->setRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedUserRelation(UserRelation $receivedUserRelation): self
+    {
+        if ($this->receivedUserRelations->removeElement($receivedUserRelation)) {
+            // set the owning side to null (unless already changed)
+            if ($receivedUserRelation->getRecipient() === $this) {
+                $receivedUserRelation->setRecipient(null);
+            }
+        }
 
         return $this;
     }

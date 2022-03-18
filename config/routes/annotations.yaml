@@ -7,6 +7,11 @@ controllers_admin:
     type: annotation
     prefix: '/admin'
 
+controllers_settings:
+    resource: ../../src/Controller/settings
+    type: annotation
+    prefix: '/settings'
+
 controllers_tournament:
     resource: ../../src/Controller/tournament
     type: annotation

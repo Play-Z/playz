@@ -3,7 +3,9 @@
 namespace App\Controller\play\team;
 
 use App\Entity\Team;
+use App\Form\EditTeamType;
 use App\Form\TeamType;
+use App\Service\TeamService;
 use App\Repository\TeamRepository;
 use App\Security\Voter\TeamVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -27,12 +29,17 @@ class TeamController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function new(Request $request): Response
     {
+        $user = $this->getUser();
         $team = new Team();
         $form = $this->createForm(TeamType::class, $team);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            if (!in_array('ROLE_ADMIN',$user->getRoles())){
+                $user->setRoles((array('ROLE_TEAM_CREATOR')));
+            }
+            $team->addUser($user);
             $entityManager->persist($team);
             $entityManager->flush();
 
@@ -55,14 +62,17 @@ class TeamController extends AbstractController
 
     #[Route('/{slug}/edit', name: 'team_edit', methods: ['GET','POST'])]
     #[IsGranted(TeamVoter::EDIT, 'team')]
-    public function edit(Request $request, Team $team): Response
+    public function edit(Request $request, Team $team, TeamService $teamService): Response
     {
-        $form = $this->createForm(TeamType::class, $team);
+        $form = $this->createForm(EditTeamType::class, $team);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            $this->addFlash(
+                'success',
+                "L'équipe a bien été modifier"
+            );
             return $this->redirectToRoute('team_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -85,15 +95,26 @@ class TeamController extends AbstractController
         return $this->redirectToRoute('team_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{slug}', name: 'team_join', methods: ['POST'])]
-    public function join(Team $team): Response
+    #[Route('/{slug}/join', name: 'team_join', methods: ['GET', 'POST'])]
+    public function join(Team $team, TeamService $teamService): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getUser();
 
         if ($team->getPublic() === true) {
-            $team->addMember($user);
-            $entityManager->flush();
+            if ($teamService->countTeamUsers($team)){
+                if (!in_array('ROLE_ADMIN',$user->getRoles())){
+                    $user->setRoles((array('ROLE_TEAM_MEMBER')));
+                }
+                $team->addUser($user);
+                $entityManager->flush();
+            }else{
+                $this->addFlash(
+                    'error',
+                    "Impossible de rejoindre l'équipe car il n'y a plus de place"
+                );
+                return $this->redirectToRoute('team_show', [], Response::HTTP_SEE_OTHER);
+            }
         }
 
         return $this->redirectToRoute('team_index', [], Response::HTTP_SEE_OTHER);

@@ -1,6 +1,6 @@
 {% extends 'baseTemplate/play-base.html.twig' %}
 
-{% block title %}Modifier {{ team.name }}{% endblock %}
+{% set page_title = 'Modification de' ~ team.name %}
 
 {% block content %}
     <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Modification de l'équipe {{ team.name }}</h1>

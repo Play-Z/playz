@@ -17,7 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Team
 {
-    use BlameableTrait;
 
     /**
      * @ORM\Id
@@ -65,13 +64,42 @@ class Team
     private $public = false;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="teams")
+     * @ORM\OneToMany(targetEntity=TournamentTeam::class, mappedBy="teams")
      */
-    private $members;
+    private $tournamentTeams;
+
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="team")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     */
+    private $users;
+
+    /**
+     * @var User
+     *
+     * @Gedmo\Blameable(on="create")
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=true, unique=true)
+     */
+    private $createdBy;
+
+    /**
+     * @var User|null
+     *
+     * @Gedmo\Blameable(on="update")
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $updatedBy;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $emplacement = 10;
 
     public function __construct()
     {
-        $this->members = new ArrayCollection();
+        $this->tournamentTeams = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -145,30 +173,6 @@ class Team
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getMembers(): Collection
-    {
-        return $this->members;
-    }
-
-    public function addMember(User $member): self
-    {
-        if (!$this->members->contains($member)) {
-            $this->members[] = $member;
-        }
-
-        return $this;
-    }
-
-    public function removeMember(User $member): self
-    {
-        $this->members->removeElement($member);
-
-        return $this;
-    }
-
     public function getPublic(): ?bool
     {
         return $this->public;
@@ -177,6 +181,114 @@ class Team
     public function setPublic(bool $public): self
     {
         $this->public = $public;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TournamentTeam[]
+     */
+    public function getTournamentTeams(): Collection
+    {
+        return $this->tournamentTeams;
+    }
+
+    public function addTournamentTeam(TournamentTeam $tournamentTeam): self
+    {
+        if (!$this->tournamentTeams->contains($tournamentTeam)) {
+            $this->tournamentTeams[] = $tournamentTeam;
+            $tournamentTeam->setTeams($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTournamentTeam(TournamentTeam $tournamentTeam): self
+    {
+        if ($this->tournamentTeams->removeElement($tournamentTeam)) {
+            // set the owning side to null (unless already changed)
+            if ($tournamentTeam->getTeams() === $this) {
+                $tournamentTeam->setTeams(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getTeam() === $this) {
+                $user->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getCreatedBy(): User
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @param User $createdBy
+     * @return self
+     */
+    public function setCreatedBy(User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+        return $this;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getUpdatedBy(): ?User
+    {
+        return $this->updatedBy;
+    }
+
+    /**
+     * @param User|null $updatedBy
+     * @return self
+     */
+    public function setUpdatedBy(?User $updatedBy): self
+    {
+        $this->updatedBy = $updatedBy;
+        return $this;
+    }
+
+    public function getEmplacement(): ?int
+    {
+        return $this->emplacement;
+    }
+
+    public function setEmplacement(int $emplacement): self
+    {
+        $this->emplacement = $emplacement;
 
         return $this;
     }

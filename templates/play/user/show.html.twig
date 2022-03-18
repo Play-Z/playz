@@ -1,0 +1,61 @@
+{% extends 'baseTemplate/play-base.html.twig' %}
+
+{% set page_title = 'Profil ' ~ user.username %}
+
+{% block content %}
+    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">{{ user.username }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Username</th>
+                <td>{{ user.username }}</td>
+            </tr>
+            {% if user.team %}
+            <tr>
+                <th>Equipe</th>
+                <td>{{ user.team.name }}</td>
+                <th>Membres</th>
+                <td>
+                    {% for member in user.team.users %}
+                        {{ member.username }},
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>Prénom</th>
+                <td>{{ user.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ user.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Organisation</th>
+                <td>{{ user.organization }}</td>
+            </tr>
+            <tr>
+                <th>Position</th>
+                <td>{{ user.organizationPosition }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ user.description }}</td>
+            </tr>
+            <tr>
+                <th>Pays</th>
+                <td>{{ user.country }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    {% if is_granted('edit', user) %}
+    <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('user_profile_edit', {'slug': user.slug}) }}">Modifier</a>
+    {% endif %}
+
+    {% if is_granted('ROLE_USER') and app.user != user %}
+        {{ include('settings/user_relation/_form.html.twig') }}
+    {% endif %}
+
+{% endblock %}
