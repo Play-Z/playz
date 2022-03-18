@@ -11,13 +11,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class TeamVoter extends Voter
 {
     const EDIT = 'edit';
+    const LEAVE = 'leave';
     const DELETE = 'delete';
 
     protected function supports(string $attribute, $subject): bool
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::EDIT, self::DELETE]) && $subject instanceof \App\Entity\Team;
+        return in_array($attribute, [self::EDIT, self::LEAVE, self::DELETE]) && $subject instanceof \App\Entity\Team;
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
@@ -33,6 +34,8 @@ class TeamVoter extends Voter
         switch ($attribute) {
             case self::EDIT:
                 return $this->canEdit($targetTeam, $user);
+            case self::LEAVE:
+                return $this->canLeave($targetTeam, $user);
             case self::DELETE:
                 return $this->canDelete($targetTeam, $user);
         }
@@ -43,6 +46,11 @@ class TeamVoter extends Voter
     private function canEdit(Team $targetTeam, User $user)
     {
         return in_array('ROLE_ADMIN', $user->getRoles()) || $targetTeam->getCreatedBy() === $user && in_array('ROLE_TEAM_CREATOR', $user->getRoles());
+    }
+
+    private function canLeave(Team $targetTeam, User $user)
+    {
+        return $user->getTeam() === $targetTeam;
     }
 
     private function canDelete(Team $targetTeam, User $user){

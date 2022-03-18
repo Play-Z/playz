@@ -123,26 +123,29 @@ class TeamController extends AbstractController
     }
 
     #[Route('/{slug}/leave', name: 'team_leave', methods: ['GET', 'POST'])]
+    #[IsGranted(TeamVoter::LEAVE, 'team')]
     public function leave(Team $team): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getUser();
+        $user->setRoles(['ROLE_USER']);
 
-        if ($user->getTeam() === $team) {
-            $user->setTeam(null);
+        $team->removeUser($user);
+        if (count($team->getUsers()) == 0){
+            $entityManager->remove($team);
             $entityManager->flush();
             $this->addFlash(
                 'success',
-                "Vous avez bien quitté l'équipe."
+                "Vous avez bien quitté l'équipe et elle a été supprimé."
             );
-            return $this->redirectToRoute('team_show', ['slug' => $team->getSlug()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('team_index', [], Response::HTTP_SEE_OTHER);
         }
 
         $this->addFlash(
-            'error',
-            "Vous ne pouvez pas quitter cette équipe car vous n'en faites pas parti."
+            'success',
+            "Vous avez bien quitté l'équipe."
         );
 
-        return $this->redirectToRoute('team_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('team_show', ['slug' => $team->getSlug()], Response::HTTP_SEE_OTHER);
     }
 }
