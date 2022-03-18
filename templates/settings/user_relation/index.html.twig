@@ -1,0 +1,43 @@
+{% extends 'baseTemplate/settings-base.html.twig' %}
+
+{% block title %}Amis{% endblock %}
+
+{% block body %}
+    <h1>UserRelation index</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Utilisateur</th>
+            <th>Statut</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user_relation in user_relations %}
+            <tr>
+                {% if user_relation.status == 'accepted' %}
+                    {% if app.user == user_relation.sender %}
+                        <td>{{ user_relation.sender.username }}</td>
+                    {% else %}
+                        <td>{{ user_relation.recipient.username }}</td>
+                    {% endif %}
+                    <td>Ami</td>
+                {% elseif user_relation.status == 'blocked' %}
+                    <td>{{ user_relation.recipient.username }}</td>
+                    <td>Bloquer</td>
+                {% endif %}
+
+                <td>
+                    {{ include('settings/user_relation/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Vous n'avez pas encore d'amis</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
