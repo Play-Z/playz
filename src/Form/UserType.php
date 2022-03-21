@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -16,6 +17,8 @@ class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
+        $hidePsw = $options["hidePsw"];
         $builder
             ->add('username')
             ->add('firstname')
@@ -25,7 +28,11 @@ class UserType extends AbstractType
             ->add('organizationPosition')
             ->add('description', TextType::class)
             ->add('email')
-            ->add('plainPassword', PasswordType::class, [
+            ;
+        //hide password on the edit
+        if($hidePsw !== "update"){
+
+            $builder->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
@@ -68,12 +75,14 @@ class UserType extends AbstractType
 //            ->add('isVerified')
 //            ->add('teams')
         ;
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'hidePsw' => null,
         ]);
     }
 }

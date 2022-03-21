@@ -30,6 +30,7 @@ class UsersController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword( $form->get('plainPassword')->getData());
             // encode the plain password
             $user->setPassword(
             $userPasswordHasherInterface->hashPassword(
@@ -37,6 +38,7 @@ class UsersController extends AbstractController
                 $form->get('plainPassword')->getData()
                 )
             );
+            $user->setRoles( array('ROLE_USER') );
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
@@ -63,7 +65,7 @@ class UsersController extends AbstractController
     #[Route('/{id}/edit', name: 'users_edit', methods: ['GET','POST'])]
     public function edit(Request $request, User $user): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user, array("hidePsw"=> "update"));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
