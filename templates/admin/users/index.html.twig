@@ -1,6 +1,6 @@
 {% extends 'baseTemplate/admin-base.html.twig' %}
 
-{% block title %}Utilisateur{% endblock %}
+{% block title %}Utilisateurs{% endblock %}
 
 {% block body %}
     <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Utilisateur</h1>
@@ -8,10 +8,12 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Id</th>
+            {# <th>Id</th> #}
             <th>Email</th>
             <th>Surnom</th>
-{#            <th>Roles</th>#}
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Roles</th>
 {#            <th>Password</th>#}
 {#            <th>IsVerified</th>#}
 {#            <th>actions</th>#}
@@ -20,13 +22,15 @@
         <tbody>
         {% for user in users %}
             <tr>
-                {#              <td>{{ user.id }}</td>#}
-                {#              <td>{{ user.roles ? user.roles|json_encode : '' }}</td>#}
-                {#              <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>#}
-                {#              <td>{{ user.password }}</td>#}
+                {# <td>{{ user.id }}</td> #}
                 <td>{{ user.email }}</td>
                 <td>{{ user.username }}</td>
+                <td>{{ user.firstname }}</td>
+                <td>{{ user.lastname }}</td>
+                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
 
+                {#              <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>#}
+                              {# <td>{{ user.password }}</td> #}
                 <td>
                     <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('users_show', {'id': user.id}) }}">Afficher</a>
                     <a class="text-red-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('users_edit', {'id': user.id}) }}">Modifier</a>
