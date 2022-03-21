@@ -55,7 +55,14 @@
     {% endif %}
 
     {% if is_granted('ROLE_USER') and app.user != user %}
-        {{ include('settings/user_relation/_form.html.twig') }}
+        {{ include('settings/user_relation/_friend.form.html.twig') }}
     {% endif %}
+
+    {% if is_granted('ROLE_TEAM_CREATOR') or is_granted('ROLE_TEAM_MANAGER') %}
+        {% if app.user.team.public == false and user.team is null %}
+            {{ include('settings/user_relation/_team.form.html.twig') }}
+        {% endif %}
+    {% endif %}
+
 
 {% endblock %}

@@ -1,4 +1,5 @@
 <form method="post" action="{{ path('user_relation_new') }}">
     <input type="hidden" name="recipient" value="{{ user.id }}">
+    <input type="hidden" name="type" value="friend">
     <button class="btn">Ajouter</button>
 </form>

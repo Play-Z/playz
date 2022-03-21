@@ -1,10 +1,17 @@
 security:
     role_hierarchy:
         ROLE_TEAM_MEMBER : ROLE_USER
-        ROLE_TEAM_CREATOR : ROLE_TEAM_MEMBER
-        ROLE_TOURNAMENT_MANAGER : ROLE_USER
-        ROLE_TOURNAMENT_ARBITER : ROLE_USER
-        ROLE_ADMIN : [ROLE_LEADER, ROLE_TOURNAMENT_ARBITER, ROLE_TOURNAMENT_MANAGER]
+        ROLE_TEAM_MANAGER : ROLE_TEAM_MEMBER
+        ROLE_TEAM_CREATOR : ROLE_TEAM_MANAGER
+        ROLE_TOURNAMENT_ARBITER: ROLE_USER
+        ROLE_TOURNAMENT_MANAGER : ROLE_TOURNAMENT_ARBITER
+        ROLE_ADMIN : [
+                    ROLE_TEAM_MEMBER,
+                    ROLE_TEAM_MANAGER,
+                    ROLE_TEAM_CREATOR,
+                    ROLE_TOURNAMENT_ARBITER,
+                    ROLE_TOURNAMENT_MANAGER
+                    ]
 
     # https://symfony.com/doc/current/security/authenticator_manager.html
     enable_authenticator_manager: true

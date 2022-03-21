@@ -36,6 +36,11 @@ class UserRelation
      */
     private $recipient;
 
+    /**
+     * @ORM\Column(type="string", length=30)
+     */
+    private $type;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -73,6 +78,18 @@ class UserRelation
     public function setRecipient(?User $recipient): self
     {
         $this->recipient = $recipient;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

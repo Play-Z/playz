@@ -40,17 +40,21 @@
 
     <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_index') }}">Retour</a>
 
-    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+    {% if is_granted('ROLE_USER') %}
         {% if app.user.team is null and team.public %}
             <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_join', {'slug': team.slug}) }}">Rejoindre</a>
         {% endif %}
     {% endif %}
 
     {% if is_granted('edit', team) %}
-    <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_edit', {'slug': team.slug}) }}">Modifier</a>
+    <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_edit', {'slug': team.slug}) }}">Modifier le profil de l'équipe</a>
     {% endif %}
 
-    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+    {% if is_granted('edit', team) %}
+        <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_member_index', {'slug': team.slug}) }}">Modifier les membres de l'équipe</a>
+    {% endif %}
+
+    {% if is_granted('ROLE_USER') %}
         {% if app.user.team == team %}
             <a class="btn text-red-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_leave', {'slug': team.slug}) }}">Quitter l'équipe</a>
         {% endif %}

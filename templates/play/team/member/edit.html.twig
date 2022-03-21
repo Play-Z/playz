@@ -1,0 +1,13 @@
+{% extends 'baseTemplate/play-base.html.twig' %}
+
+{% set page_title = 'Modification de' ~ user.username %}
+
+{% block content %}
+    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Modification du rôle de {{ user.username }}</h1>
+
+    {{ include('play/team/member/_form.html.twig', {'button_label': 'Sauvegarder'}) }}
+
+    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_member_index', {'slug': team.slug}) }}">Retour</a>
+
+    {{ include('play/team/_delete_form.html.twig') }}
+{% endblock %}

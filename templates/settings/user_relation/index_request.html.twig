@@ -3,11 +3,12 @@
 {% block title %}Demandes d'amis{% endblock %}
 
 {% block body %}
-    <h1>Demande d'amis</h1>
+    <h1>Demande d'utilisateurs</h1>
 
     <table class="table">
         <thead>
             <tr>
+                <th>Type</th>
                 <th>Utilisateur</th>
                 <th>actions</th>
             </tr>
@@ -15,6 +16,11 @@
         <tbody>
         {% for user_relation in user_relations %}
             <tr>
+                {% if user_relation.type == 'friend' %}
+                    <td>Demande d'ami</td>
+                {% elseif user_relation.type == 'team' %}
+                    <td>Invitation d'équipe</td>
+                {% endif %}
                 <td>{{ user_relation.sender.username }}</td>
                 <td>
                     <a href="{{ path('user_relation_accept', {'id': user_relation.id}) }}">Accepter</a>
@@ -24,7 +30,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">Aucune demande d'amis</td>
+                <td colspan="3">Aucune demande d'utilisateurs</td>
             </tr>
         {% endfor %}
         </tbody>

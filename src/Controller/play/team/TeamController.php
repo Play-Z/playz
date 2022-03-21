@@ -4,8 +4,10 @@ namespace App\Controller\play\team;
 
 use App\Entity\Team;
 use App\Entity\User;
+use App\Form\EditTeamMemberType;
 use App\Form\EditTeamType;
-use App\Form\TeamType;
+use App\Form\CreateTeamType;
+use App\Repository\UserRepository;
 use App\Service\TeamService;
 use App\Repository\TeamRepository;
 use App\Security\Voter\TeamVoter;
@@ -32,7 +34,7 @@ class TeamController extends AbstractController
     {
         $user = $this->getUser();
         $team = new Team();
-        $form = $this->createForm(TeamType::class, $team);
+        $form = $this->createForm(CreateTeamType::class, $team);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -60,18 +62,51 @@ class TeamController extends AbstractController
 
     #[Route('/{slug}/edit', name: 'team_edit', methods: ['GET','POST'])]
     #[IsGranted(TeamVoter::EDIT, 'team')]
-    public function edit(Request $request, Team $team, TeamService $teamService): Response
+    public function edit(Request $request, Team $team): Response
     {
+        $entityManager = $this->getDoctrine()->getManager();
         $form = $this->createForm(EditTeamType::class, $team);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             $this->addFlash(
                 'success',
                 "L'équipe a bien été modifier"
             );
-            return $this->redirectToRoute('team_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('team_show', ['slug' => $team->getSlug()], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('play/team/edit.html.twig', [
+            'team' => $team,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{slug}/members/edit', name: 'team_members_edit', methods: ['GET','POST'])]
+    #[IsGranted(TeamVoter::EDIT, 'team')]
+    public function membersEdit(Request $request, Team $team, UserRepository $userRepository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $form = $this->createForm(EditTeamMemberType::class, $team);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $updatedMembers = $request->request->get('edit_team')['users'];
+            $currentMembers = $userRepository->findBy(['team' => $team]);
+
+            foreach ($currentMembers as $member){
+                if (!in_array($member->getId(), $updatedMembers)){
+                    dd($member);
+                    $team->removeUser($member);
+                }
+            }
+            $entityManager->flush();
+            $this->addFlash(
+                'success',
+                "L'équipe a bien été modifier"
+            );
+            return $this->redirectToRoute('team_show', ['slug' => $team->getSlug()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('play/team/edit.html.twig', [
