@@ -9,14 +9,13 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class UserProfileVoter extends Voter
+class TeamMemberVoter extends Voter
 {
-    const EDIT = 'edit';
-    const VIEW = 'view';
+    const MANAGE = 'manage';
+    const FIRE = 'fire';
 
-    private $security;
+    private Security $security;
     private SecurityService $securityService;
-
 
     public function __construct(Security $security, SecurityService $securityService)
     {
@@ -26,9 +25,7 @@ class UserProfileVoter extends Voter
 
     protected function supports(string $attribute, $subject): bool
     {
-        // replace with your own logic
-        // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::EDIT, self::VIEW]) && $subject instanceof \App\Entity\User;
+        return in_array($attribute, [self::MANAGE, self::FIRE]) && $subject instanceof \App\Entity\User;
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
@@ -39,7 +36,6 @@ class UserProfileVoter extends Voter
             return false;
         }
 
-
         if ($this->security->isGranted('ROLE_ADMIN')) {
             return true;
         }
@@ -47,22 +43,27 @@ class UserProfileVoter extends Voter
         $targetUser = $subject;
 
         switch ($attribute) {
-            case self::VIEW:
-                return $this->canView($targetUser, $user);
-            case self::EDIT:
-                return $this->canEdit($targetUser, $user);
+            case self::MANAGE:
+                return $this->canManage($targetUser, $user);
+            case self::FIRE:
+                return $this->canFire($targetUser, $user);
         }
 
         return false;
     }
 
-    private function canView(User $targetUser, User $user)
+    private function canManage(User $targetUser, User $user)
     {
-        return $this->canEdit($targetUser, $user);
+        if ($this->securityService->isGranted($targetUser,'ROLE_TEAM_CREATOR')){
+            return false;
+        }
+        else{
+            return $this->securityService->isGranted($user, 'ROLE_TEAM_MANAGER') && $targetUser !== $user;
+        }
     }
 
-    private function canEdit(User $targetUser, User $user)
+    private function canFire(User $targetUser, User $user)
     {
-        return $user === $targetUser;
+        return $this->security->isGranted('ROLE_TEAM_CREATOR') && $targetUser !== $user;
     }
 }

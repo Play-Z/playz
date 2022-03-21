@@ -18,14 +18,16 @@
                 <td>{{ member.username }}</td>
                 <td>
                     {% for role in member.roles %}
-                        {% if role == 'ROLE_TEAM_CREATOR' or role == 'ROLE_TEAM_MEMBER' %}
+                        {% if role == 'ROLE_TEAM_CREATOR' or role == 'ROLE_TEAM_MEMBER' or role == 'ROLE_TEAM_MANAGER' %}
                             {{ role }}
                         {% endif %}
                     {% endfor %}
                 </td>
+                {% if is_granted('manage', member) %}
                 <td>
                     <a href="{{ path('team_member_edit', {'user_slug': member.slug, 'slug': member.team.slug}) }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Modifier</a>
                 </td>
+                {% endif %}
             </tr>
         {% else %}
             <tr>

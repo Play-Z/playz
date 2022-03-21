@@ -4,8 +4,10 @@ namespace App\Security\Voter;
 
 use App\Entity\Team;
 use App\Entity\User;
+use App\Service\SecurityService;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class TeamVoter extends Voter
@@ -14,10 +16,18 @@ class TeamVoter extends Voter
     const LEAVE = 'leave';
     const DELETE = 'delete';
 
+    private $security;
+    private SecurityService $securityService;
+
+
+    public function __construct(Security $security, SecurityService $securityService)
+    {
+        $this->security = $security;
+        $this->securityService = $securityService;
+    }
+
     protected function supports(string $attribute, $subject): bool
     {
-        // replace with your own logic
-        // https://symfony.com/doc/current/security/voters.html
         return in_array($attribute, [self::EDIT, self::LEAVE, self::DELETE]) && $subject instanceof \App\Entity\Team;
     }
 
@@ -27,6 +37,10 @@ class TeamVoter extends Voter
 
         if (!$user instanceof UserInterface) {
             return false;
+        }
+
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            return true;
         }
 
         $targetTeam = $subject;
@@ -45,7 +59,7 @@ class TeamVoter extends Voter
 
     private function canEdit(Team $targetTeam, User $user)
     {
-        return in_array('ROLE_ADMIN', $user->getRoles()) || $targetTeam->getCreatedBy() === $user && in_array('ROLE_TEAM_CREATOR', $user->getRoles());
+        return $targetTeam->getCreatedBy() === $user && $this->securityService->isGranted($user,'ROLE_TEAM_CREATOR');
     }
 
     private function canLeave(Team $targetTeam, User $user)
@@ -54,6 +68,6 @@ class TeamVoter extends Voter
     }
 
     private function canDelete(Team $targetTeam, User $user){
-        return in_array('ROLE_ADMIN', $user->getRoles()) || $targetTeam->getCreatedBy() === $user && in_array('ROLE_TEAM_CREATOR', $user->getRoles());
+        return $targetTeam->getCreatedBy() === $user && $this->securityService->isGranted($user,'ROLE_TEAM_CREATOR');
     }
 }

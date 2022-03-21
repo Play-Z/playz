@@ -57,6 +57,23 @@ class UserFixtures extends Fixture
         $manager->persist($player);
         $this->setReference(self::USER_USER, $player);
 
+        $player1 = (new User())
+            ->setUsername('Player1')
+            ->setEmail('player1@playz.com')
+            ->setRoles(['ROLE_USER'])
+            ->setIsVerified(true)
+            ->setNewsletter(false)
+            ->setLastname('Player1')
+            ->setFirstname('Player1')
+            ->setCountry('France')
+            ->setOrganization('PlayZ')
+            ->setOrganizationPosition('Moderator')
+            ->setDescription('Hi ! I am one of the moderator of the playz team !')
+        ;
+        $player1->setPassword($this->userPasswordHasher->hashPassword($player1, 'test'));
+        $manager->persist($player1);
+        $this->setReference(self::USER_USER, $player1);
+
         $manager->flush();
     }
 }

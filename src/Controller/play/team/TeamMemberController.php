@@ -8,6 +8,7 @@ use App\Form\EditTeamMemberType;
 use App\Form\EditTeamType;
 use App\Form\CreateTeamType;
 use App\Repository\UserRepository;
+use App\Security\Voter\TeamMemberVoter;
 use App\Service\TeamService;
 use App\Repository\TeamRepository;
 use App\Security\Voter\TeamVoter;
@@ -20,7 +21,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/team/{slug}/member')]
-#[IsGranted(TeamVoter::EDIT, 'team')]
 class TeamMemberController extends AbstractController
 {
     #[Route('/', name: 'team_member_index', methods: ['GET'])]
@@ -35,6 +35,7 @@ class TeamMemberController extends AbstractController
 
     #[Route('/{user_slug}/edit', name: 'team_member_edit', methods: ['GET','POST'])]
     #[ParamConverter('user', options: ['mapping' => ['user_slug' => 'slug']])]
+    #[IsGranted(TeamMemberVoter::MANAGE, 'user')]
     public function edit(Request $request, User $user, Team $team): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
@@ -55,31 +56,20 @@ class TeamMemberController extends AbstractController
             'team' => $team,
             'form' => $form,
         ]);
-//        $entityManager = $this->getDoctrine()->getManager();
-//        $form = $this->createForm(EditTeamMembersType::class, $user);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $updatedMembers = $request->request->get('edit_team')['users'];
-//            $currentMembers = $userRepository->findBy(['team' => $team]);
-//
-//            foreach ($currentMembers as $member){
-//                if (!in_array($member->getId(), $updatedMembers)){
-//                    dd($member);
-//                    $team->removeUser($member);
-//                }
-//            }
-//            $entityManager->flush();
-//            $this->addFlash(
-//                'success',
-//                "L'équipe a bien été modifier"
-//            );
-//            return $this->redirectToRoute('team_show', ['slug' => $team->getSlug()], Response::HTTP_SEE_OTHER);
-//        }
-//
-//        return $this->renderForm('play/team/edit.html.twig', [
-//            'team' => $team,
-//            'form' => $form,
-//        ]);
+    }
+
+    #[Route('/{user_slug}/join', name: 'team_member_fire', methods: ['POST'])]
+    #[ParamConverter('user', options: ['mapping' => ['user_slug' => 'slug']])]
+    #[IsGranted(TeamMemberVoter::FIRE, 'user')]
+    public function fire(Request $request, User $user, Team $team): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $user->setRoles(['ROLE_USER']);
+            $team->removeUser($user);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('team_member_index', ['slug' => $team->getSlug()], Response::HTTP_SEE_OTHER);
     }
 }
