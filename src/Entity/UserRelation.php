@@ -37,7 +37,7 @@ class UserRelation
     private $recipient;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="string", length=30, nullable=true)
      */
     private $type;
 

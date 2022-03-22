@@ -64,6 +64,6 @@ class TeamMemberVoter extends Voter
 
     private function canFire(User $targetUser, User $user)
     {
-        return $this->security->isGranted('ROLE_TEAM_CREATOR') && $targetUser !== $user;
+        return $this->security->isGranted('ROLE_TEAM_CREATOR') && $targetUser !== $user && $user->getTeam() === $targetUser->getTeam();
     }
 }

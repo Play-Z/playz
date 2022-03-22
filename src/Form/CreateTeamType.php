@@ -26,7 +26,7 @@ class CreateTeamType extends AbstractType
     {
 
         $currentUser = $this->security->getUser();
-        $friendsRelation = $this->userRelationRepository->findAllFriends($currentUser);
+        $friendsRelation = $this->userRelationRepository->findAllFriendsOfUser($currentUser);
         $friends = [];
 
         foreach ($friendsRelation as $userRelation){

@@ -11,6 +11,7 @@ use App\Repository\UserRepository;
 use App\Service\TeamService;
 use App\Repository\TeamRepository;
 use App\Security\Voter\TeamVoter;
+use App\Service\UserRelationService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +31,7 @@ class TeamController extends AbstractController
 
     #[Route('/new', name: 'team_new', methods: ['GET','POST'])]
     #[IsGranted('ROLE_USER')]
-    public function new(Request $request): Response
+    public function new(Request $request, UserRelationService $userRelationService): Response
     {
         $user = $this->getUser();
         $team = new Team();
@@ -38,12 +39,20 @@ class TeamController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $recipients = $team->getUsers();
+
+            foreach ($recipients as $recipient){
+                $team->removeUser($recipient);
+                $userRelationService->handleNewTeamRelation($user, $recipient);
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $team->setCreatedBy($user);
             $entityManager->persist($team);
             $entityManager->flush();
 
-            return $this->redirectToRoute('team_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('team_show', ['slug' => $team->getSlug()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('play/team/new.html.twig', [
@@ -117,10 +126,13 @@ class TeamController extends AbstractController
 
     #[Route('/{slug}', name: 'team_delete', methods: ['POST'])]
     #[IsGranted(TeamVoter::DELETE, 'team')]
-    public function delete(Request $request, Team $team): Response
+    public function delete(Request $request, Team $team, UserRelationService $userRelationService): Response
     {
         if ($this->isCsrfTokenValid('delete'.$team->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
+            $userRelationService->deleteAllTeamUserRelation($team);
+            $user = $this->getUser();
+            $user->setRoles(['ROLE_USER']);
             $entityManager->remove($team);
             $entityManager->flush();
         }
@@ -159,12 +171,12 @@ class TeamController extends AbstractController
 
     #[Route('/{slug}/leave', name: 'team_leave', methods: ['GET', 'POST'])]
     #[IsGranted(TeamVoter::LEAVE, 'team')]
-    public function leave(Team $team): Response
+    public function leave(Team $team, UserRelationService $userRelationService): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getUser();
         $user->setRoles(['ROLE_USER']);
-
+        $userRelationService->deleteTeamUserRelation($team, $user);
         $team->removeUser($user);
         if (count($team->getUsers()) == 0){
             $entityManager->remove($team);
@@ -175,7 +187,28 @@ class TeamController extends AbstractController
             );
             return $this->redirectToRoute('team_index', [], Response::HTTP_SEE_OTHER);
         }
+        elseif ($team->getCreatedBy() === $user){
+            $members =$team->getUsers()->getValues();
+            foreach ($members as $member){
+                if (in_array('ROLE_TEAM_MANAGER', $member->getRoles())){
+                    $member->setRoles(['ROLE_TEAM_CREATOR']);
+                    $team->setCreatedBy($member);
+                    $haveSetNewCreator = true;
+                }
+                else{
+                    $haveSetNewCreator = false;
+                }
+            }
 
+            if (!$haveSetNewCreator){
+                $rand_key = array_rand($members);
+                $member = $members[$rand_key];
+                dump($member);
+                $member->setRoles(['ROLE_TEAM_CREATOR']);
+                $team->setCreatedBy($member);
+            }
+        }
+        $entityManager->flush();
         $this->addFlash(
             'success',
             "Vous avez bien quitté l'équipe."

@@ -12,6 +12,7 @@ use App\Security\Voter\TeamMemberVoter;
 use App\Service\TeamService;
 use App\Repository\TeamRepository;
 use App\Security\Voter\TeamVoter;
+use App\Service\UserRelationService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -58,14 +59,15 @@ class TeamMemberController extends AbstractController
         ]);
     }
 
-    #[Route('/{user_slug}/join', name: 'team_member_fire', methods: ['POST'])]
+    #[Route('/{user_slug}/fire', name: 'team_member_fire', methods: ['POST'])]
     #[ParamConverter('user', options: ['mapping' => ['user_slug' => 'slug']])]
     #[IsGranted(TeamMemberVoter::FIRE, 'user')]
-    public function fire(Request $request, User $user, Team $team): Response
+    public function fire(Request $request, User $user, Team $team, UserRelationService $userRelationService): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $user->setRoles(['ROLE_USER']);
+            $userRelationService->deleteTeamUserRelation($team, $user);
             $team->removeUser($user);
             $entityManager->flush();
         }

@@ -49,7 +49,7 @@ class UserRelationRepository extends ServiceEntityRepository
     /**
      * @return User[] Returns an array of User objects
      */
-    public function findAllFriends($user)
+    public function findAllFriendsOfUser($user)
     {
         $entityManager = $this->getEntityManager();
 
@@ -59,9 +59,9 @@ class UserRelationRepository extends ServiceEntityRepository
                 FROM App\Entity\UserRelation ur
                 INNER JOIN ur.recipient r
                 INNER JOIN ur.sender s
-                WHERE(s.id = :userId AND ur.status = :accepted) OR (r.id = :userId AND ur.status = :accepted)
+                WHERE(s.id = :userId AND ur.status = :accepted AND ur.type = :type) OR (r.id = :userId AND ur.status = :accepted AND ur.type = :type)
                 '
-        )->setParameters(['userId' => $user, 'accepted' => 'accepted']);
+        )->setParameters(['userId' => $user, 'accepted' => 'accepted','type' => 'friend']);
 
         return $query->getResult();
     }
@@ -69,7 +69,7 @@ class UserRelationRepository extends ServiceEntityRepository
     /**
      * @return User[] Returns an array of User objects
      */
-    public function findUserSenderTeam($id)
+    public function findUserRelationById($id)
     {
         $entityManager = $this->getEntityManager();
 
@@ -87,36 +87,17 @@ class UserRelationRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-//    /**
-//     * @return UserRelation[] Returns an array of UserRelation objects
-//     */
-//    public function findAllRelationByUser($sender, $recipient)
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.sender = :sender AND u.recipient = :recipient')
-//            ->orWhere('u.sender = :recipient AND u.recipient = :sender')
-//            ->setParameters(['sender' => $sender, 'recipient' => $recipient])
-//            ->getQuery()
-//            ->getResult()
-//            ;
-//    }
-
-    /**
-     * @return UserRelation[] Returns an array of UserRelation objects
-     */
     public function findBlockedRelationByUser($sender, $recipient)
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.sender = :sender AND u.recipient = :recipient AND u.status = :status')
+            ->orWhere('u.sender = :recipient AND u.recipient = :sender AND u.status = :status')
             ->setParameters(['sender' => $sender, 'recipient' => $recipient, 'status' => 'blocked'])
             ->getQuery()
             ->getResult()
             ;
     }
 
-    /**
-     * @return UserRelation[] Returns an array of UserRelation objects
-     */
     public function findAllRelationByUserAndType($sender, $recipient, $relationType)
     {
         return $this->createQueryBuilder('u')
@@ -126,5 +107,69 @@ class UserRelationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    public function findAllRelationWhereUserIsRecipientByType($recipient, $relationType)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.recipient = :recipient AND u.type = :type')
+            ->setParameters(['recipient' => $recipient, 'type' => $relationType])
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findAllTeamUserRelationByTeam($team)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            '
+                SELECT ur, s, r, t
+                FROM App\Entity\UserRelation ur
+                INNER JOIN ur.recipient r
+                INNER JOIN ur.sender s
+                INNER JOIN s.team t
+                WHERE t = :team AND ur.type = :type
+                '
+        )->setParameters(['team'=> $team, 'type' => 'team']);
+
+        return $query->getResult();
+    }
+
+    public function findTeamUserRelationByTeamAndRecipient($team, $user)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            '
+                SELECT ur, s, r, t
+                FROM App\Entity\UserRelation ur
+                INNER JOIN ur.recipient r
+                INNER JOIN ur.sender s
+                INNER JOIN s.team t
+                WHERE t = :team AND ur.type = :type
+                AND r = :user
+                '
+        )->setParameters(['team'=> $team, 'user' => $user, 'type' => 'team']);
+
+        return $query->getResult();
+    }
+
+    public function findAllFriendUserRelation($user)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            '
+                SELECT ur, s, r
+                FROM App\Entity\UserRelation ur
+                INNER JOIN ur.recipient r
+                INNER JOIN ur.sender s
+                WHERE (ur.type = :type AND ur.status = :accepted OR ur.status = :blocked) AND (ur.sender = :user OR ur.recipient = :user)
+                '
+        )->setParameters(['user'=> $user, 'accepted' => 'accepted', 'blocked' => 'blocked',  'type' => 'friend']);
+
+        return $query->getResult();
     }
 }

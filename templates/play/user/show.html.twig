@@ -51,11 +51,15 @@
     </table>
 
     {% if is_granted('edit', user) %}
-    <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('user_profile_edit', {'slug': user.slug}) }}">Modifier</a>
+        <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('user_profile_edit', {'slug': user.slug}) }}">Modifier</a>
     {% endif %}
 
     {% if is_granted('ROLE_USER') and app.user != user %}
         {{ include('settings/user_relation/_friend.form.html.twig') }}
+    {% endif %}
+
+    {% if is_granted('ROLE_USER') and app.user != user %}
+        {{ include('settings/user_relation/_block.form.html.twig') }}
     {% endif %}
 
     {% if is_granted('ROLE_TEAM_CREATOR') or is_granted('ROLE_TEAM_MANAGER') %}

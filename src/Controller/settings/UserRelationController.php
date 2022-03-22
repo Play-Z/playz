@@ -2,10 +2,11 @@
 
 namespace App\Controller\settings;
 
+use App\Entity\User;
 use App\Entity\UserRelation;
 use App\Repository\UserRelationRepository;
-use App\Repository\UserRepository;
 use App\Service\UserRelationService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,18 +19,7 @@ class UserRelationController extends AbstractController
     public function index(UserRelationRepository $userRelationRepository): Response
     {
         $user = $this->getUser();
-
-        $userSenderRelation = $userRelationRepository->findBy(['sender' => $user]);
-        $userRecipientRelation = $userRelationRepository->findBy(['recipient' => $user, 'status' => 'accepted']);
-
-        foreach ($userSenderRelation as $i => $relation){
-            if ($relation->getStatus() !== 'accepted' && $relation->getStatus() !== 'blocked'){
-                unset($userSenderRelation[$i]);
-            }
-        }
-
-        $userRelations = array_merge($userSenderRelation, $userRecipientRelation);
-
+        $userRelations = $userRelationRepository->findAllFriendUserRelation($user);
 
         return $this->render('settings/user_relation/index.html.twig', [
             'user_relations' => $userRelations,
@@ -41,30 +31,33 @@ class UserRelationController extends AbstractController
     {
         $recipient = $this->getUser();
 
+        $userRelationRequest = $userRelationRepository->findBy(['recipient' => $recipient, 'status' => 'pending']);
+
         return $this->render('settings/user_relation/index_request.html.twig', [
-            'user_relations' => $userRelationRepository->findBy(['recipient' => $recipient, 'status' => 'pending']),
+            'user_relations' => $userRelationRequest,
         ]);
     }
 
-    #[Route('/new', name: 'user_relation_new', methods: ['POST'])]
-    public function new(Request $request, UserRepository $userRepository, UserRelationService $userRelationService, UserRelationRepository $userRelationRepository): Response
+    #[Route('/new/{user_slug}', name: 'user_relation_new', methods: ['POST'])]
+    #[ParamConverter('user', options: ['mapping' => ['user_slug' => 'slug']])]
+    public function new(Request $request, User $user, UserRelationService $userRelationService, UserRelationRepository $userRelationRepository): Response
     {
-        $user = $this->getUser();
+        $sender = $this->getUser();
 
-        $recipient = $userRepository->find($request->request->get('recipient'));
+        $recipient = $user;
         $relationType = $request->request->get('type');
 
-        $allBlockedUserRelation = $userRelationRepository->findBlockedRelationByUser($user, $recipient);
+        $allBlockedUserRelation = $userRelationRepository->findBlockedRelationByUser($sender, $recipient);
 
         if (empty($allBlockedUserRelation)){
             if ($relationType === 'team'){
                 $this->addFlash('notice',
-                    $userRelationService->handleNewTeamRelation($user, $recipient)
+                    $userRelationService->handleNewTeamRelation($sender, $recipient)
                 );
             }
             elseif ($relationType === 'friend'){
                 $this->addFlash('notice',
-                    $userRelationService->handleNewFriendRelation($user, $recipient)
+                    $userRelationService->handleNewFriendRelation($sender, $recipient)
                 );
             }
         }
@@ -100,7 +93,7 @@ class UserRelationController extends AbstractController
         $user = $this->getUser();
 
         if ($userRelation->getType() === 'team'){
-            $userRelationWithJoinEntity = $userRelationRepository->findUserSenderTeam(['id' => $userRelation->getId()])[0];
+            $userRelationWithJoinEntity = $userRelationRepository->findUserRelationById(['id' => $userRelation->getId()])[0];
             if (!in_array('ROLE_ADMIN',$user->getRoles())){
                 $user->setRoles((array('ROLE_TEAM_MEMBER')));
             }
@@ -113,17 +106,19 @@ class UserRelationController extends AbstractController
         return $this->redirectToRoute('user_relation_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{id}/block', name: 'user_relation_block', methods: ['GET','POST'])]
-    public function blockUser(Request $request, UserRelation $userRelation): Response
+    #[Route('/block/{user_slug}', name: 'user_relation_block', methods: ['GET', 'POST'])]
+    #[ParamConverter('user', options: ['mapping' => ['user_slug' => 'slug']])]
+    public function blockUser(UserRelationService $userRelationService, User $user): Response
     {
-        $userRelation->setStatus('blocked');
-        $this->getDoctrine()->getManager()->flush();
+        $this->addFlash('success',
+            $userRelationService->handleBlock($user)
+        );
 
-        return $this->redirectToRoute('user_relation_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('index_user_profile', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}/decline', name: 'user_relation_decline', methods: ['POST'])]
-    public function declineRequest(Request $request, UserRelation $userRelation): Response
+    public function declineRequest(UserRelation $userRelation): Response
     {
         $userRelation->setStatus('rejected');
         $this->getDoctrine()->getManager()->flush();
