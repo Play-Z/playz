@@ -14,7 +14,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
-#[Route('/account', name: 'user_account', methods: ['GET'])]
+#[Route('/account')]
 class UserAccountController extends AbstractController
 {
     #[Route('/', name: 'user_account', methods: ['GET','POST'])]
@@ -47,7 +47,6 @@ class UserAccountController extends AbstractController
                 }
             }
         }
-
 
         return $this->render('settings/account/account.html.twig', [
             'user' => $user->getSlug(),
