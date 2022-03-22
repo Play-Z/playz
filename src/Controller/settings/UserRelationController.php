@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/relations')]
 class UserRelationController extends AbstractController
 {
-    #[Route('/', name: 'friend_index', methods: ['GET'])]
+    #[Route('/', name: 'user_relation_index', methods: ['GET'])]
     public function index(UserRelationRepository $userRelationRepository): Response
     {
         $user = $this->getUser();
@@ -26,7 +26,7 @@ class UserRelationController extends AbstractController
         ]);
     }
 
-    #[Route('/request', name: 'user_relation_index', methods: ['GET'])]
+    #[Route('/request', name: 'user_relation_request_index', methods: ['GET'])]
     public function indexRequest(UserRelationRepository $userRelationRepository): Response
     {
         $recipient = $this->getUser();
