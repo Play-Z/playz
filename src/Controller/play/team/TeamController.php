@@ -3,11 +3,15 @@
 namespace App\Controller\play\team;
 
 use App\Entity\Team;
+use App\Entity\User;
+use App\Form\EditTeamMemberType;
 use App\Form\EditTeamType;
-use App\Form\TeamType;
+use App\Form\CreateTeamType;
+use App\Repository\UserRepository;
 use App\Service\TeamService;
 use App\Repository\TeamRepository;
 use App\Security\Voter\TeamVoter;
+use App\Service\UserRelationService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,23 +31,28 @@ class TeamController extends AbstractController
 
     #[Route('/new', name: 'team_new', methods: ['GET','POST'])]
     #[IsGranted('ROLE_USER')]
-    public function new(Request $request): Response
+    public function new(Request $request, UserRelationService $userRelationService): Response
     {
         $user = $this->getUser();
         $team = new Team();
-        $form = $this->createForm(TeamType::class, $team);
+        $form = $this->createForm(CreateTeamType::class, $team);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            if (!in_array('ROLE_ADMIN',$user->getRoles())){
-                $user->setRoles((array('ROLE_TEAM_CREATOR')));
+
+            $recipients = $team->getUsers();
+
+            foreach ($recipients as $recipient){
+                $team->removeUser($recipient);
+                $userRelationService->handleNewTeamRelation($user, $recipient);
             }
-            $team->addUser($user);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $team->setCreatedBy($user);
             $entityManager->persist($team);
             $entityManager->flush();
 
-            return $this->redirectToRoute('team_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('team_show', ['slug' => $team->getSlug()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('play/team/new.html.twig', [
@@ -62,18 +71,51 @@ class TeamController extends AbstractController
 
     #[Route('/{slug}/edit', name: 'team_edit', methods: ['GET','POST'])]
     #[IsGranted(TeamVoter::EDIT, 'team')]
-    public function edit(Request $request, Team $team, TeamService $teamService): Response
+    public function edit(Request $request, Team $team): Response
     {
+        $entityManager = $this->getDoctrine()->getManager();
         $form = $this->createForm(EditTeamType::class, $team);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             $this->addFlash(
                 'success',
                 "L'équipe a bien été modifier"
             );
-            return $this->redirectToRoute('team_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('team_show', ['slug' => $team->getSlug()], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('play/team/edit.html.twig', [
+            'team' => $team,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{slug}/members/edit', name: 'team_members_edit', methods: ['GET','POST'])]
+    #[IsGranted(TeamVoter::EDIT, 'team')]
+    public function membersEdit(Request $request, Team $team, UserRepository $userRepository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $form = $this->createForm(EditTeamMemberType::class, $team);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $updatedMembers = $request->request->get('edit_team')['users'];
+            $currentMembers = $userRepository->findBy(['team' => $team]);
+
+            foreach ($currentMembers as $member){
+                if (!in_array($member->getId(), $updatedMembers)){
+                    dd($member);
+                    $team->removeUser($member);
+                }
+            }
+            $entityManager->flush();
+            $this->addFlash(
+                'success',
+                "L'équipe a bien été modifier"
+            );
+            return $this->redirectToRoute('team_show', ['slug' => $team->getSlug()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('play/team/edit.html.twig', [
@@ -84,10 +126,13 @@ class TeamController extends AbstractController
 
     #[Route('/{slug}', name: 'team_delete', methods: ['POST'])]
     #[IsGranted(TeamVoter::DELETE, 'team')]
-    public function delete(Request $request, Team $team): Response
+    public function delete(Request $request, Team $team, UserRelationService $userRelationService): Response
     {
         if ($this->isCsrfTokenValid('delete'.$team->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
+            $userRelationService->deleteAllTeamUserRelation($team);
+            $user = $this->getUser();
+            $user->setRoles(['ROLE_USER']);
             $entityManager->remove($team);
             $entityManager->flush();
         }
@@ -113,10 +158,62 @@ class TeamController extends AbstractController
                     'error',
                     "Impossible de rejoindre l'équipe car il n'y a plus de place"
                 );
-                return $this->redirectToRoute('team_show', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('team_show', ['slug' => $team->getSlug()], Response::HTTP_SEE_OTHER);
             }
         }
 
+        $this->addFlash(
+            'success',
+            "Vous avez bien rejoins l'équipe."
+        );
         return $this->redirectToRoute('team_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{slug}/leave', name: 'team_leave', methods: ['GET', 'POST'])]
+    #[IsGranted(TeamVoter::LEAVE, 'team')]
+    public function leave(Team $team, UserRelationService $userRelationService): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        $user->setRoles(['ROLE_USER']);
+        $userRelationService->deleteTeamUserRelation($team, $user);
+        $team->removeUser($user);
+        if (count($team->getUsers()) == 0){
+            $entityManager->remove($team);
+            $entityManager->flush();
+            $this->addFlash(
+                'success',
+                "Vous avez bien quitté l'équipe et elle a été supprimé."
+            );
+            return $this->redirectToRoute('team_index', [], Response::HTTP_SEE_OTHER);
+        }
+        elseif ($team->getCreatedBy() === $user){
+            $members =$team->getUsers()->getValues();
+            foreach ($members as $member){
+                if (in_array('ROLE_TEAM_MANAGER', $member->getRoles())){
+                    $member->setRoles(['ROLE_TEAM_CREATOR']);
+                    $team->setCreatedBy($member);
+                    $haveSetNewCreator = true;
+                }
+                else{
+                    $haveSetNewCreator = false;
+                }
+            }
+
+            if (!$haveSetNewCreator){
+                $rand_key = array_rand($members);
+                $member = $members[$rand_key];
+                dump($member);
+                $member->setRoles(['ROLE_TEAM_CREATOR']);
+                $team->setCreatedBy($member);
+            }
+        }
+        $entityManager->flush();
+        $this->addFlash(
+            'success',
+            "Vous avez bien quitté l'équipe."
+        );
+
+        return $this->redirectToRoute('team_show', ['slug' => $team->getSlug()], Response::HTTP_SEE_OTHER);
     }
 }

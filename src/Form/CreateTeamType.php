@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
 
-class TeamType extends AbstractType
+class CreateTeamType extends AbstractType
 {
     private $userRelationRepository;
     private $security;
@@ -26,7 +26,7 @@ class TeamType extends AbstractType
     {
 
         $currentUser = $this->security->getUser();
-        $friendsRelation = $this->userRelationRepository->findAllFriends($currentUser);
+        $friendsRelation = $this->userRelationRepository->findAllFriendsOfUser($currentUser);
         $friends = [];
 
         foreach ($friendsRelation as $userRelation){

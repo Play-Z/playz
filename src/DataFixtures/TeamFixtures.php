@@ -11,7 +11,7 @@ class TeamFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        TeamFactory::createMany(6, ['users' => UserFactory::new()->many(1, 5)]);
+        TeamFactory::createMany(64, ['created_by' => UserFactory::new(), 'users' => UserFactory::new()->many(1, 9)]);
         $manager->flush();
     }
 }
