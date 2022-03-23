@@ -5,7 +5,7 @@ namespace App\Controller\settings;
 use App\Entity\User;
 use App\Form\ChangeEmailType;
 use App\Form\ChangePasswordFormType;
-use App\Form\UserType;
+use App\Form\UserProfileType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

@@ -132,7 +132,9 @@ class TeamController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $userRelationService->deleteAllTeamUserRelation($team);
             $user = $this->getUser();
-            $user->setRoles(['ROLE_USER']);
+            if (!in_array('ROLE_ADMIN',$user->getRoles())) {
+                $user->setRoles(['ROLE_USER']);
+            }
             $entityManager->remove($team);
             $entityManager->flush();
         }
@@ -175,7 +177,9 @@ class TeamController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getUser();
-        $user->setRoles(['ROLE_USER']);
+        if (!in_array('ROLE_ADMIN',$user->getRoles())) {
+            $user->setRoles(['ROLE_USER']);
+        }
         $userRelationService->deleteTeamUserRelation($team, $user);
         $team->removeUser($user);
         if (count($team->getUsers()) == 0){
@@ -191,7 +195,9 @@ class TeamController extends AbstractController
             $members =$team->getUsers()->getValues();
             foreach ($members as $member){
                 if (in_array('ROLE_TEAM_MANAGER', $member->getRoles())){
-                    $member->setRoles(['ROLE_TEAM_CREATOR']);
+                    if (!in_array('ROLE_ADMIN',$user->getRoles())) {
+                        $member->setRoles(['ROLE_TEAM_CREATOR']);
+                    }
                     $team->setCreatedBy($member);
                     $haveSetNewCreator = true;
                 }
@@ -203,8 +209,9 @@ class TeamController extends AbstractController
             if (!$haveSetNewCreator){
                 $rand_key = array_rand($members);
                 $member = $members[$rand_key];
-                dump($member);
-                $member->setRoles(['ROLE_TEAM_CREATOR']);
+                if (!in_array('ROLE_ADMIN',$user->getRoles())) {
+                    $member->setRoles(['ROLE_TEAM_CREATOR']);
+                }
                 $team->setCreatedBy($member);
             }
         }

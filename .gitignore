@@ -30,3 +30,21 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+/!/
+ /*
+ !/public/
+ /public/*
+ !/public/uploads/
+ /public/uploads/*
+ !/public/uploads/images/
+ /public/uploads/images/*
+ !/public/uploads/images/team/
+ /public/uploads/images/team/*
+ !/public/uploads/images/team/cloud9_logo.png
+ !/public/uploads/images/team/fnatic_logo.png
+ !/public/uploads/images/team/g2_esports_logo.png
+ !/public/uploads/images/team/karmine_corp_logo.png
+ !/public/uploads/images/team/sk_telecom_t1_logo.png
+ !/public/uploads/images/team/solary_logo.png
+ !/public/uploads/images/team/vitality_logo.png

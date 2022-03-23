@@ -114,7 +114,7 @@ class UserRelationController extends AbstractController
             $userRelationService->handleBlock($user)
         );
 
-        return $this->redirectToRoute('index_user_profile', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('user_profile_index', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}/decline', name: 'user_relation_decline', methods: ['POST'])]

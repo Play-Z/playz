@@ -1,12 +1,24 @@
 vich_uploader:
     db_driver: orm
 
+    #mappings:
+    #    products:
+    #        uri_prefix: /images/products
+    #        upload_destination: '%kernel.project_dir%/public/images/products'
     mappings:
-        images:
-            uri_prefix: /images
-            upload_destination: '%kernel.project_dir%/public/images'
-            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+        userImage:
+            uri_prefix: /uploads/images/user
+            upload_destination: '%kernel.project_dir%/public/uploads/images/user'
+            namer: vich_uploader.namer_origname
         gameLogo:
-            uri_prefix: /images/games/logos
-            upload_destination: '%kernel.project_dir%/public/images/games/logos'
-            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            uri_prefix: /uploads/images/game
+            upload_destination: '%kernel.project_dir%/public/uploads/images/game'
+            namer: vich_uploader.namer_origname
+        teamLogo:
+            uri_prefix: /uploads/images/team
+            upload_destination: '%kernel.project_dir%/public/uploads/images/team'
+            namer: vich_uploader.namer_origname
+        tournamentLogo:
+            uri_prefix: /uploads/images/tournament
+            upload_destination: '%kernel.project_dir%/public/uploads/images/tournament'
+            namer: vich_uploader.namer_origname
