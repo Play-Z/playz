@@ -8,8 +8,13 @@
     <table class="table">
         <tbody>
         <tr>
-            <th>Logo</th>
-            <td><img src="{{ game.imageName }}" width="64" height="auto" alt="{{ game.imageName }}"></td>
+            {% if game.path %}
+                <th>Logo</th>
+                <td><img src="{{ vich_uploader_asset(game, 'logo') }}" width="64" height="auto" alt="Logo de {{ game.name }}"></td>
+            {% else %}
+                <th>Logo</th>
+                <td>Pas de logo</td>
+            {% endif %}
         </tr>
         <tr>
             <th>Nom</th>

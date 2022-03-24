@@ -3,7 +3,7 @@
 namespace App\Controller\play\user;
 
 use App\Entity\User;
-use App\Form\UserType;
+use App\Form\UserProfileType;
 use App\Repository\UserRepository;
 use App\Security\Voter\UserProfileVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user')]
 class UserProfileController extends AbstractController
 {
-    #[Route('/', name: 'index_user_profile', methods: ['GET'])]
+    #[Route('/', name: 'user_profile_index', methods: ['GET'])]
     public function index(UserRepository $userRepository)
     {
         return $this->render('play/user/index.html.twig', [
@@ -35,7 +35,7 @@ class UserProfileController extends AbstractController
     #[Route('/{slug}/edit', name: 'user_profile_edit', methods: ['GET','POST'])]
     public function edit(Request $request, User $user): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserProfileType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

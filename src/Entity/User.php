@@ -8,16 +8,20 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  * @UniqueEntity(fields={"email"}, message="Il existe déjà un compte playz lié à cette adresse email.")
+ * @Vich\Uploadable
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serializable
 {
     /**
      * @ORM\Id
@@ -117,6 +121,80 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $receivedUserRelations;
 
+    /**
+     * @var \DateTime $createdAt
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime $updatedAt
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     *
+     */
+    private $updatedAt;
+
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $path;
+
+    public function getPath(): ?string
+    {
+        return $this->path;
+    }
+
+    public function setPath(?string $path): self
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
+    /**
+     * @Vich\UploadableField(mapping="userImage", fileNameProperty="path")
+     *
+     * @var File $image
+     *
+     * @Assert\File(
+     *     maxSize = "2M",
+     *     mimeTypes = {"image/png", "image/jpeg"},
+     *     mimeTypesMessage = "Please upload a valid image file (png, jpg/jpeg)"
+     * )
+     */
+    private $image;
+
+    /**
+     * @param UploadedFile $image
+     */
+    public function setImage(?File $image = null)
+    {
+        $this->image = $image;
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    /**
+     * @return UploadedFile
+     */
+    public function getImage(): ?File
+    {
+        return $this->image;
+    }
+
     public function __construct()
     {
         $this->sendedUserRelations = new ArrayCollection();
@@ -190,13 +268,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setRoles(array $roles): self
     {
-        if (in_array('ROLE_ADMIN', $roles)){
-            return $this;
-        }
-        else{
-            $this->roles = $roles;
-            return $this;
-        }
+        $this->roles = $roles;
+        return $this;
     }
 
     /**
@@ -419,5 +492,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->email,
+            $this->password,
+        ));
+    }
+
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->email,
+            $this->password,
+            ) = unserialize($serialized);
     }
 }

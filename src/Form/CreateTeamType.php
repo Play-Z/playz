@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CreateTeamType extends AbstractType
 {
@@ -39,6 +40,14 @@ class CreateTeamType extends AbstractType
         }
 
         $builder
+            ->add('logo', VichImageType::class, [
+                'required' => false,
+                'allow_delete' => true,
+                'download_label' => true,
+                'download_uri' => true,
+                'image_uri' => true,
+                'asset_helper' => true
+            ])
             ->add('name')
             ->add('users', ChoiceType::class, [
                 // looks for choices from this entity

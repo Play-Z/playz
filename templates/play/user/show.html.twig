@@ -8,6 +8,15 @@
     <table class="table">
         <tbody>
             <tr>
+                {% if user.path %}
+                    <th>Image de profil</th>
+                    <td><img src="{{ vich_uploader_asset(user, 'image') }}" width="180" height="auto" alt="Image de profil de {{ user.username }}"></td>
+                {% else %}
+                    <th>Image de profil</th>
+                    <td>Pas d'image de profil</td>
+                {% endif %}
+            </tr>
+            <tr>
                 <th>Username</th>
                 <td>{{ user.username }}</td>
             </tr>

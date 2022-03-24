@@ -9,11 +9,15 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=TeamRepository::class)
  * @UniqueEntity(fields={"name"}, message="Il existe déjà une équipe portant ce nom dans playz.")
+ * @Vich\Uploadable
  */
 class Team
 {
@@ -47,11 +51,6 @@ class Team
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $logo;
 
     /**
      * @ORM\Column(type="boolean")
@@ -95,6 +94,52 @@ class Team
      * @ORM\Column(type="integer")
      */
     private $emplacement = 10;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $path;
+
+    public function getPath(): ?string
+    {
+        return $this->path;
+    }
+
+    public function setPath(?string $path): self
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
+    /**
+     * @Vich\UploadableField(mapping="teamLogo", fileNameProperty="path")
+     * @Assert\File(
+     *     maxSize = "2M",
+     *     mimeTypes = {"image/png"},
+     *     mimeTypesMessage = "Please upload a valid image file (png)"
+     * )
+     *
+     * @var File $logo
+     */
+    private $logo;
+
+    /**
+     * @param UploadedFile $logo
+     */
+    public function setLogo(?File $logo = null)
+    {
+        $this->logo = $logo;
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    /**
+     * @return UploadedFile
+     */
+    public function getLogo(): ?File
+    {
+        return $this->logo;
+    }
 
     public function __construct()
     {
@@ -145,18 +190,6 @@ class Team
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getLogo(): ?string
-    {
-        return $this->logo;
-    }
-
-    public function setLogo(?string $logo): self
-    {
-        $this->logo = $logo;
 
         return $this;
     }

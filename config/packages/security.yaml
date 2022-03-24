@@ -5,10 +5,7 @@ security:
         ROLE_TEAM_CREATOR : ['ROLE_TEAM_MANAGER']
         ROLE_TOURNAMENT_ARBITER: ['ROLE_USER']
         ROLE_TOURNAMENT_MANAGER : ['ROLE_TOURNAMENT_ARBITER']
-        ROLE_ADMIN : ['
-                    ROLE_TEAM_MEMBER',
-                    'ROLE_TEAM_MANAGER',
-                    'ROLE_TEAM_CREATOR',
+        ROLE_ADMIN : [
                     'ROLE_TOURNAMENT_ARBITER',
                     'ROLE_TOURNAMENT_MANAGER'
                     ]

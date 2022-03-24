@@ -135,7 +135,9 @@ class UserRelationService {
             if ($sender->getTeam() === $recipient->getTeam()){
                 if ($this->securityService->isGranted($sender, 'ROLE_TEAM_CREATOR')){
                     $team = $sender->getTeam();
-                    $recipient->setRoles(['ROLE_USER']);
+                    if (!in_array('ROLE_ADMIN',$user->getRoles())) {
+                        $recipient->setRoles(['ROLE_USER']);
+                    }
                     $this->deleteTeamUserRelation($team, $recipient);
                     $team->removeUser($recipient);
                     $this->entityManager->flush();
@@ -144,7 +146,9 @@ class UserRelationService {
                 }
                 elseif ($this->securityService->isGranted($recipient, 'ROLE_TEAM_CREATOR')){
                     $team = $recipient->getTeam();
-                    $sender->setRoles(['ROLE_USER']);
+                    if (!in_array('ROLE_ADMIN',$user->getRoles())) {
+                        $sender->setRoles(['ROLE_USER']);
+                    }
                     $this->deleteTeamUserRelation($sender, $user);
                     $team->removeUser($sender);
                     $this->entityManager->flush();

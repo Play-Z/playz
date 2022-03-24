@@ -13,25 +13,16 @@ class GameType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', null, array(
-                'label' => false,
-                'attr' => array(
-                    'placeholder' => 'Nom du jeu'
-                )
-            ))
-            ->add('description', null, array(
-                'label' => false,
-                'attr' => array(
-                    'placeholder' => 'Description du jeu...'
-                )
-            ))
-            ->add('imageFile', VichImageType::class, [
+            ->add('logo', VichImageType::class, [
                 'required' => false,
                 'allow_delete' => true,
+                'download_label' => true,
                 'download_uri' => true,
                 'image_uri' => true,
-                'asset_helper' => true,
+                'asset_helper' => true
             ])
+            ->add('name')
+            ->add('description')
         ;
     }
 
