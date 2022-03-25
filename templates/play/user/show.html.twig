@@ -109,7 +109,7 @@
     {% endif %}
 
     {% if is_granted('ROLE_USER') and app.user != user %}
-        {{ include('settings/user_relation/_block.form.html.twig') }}
+        {{ include('settings/user_relation/_block_form.html.twig') }}
     {% endif %}
 
     {% if is_granted('ROLE_TEAM_CREATOR') or is_granted('ROLE_TEAM_MANAGER') %}

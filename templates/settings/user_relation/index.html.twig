@@ -31,7 +31,9 @@
                 <td>
                     {{ include('settings/user_relation/_delete_form.html.twig') }}
                     {% if user_relation.status == 'accepted' %}
-                        {{ include('settings/user_relation/_block_form.html.twig') }}
+                        <form method="post" action="{{ path('user_relation_block', {'user_slug' : user_relation.recipient.slug }) }}" onsubmit="return confirm('Etes vous sur de vouloir bloquer cet utilisateur ?');">
+                            <button class="btn text-red-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Bloquer</button>
+                        </form>
                     {% endif %}
                 </td>
             </tr>
