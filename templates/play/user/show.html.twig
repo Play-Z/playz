@@ -20,17 +20,66 @@
                 <th>Username</th>
                 <td>{{ user.username }}</td>
             </tr>
-            {% if user.team %}
-            <tr>
-                <th>Equipe</th>
-                <td>{{ user.team.name }}</td>
-                <th>Membres</th>
-                <td>
-                    {% for member in user.team.users %}
-                        {{ member.username }},
+                {% if user.team %}
+                    <tr>
+                        <th>Equipe</th>
+                        <td>
+                            <a href="{{ path('team_show', {'slug': user.team.slug}) }}">
+                                {% if user.team.path %}
+                                    <img src="{{ vich_uploader_asset(user.team, 'logo') }}" width="64" height="auto" alt="Logo de l'équipe {{ user.team.name }}">
+                                {% endif %}
+                                {{ user.team.name }}
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Rôle dans l'équipe</th>
+                        <td>
+                            {% for role in user.roles %}
+                                {% if role == 'ROLE_TEAM_CREATOR' or role == 'ROLE_TEAM_MEMBER' %}
+                                    {{ role|formatRole(role) }}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Membres de l'équipe</th>
+                        <td>
+                            {% for member in user.team.users %}
+                                <a href="{{ path('user_profile_show', {'slug': member.slug}) }}">{{ member.username }} </a>
+                            {% endfor %}
+                        </td>
+                    </tr>
+
+                        {% if user.team.game is defined and not null %}
+                            <tr>
+                                <th>Jeu</th>
+                                <td>
+                                    {% if user.team.game.path %}
+                                        <img src="{{ vich_uploader_asset(user.team.game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ user.team.game.name }}">
+                                    {% else %}
+                                        {{ user.team.game.name }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                {% endif %}
+
+            {% if user.games is defined and not null %}
+                <tr>
+                    <th>Jeux</th>
+                    <td>
+                    {% for game in user.games %}
+                        {% if game.path %}
+                            <img src="{{ vich_uploader_asset(game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ game.name }}">
+                        {% else %}
+                            {{ game.name }}
+                        {% endif %}
                     {% endfor %}
-                </td>
-            </tr>
+                    </td>
+                </tr>
             {% endif %}
             <tr>
                 <th>Prénom</th>
@@ -39,14 +88,6 @@
             <tr>
                 <th>Nom</th>
                 <td>{{ user.lastname }}</td>
-            </tr>
-            <tr>
-                <th>Organisation</th>
-                <td>{{ user.organization }}</td>
-            </tr>
-            <tr>
-                <th>Position</th>
-                <td>{{ user.organizationPosition }}</td>
             </tr>
             <tr>
                 <th>Description</th>

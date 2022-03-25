@@ -91,16 +91,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     private $timezone;
 
     /**
-     * @ORM\Column(type="string", length=40, nullable=true)
-     */
-    private $organization;
-
-    /**
-     * @ORM\Column(type="string", length=30, nullable=true)
-     */
-    private $organization_position;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $newsletter = false;
@@ -382,30 +372,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     public function setTimezone(?string $timezone): self
     {
         $this->timezone = $timezone;
-
-        return $this;
-    }
-
-    public function getOrganization(): ?string
-    {
-        return $this->organization;
-    }
-
-    public function setOrganization(?string $organization): self
-    {
-        $this->organization = $organization;
-
-        return $this;
-    }
-
-    public function getOrganizationPosition(): ?string
-    {
-        return $this->organization_position;
-    }
-
-    public function setOrganizationPosition(?string $organization_position): self
-    {
-        $this->organization_position = $organization_position;
 
         return $this;
     }

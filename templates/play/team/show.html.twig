@@ -20,8 +20,22 @@
                 <th>Name</th>
                 <td>{{ team.name }}</td>
             </tr>
+            {% if team.games is defined and not null %}
+                <tr>
+                    <th>Jeux</th>
+                    <td>
+                        {% for game in team.games %}
+                            {% if game.path %}
+                                <img src="{{ vich_uploader_asset(game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ game.name }}">
+                            {% else %}
+                                {{ game.name }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endif %}
             <tr>
-                <th>IsVerified</th>
+                <th>Equipe esport officielle</th>
                 <td>{{ team.isVerified ? 'Oui' : 'Non' }}</td>
             </tr>
             <tr>
@@ -29,11 +43,27 @@
                 <td>{{ team.public ? 'Publique' : 'Privée' }}</td>
             </tr>
             <tr>
+                <th>Créateur</th>
+                <td><a href="{{ path('user_profile_show', {'slug': team.createdBy.slug}) }}">{{ team.createdBy.username }}</a></td>
+            </tr>
+            <tr>
                 <th>Membres</th>
                 <td>
                     {% for user in team.users %}
-                        {{ user.username }},
+                        <a href="{{ path('user_profile_show', {'slug': user.slug}) }}">{{ user.username }} </a>
                     {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <th>Jeu</th>
+                <td>
+                {% if team.game is defined and not null %}
+                    {% if team.game.path %}
+                        <img src="{{ vich_uploader_asset(team.game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ team.game.name }}">
+                    {% else %}
+                        {{ team.game.name }}
+                    {% endif %}
+                {% endif %}
                 </td>
             </tr>
             <tr>

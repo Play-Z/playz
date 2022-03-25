@@ -125,6 +125,21 @@ class Team
     private $logo;
 
     /**
+     * @ORM\ManyToMany(targetEntity=Game::class, inversedBy="teams")
+     */
+    private $games;
+
+    /**
+     * @ORM\Column(type="string", length=40, nullable=true)
+     */
+    private $location;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Game::class, inversedBy="teams")
+     */
+    private $game;
+
+    /**
      * @param UploadedFile $logo
      */
     public function setLogo(?File $logo = null)
@@ -326,6 +341,30 @@ class Team
     public function setEmplacement(int $emplacement): self
     {
         $this->emplacement = $emplacement;
+
+        return $this;
+    }
+
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?string $location): self
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    public function getGame(): ?Game
+    {
+        return $this->game;
+    }
+
+    public function setGame(?Game $game): self
+    {
+        $this->game = $game;
 
         return $this;
     }
