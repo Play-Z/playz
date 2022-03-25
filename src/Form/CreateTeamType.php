@@ -2,8 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Game;
 use App\Entity\Team;
 use App\Repository\UserRelationRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -60,6 +62,17 @@ class CreateTeamType extends AbstractType
                  'multiple' => true,
                  'expanded' => true,
                  'data' => $friends,
+            ])
+            ->add('game', EntityType::class, [
+                // looks for choices from this entity
+                'class' => Game::class,
+
+                // uses the User.username property as the visible option string
+                'choice_label' => 'name',
+
+                // used to render a select box, check boxes or radios
+                'multiple' => false,
+                'expanded' => false,
             ])
             ->add('public')
             ->add('emplacement', IntegerType::class, [

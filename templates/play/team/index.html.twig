@@ -8,9 +8,10 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Logo</th>
-                <th>Name</th>
+                <th>Equipe</th>
+                <th>Créateur</th>
                 <th>Membres</th>
+                <th>Jeu</th>
                 <th>Description</th>
                 <th>Visibilité équipe</th>
                 <th>Equipe esport officielle</th>
@@ -20,12 +21,28 @@
         <tbody>
         {% for team in teams %}
             <tr>
-                <td>{{ team.logo }}</td>
-                <td>{{ team.name }}</td>
+                <td>
+                    <a href="{{ path('team_show', {'slug': team.slug}) }}">
+                        {% if team.path %}
+                            <img src="{{ vich_uploader_asset(team, 'logo') }}" width="64" height="auto" alt="Logo de l'équipe {{ team.name }}">
+                        {% endif %}
+                        <span>{{ team.name }}</span>
+                    </a>
+                </td>
+                <td><a href="{{ path('user_profile_show', {'slug': team.createdBy.slug}) }}">{{ team.createdBy.username }}</a></td>
                 <td>
                         {% for user in team.users %}
-                            {{ user.username }},
+                            <a href="{{ path('user_profile_show', {'slug': user.slug}) }}">{{ user.username }}</a>
                         {% endfor %}
+                </td>
+                <td>
+                {% if team.game is defined and not null %}
+                    {% if team.game.path %}
+                        <img src="{{ vich_uploader_asset(team.game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ team.game.name }}">
+                    {% else %}
+                        {{ team.game.name }}
+                    {% endif %}
+                {% endif %}
                 </td>
                 <td>{{ team.description }}</td>
                 <td>{{ team.public ? 'Publique' : 'Privée' }}</td>

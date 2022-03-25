@@ -32,8 +32,6 @@ class UserFixtures extends Fixture
             ->setLastname('Playz')
             ->setFirstname('Admin')
             ->setCountry('France')
-            ->setOrganization('PlayZ')
-            ->setOrganizationPosition('CEO')
             ->setDescription('Hi ! I am the CEO of playz')
         ;
         $admin->setPassword($this->userPasswordHasher->hashPassword($admin, 'test'));
@@ -49,8 +47,6 @@ class UserFixtures extends Fixture
             ->setLastname('Player')
             ->setFirstname('Player')
             ->setCountry('France')
-            ->setOrganization('PlayZ')
-            ->setOrganizationPosition('Moderator')
             ->setDescription('Hi ! I am one of the moderator of the playz team !')
         ;
         $player->setPassword($this->userPasswordHasher->hashPassword($player, 'test'));
@@ -66,8 +62,6 @@ class UserFixtures extends Fixture
             ->setLastname('Player1')
             ->setFirstname('Player1')
             ->setCountry('France')
-            ->setOrganization('PlayZ')
-            ->setOrganizationPosition('Moderator')
             ->setDescription('Hi ! I am one of the moderator of the playz team !')
         ;
         $player1->setPassword($this->userPasswordHasher->hashPassword($player1, 'test'));
