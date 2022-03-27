@@ -27,6 +27,7 @@ class UserTest extends PantherTestCase
         $pantherClient = static::createPantherClient();
         $crawler = new Crawler();
 
+        $pantherClient->takeScreenshot('screen.png');
         $crawler = $pantherClient->clickLink('Profil');
         $crawler = $pantherClient->clickLink('Modifier');
 
@@ -51,5 +52,15 @@ class UserTest extends PantherTestCase
 
         $this->assertSame(self::$baseUri.'/', $pantherClient->getCurrentURL());
         $this->assertSelectorNotExists('#logout-link');
+    }
+
+    public function testLoginAdmin()
+    {
+        $pantherClient = static::createAdditionalPantherClient();
+        $pantherClient->request('GET', '/login');
+        $pantherClient->submitForm('Sign in', ['email' => 'admin.test@playz.com', 'password' => 'test']);
+        $crawler = new Crawler();
+
+        $this->assertSame(self::$baseUri.'/admin/', $pantherClient->getCurrentURL());
     }
 }
