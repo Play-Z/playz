@@ -116,5 +116,27 @@ class UserFixtures extends Fixture
         $this->setReference(self::USER_ARBITER, $arbiter);
 
         $manager->flush();
+
+        $testUser = (new User())
+            ->setUsername('Testuser')
+            ->setEmail('user.test@playz.com')
+            ->setRoles(['ROLE_USER'])
+            ->setIsVerified(true)
+        ;
+        $testUser->setPassword($this->userPasswordHasher->hashPassword($testUser, 'test'));
+        $manager->persist($testUser);
+
+        $manager->flush();
+
+        $adminTest = (new User())
+            ->setUsername('TestAdmin')
+            ->setEmail('admin.test@playz.com')
+            ->setRoles(['ROLE_ADMIN'])
+            ->setIsVerified(true)
+        ;
+        $adminTest->setPassword($this->userPasswordHasher->hashPassword($adminTest, 'test'));
+        $manager->persist($adminTest);
+
+        $manager->flush();
     }
 }

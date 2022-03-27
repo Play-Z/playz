@@ -2,36 +2,54 @@
 
 namespace App\Tests;
 
-use App\Repository\UserRepository;
+use Symfony\Component\Panther\DomCrawler\Crawler;
 use Symfony\Component\Panther\PantherTestCase;
 
 class UserTest extends PantherTestCase
 {
 
-    public function testLogin()
+    public function testLoginUser()
     {
         $pantherClient = static::createPantherClient();
         $pantherClient->request('GET', '/login');
-        $pantherClient->submitForm('Sign in', ['email' => 'player@playz.com', 'password' => 'test']);
+        $pantherClient->submitForm('Sign in', ['email' => 'user.test@playz.com', 'password' => 'test']);
+        $crawler = new Crawler();
 
-        $this->assertSame(self::$baseUri.'/', $pantherClient->getCurrentURL());
+        $this->assertSame(self::$baseUri.'/play/', $pantherClient->getCurrentURL());
+        $this->assertSelectorExists('#logout-link');
     }
 
-    public function testLogout()
-    {
-        $pantherClient = static::createPantherClient();
-        $pantherClient->request('GET', '/login');
-        $pantherClient->submitForm('Sign in', ['email' => 'player@playz.com', 'password' => 'test']);
-
-        $this->assertSame(self::$baseUri.'/', $pantherClient->getCurrentURL());
-    }
-
+    /**
+     * @depends testLoginUser
+     */
     public function testEditProfile()
     {
         $pantherClient = static::createPantherClient();
-        $pantherClient->request('GET', '/login');
-        $pantherClient->submitForm('Sign in', ['email' => 'player@playz.com', 'password' => 'test']);
+        $crawler = new Crawler();
 
-        $this->assertSame(self::$baseUri.'/play/user/player/edit', $pantherClient->getCurrentURL());
+        $crawler = $pantherClient->clickLink('Profil');
+        $crawler = $pantherClient->clickLink('Modifier');
+
+        $pantherClient->submitForm('Sauvegarder', ['user_profile[firstname]' => 'Test', 'user_profile[lastname]' => 'Test', 'user_profile[description]' => 'Hello World !']);
+
+        $this->assertSame(self::$baseUri.'/play/user/testuser', $pantherClient->getCurrentURL());
+        $this->assertSelectorTextContains('#user-lastname', 'Test');
+        $this->assertSelectorTextContains('#user-firstname', 'Test');
+        $this->assertSelectorTextContains('#user-description', 'Hello World !');
+    }
+
+    /**
+     * @depends testLoginUser
+     */
+    public function testLogout()
+    {
+        $pantherClient = static::createPantherClient();
+        $pantherClient->request('GET', '/');
+        $crawler = new Crawler();
+
+        $crawler = $pantherClient->clickLink('Se deconnecter');
+
+        $this->assertSame(self::$baseUri.'/', $pantherClient->getCurrentURL());
+        $this->assertSelectorNotExists('#logout-link');
     }
 }
