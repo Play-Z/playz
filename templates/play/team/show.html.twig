@@ -70,6 +70,48 @@
                 <th>Description</th>
                 <td>{{ team.description }}</td>
             </tr>
+            <tr>
+                <th>Réseaux sociaux</th>
+                <td>
+                    <ul style="display: inline-block;">
+                        {% if team.twitterUsername %}
+                            <li style="display: inline-block; height: 32px; width: 32px;">
+                                <a href="https://twitter.com/{{ team.twitterUsername }}">
+                                    <img src="/images/social-media/twitter/logo-blue.svg" alt="Logo twitter" />
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if team.twitchUsername %}
+                            <li style="display: inline-block; height: 32px; width: 32px;">
+                                <a href="https://www.twitch.tv/{{ team.twitchUsername }}">
+                                    <img src="/images/social-media/twitch/TwitchGlitchPurple.svg" alt="Logo twitch" />
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if team.redditUsername %}
+                            <li style="display: inline-block; height: 32px; width: 32px;">
+                                <a href="https://www.reddit.com/user/{{ team.redditUsername }}">
+                                    <img src="/images/social-media/reddit/Reddit_Mark_OnWhite.png" alt="Logo reddit" />
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if team.discordServerToken %}
+                            <li style="display: inline-block; height: 32px; width: 32px;">
+                                <a href="https://discord.gg/{{ team.discordServerToken }}">
+                                    <img src="/images/social-media/discord/Discord-Logo-Color.svg" alt="Logo discord" />
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if team.youtubeUsername %}
+                            <li style="display: inline-block; height: 32px; width: 32px;">
+                                <a href="https://www.youtube.com/c/{{ team.youtubeUsername }}">
+                                    <img src="/images/social-media/youtube/youtube_social_icon_red.png" alt="Logo youtube" />
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </td>
+            </tr>
         </tbody>
     </table>
 

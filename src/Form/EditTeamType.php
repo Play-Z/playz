@@ -7,6 +7,7 @@ use App\Entity\Team;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -46,6 +47,17 @@ class EditTeamType extends AbstractType
             ])
             ->add('description')
             ->add('logo')
+            ->add('twitterUsername')
+            ->add('twitchUsername')
+            ->add('RedditUsername')
+            ->add('youtubeUsername', TextType::class, [
+                'label' => "Le nom contenu dans l'url personnalisée de votre chaine youtube (youtube.com/c/YouTubeCreators)",
+                'attr' => [
+                    'placeholder' => "YoutubeCreators"
+                ]
+            ])
+            ->add('discordServerToken')
+            ->add('discordServerToken')
         ;
     }
 
