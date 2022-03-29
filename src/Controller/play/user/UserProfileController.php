@@ -41,7 +41,7 @@ class UserProfileController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('user_profile_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('user_profile_show', ['slug' => $user->getSlug()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('play/user/edit.html.twig', [

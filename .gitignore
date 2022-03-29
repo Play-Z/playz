@@ -31,9 +31,6 @@ npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
-!public/
-public/*
-!public/uploads/
 public/uploads/*
 !public/uploads/images/
 public/uploads/images/*
