@@ -9,9 +9,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\CallbackTransformer;
 
 class UserType extends AbstractType
 {
@@ -19,18 +21,8 @@ class UserType extends AbstractType
     {
 
         $hidePsw = $options["hidePsw"];
-        $builder
-            ->add('username')
-            ->add('firstname')
-            ->add('lastname')
-            ->add('country')
-            ->add('organization')
-            ->add('organizationPosition')
-            ->add('description', TextType::class)
-            ->add('email')
-            ;
-        //hide password on the edit
-        if($hidePsw !== "update"){
+         //hide password on the edit
+         if($hidePsw !== "update"){
 
             $builder->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
@@ -49,6 +41,17 @@ class UserType extends AbstractType
                     ]),
                 ],
             ])
+        ;
+        }
+        $builder
+            ->add('username')
+            ->add('firstname')
+            ->add('lastname')
+            ->add('country')
+            ->add('organization')
+            ->add('organizationPosition')
+            ->add('description', TextType::class)
+            ->add('email')
             ->add('roles', ChoiceType::class, [
                 'required' => true,
                 'multiple' => false,
@@ -58,9 +61,11 @@ class UserType extends AbstractType
                     'Modérateur' => 'ROLE_TEAM_MANAGER',
                     'Créateur' => 'ROLE_TEAM_CREATOR',
                 ],
-            ]);
+                'label' => 'Role :'
+            ])
+        ;
             
-            $builder->get('roles')
+        $builder->get('roles')
             ->addModelTransformer(new CallbackTransformer(
                 function ($rolesArray) {
                     // transform the array to a string
@@ -70,12 +75,10 @@ class UserType extends AbstractType
                     // transform the string back to an array
                     return [$rolesString];
                 }
-            ));
-            
-//            ->add('isVerified')
-//            ->add('teams')
+            ))
         ;
-        }
+
+       
     }
 
     public function configureOptions(OptionsResolver $resolver): void
