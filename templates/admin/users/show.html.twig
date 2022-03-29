@@ -8,10 +8,6 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
                 <th>Email</th>
                 <td>{{ user.email }}</td>
             </tr>
@@ -19,18 +15,36 @@
                 <th>Username</th>
                 <td>{{ user.username }}</td>
             </tr>
-{#            <tr>#}
-{#                <th>Roles</th>#}
-{#                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Password</th>#}
-{#                <td>{{ user.password }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>IsVerified</th>#}
-{#                <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>#}
-{#            </tr>#}
+            <tr>
+                <th>Nom</th>
+                <td>{{ user.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Prénom</th>
+                <td>{{ user.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Rôle</th>
+                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>Pays</th>
+                <td>{{ user.country }}</td>
+            </tr>
+            <tr>
+                <th>Organisation</th>
+                <td>{{ user.organization }}</td>
+            </tr>
+            <tr>
+                <th>Position Organisation</th>
+                <td>{{ user.organizationPosition }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ user.description }}</td>
+            </tr>
+
+
         </tbody>
     </table>
 

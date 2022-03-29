@@ -8,32 +8,26 @@
     <table class="table">
         <thead>
         <tr>
-            {# <th>Id</th> #}
             <th>Email</th>
             <th>Surnom</th>
             <th>Prénom</th>
             <th>Nom</th>
             <th>Roles</th>
-{#            <th>Password</th>#}
-{#            <th>IsVerified</th>#}
-{#            <th>actions</th>#}
         </tr>
         </thead>
         <tbody>
         {% for user in users %}
             <tr>
-                {# <td>{{ user.id }}</td> #}
                 <td>{{ user.email }}</td>
                 <td>{{ user.username }}</td>
                 <td>{{ user.firstname }}</td>
                 <td>{{ user.lastname }}</td>
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-
                 {#              <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>#}
-                              {# <td>{{ user.password }}</td> #}
                 <td>
                     <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('users_show', {'id': user.id}) }}">Afficher</a>
                     <a class="text-red-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('users_edit', {'id': user.id}) }}">Modifier</a>
+                    
                 </td>
             </tr>
         {% else %}
