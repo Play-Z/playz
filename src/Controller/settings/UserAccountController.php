@@ -55,15 +55,19 @@ class UserAccountController extends AbstractController
         ]);
     }
 
-    #[Route('/close', name: 'user_account_delete', methods: ['POST'])]
-    public function delete(Request $request, User $user): Response
+    #[Route('/close', name: 'user_account_close', methods: ['GET'])]
+    public function delete(): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($user);
-            $entityManager->flush();
-        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        $user->setIsClosed(true);
+        $entityManager->flush();
 
-        return $this->redirectToRoute('user_account_index', [], Response::HTTP_SEE_OTHER);
+        $this->addFlash(
+            'success',
+            "Votre compte sera désactiver dès que vous vous déconnecterez ! Vous pouvez à tout moment vous reconnecter pour le réactivé."
+        );
+
+        return $this->redirectToRoute('user_account', [], Response::HTTP_SEE_OTHER);
     }
 }

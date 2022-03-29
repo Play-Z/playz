@@ -19,10 +19,11 @@ class UserProfileController extends AbstractController
     public function index(UserRepository $userRepository)
     {
         return $this->render('play/user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $userRepository->findBy(['isClosed' => false]),
         ]);
     }
 
+    #[IsGranted(UserProfileVoter::VIEW, 'user')]
     #[Route('/{slug}', name: 'user_profile_show', methods: ['GET'])]
     public function show(User $user): Response
     {
