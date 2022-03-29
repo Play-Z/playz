@@ -2,16 +2,19 @@
 
 namespace App\Form;
 
+use App\Entity\Game;
 use App\Entity\Team;
 use App\Repository\UserRelationRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class TeamType extends AbstractType
+class CreateTeamType extends AbstractType
 {
     private $userRelationRepository;
     private $security;
@@ -26,7 +29,7 @@ class TeamType extends AbstractType
     {
 
         $currentUser = $this->security->getUser();
-        $friendsRelation = $this->userRelationRepository->findAllFriends($currentUser);
+        $friendsRelation = $this->userRelationRepository->findAllFriendsOfUser($currentUser);
         $friends = [];
 
         foreach ($friendsRelation as $userRelation){
@@ -39,6 +42,14 @@ class TeamType extends AbstractType
         }
 
         $builder
+            ->add('logo', VichImageType::class, [
+                'required' => false,
+                'allow_delete' => true,
+                'download_label' => true,
+                'download_uri' => true,
+                'image_uri' => true,
+                'asset_helper' => true
+            ])
             ->add('name')
             ->add('users', ChoiceType::class, [
                 // looks for choices from this entity
@@ -51,6 +62,17 @@ class TeamType extends AbstractType
                  'multiple' => true,
                  'expanded' => true,
                  'data' => $friends,
+            ])
+            ->add('game', EntityType::class, [
+                // looks for choices from this entity
+                'class' => Game::class,
+
+                // uses the User.username property as the visible option string
+                'choice_label' => 'name',
+
+                // used to render a select box, check boxes or radios
+                'multiple' => false,
+                'expanded' => false,
             ])
             ->add('public')
             ->add('emplacement', IntegerType::class, [

@@ -3,14 +3,26 @@
 namespace App\Security\Voter;
 
 use App\Entity\User;
+use App\Service\SecurityService;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserProfileVoter extends Voter
 {
     const EDIT = 'edit';
     const VIEW = 'view';
+
+    private $security;
+    private SecurityService $securityService;
+
+
+    public function __construct(Security $security, SecurityService $securityService)
+    {
+        $this->security = $security;
+        $this->securityService = $securityService;
+    }
 
     protected function supports(string $attribute, $subject): bool
     {
@@ -25,6 +37,11 @@ class UserProfileVoter extends Voter
 
         if (!$user instanceof UserInterface) {
             return false;
+        }
+
+
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            return true;
         }
 
         $targetUser = $subject;
@@ -46,6 +63,6 @@ class UserProfileVoter extends Voter
 
     private function canEdit(User $targetUser, User $user)
     {
-        return in_array('ROLE_ADMIN', $user->getRoles()) || $user === $targetUser;
+        return $user === $targetUser;
     }
 }

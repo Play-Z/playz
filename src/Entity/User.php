@@ -8,16 +8,20 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  * @UniqueEntity(fields={"email"}, message="Il existe déjà un compte playz lié à cette adresse email.")
+ * @Vich\Uploadable
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serializable
 {
     /**
      * @ORM\Id
@@ -87,16 +91,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $timezone;
 
     /**
-     * @ORM\Column(type="string", length=40, nullable=true)
-     */
-    private $organization;
-
-    /**
-     * @ORM\Column(type="string", length=30, nullable=true)
-     */
-    private $organization_position;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $newsletter = false;
@@ -116,6 +110,105 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=UserRelation::class, mappedBy="recipient")
      */
     private $receivedUserRelations;
+
+    /**
+     * @var \DateTime $createdAt
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime $updatedAt
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     *
+     */
+    private $updatedAt;
+
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $path;
+
+    public function getPath(): ?string
+    {
+        return $this->path;
+    }
+
+    public function setPath(?string $path): self
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
+    /**
+     * @Vich\UploadableField(mapping="userImage", fileNameProperty="path")
+     *
+     * @var File $image
+     *
+     * @Assert\File(
+     *     maxSize = "2M",
+     *     mimeTypes = {"image/png", "image/jpeg"},
+     *     mimeTypesMessage = "Please upload a valid image file (png, jpg/jpeg)"
+     * )
+     */
+    private $image;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $redditUsername;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $twitchUsername;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $twitterUsername;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $discordServerToken;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $youtubeUsername;
+
+    /**
+     * @param UploadedFile $image
+     */
+    public function setImage(?File $image = null)
+    {
+        $this->image = $image;
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    /**
+     * @return UploadedFile
+     */
+    public function getImage(): ?File
+    {
+        return $this->image;
+    }
 
     public function __construct()
     {
@@ -191,7 +284,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
-
         return $this;
     }
 
@@ -309,30 +401,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getOrganization(): ?string
-    {
-        return $this->organization;
-    }
-
-    public function setOrganization(?string $organization): self
-    {
-        $this->organization = $organization;
-
-        return $this;
-    }
-
-    public function getOrganizationPosition(): ?string
-    {
-        return $this->organization_position;
-    }
-
-    public function setOrganizationPosition(?string $organization_position): self
-    {
-        $this->organization_position = $organization_position;
-
-        return $this;
-    }
-
     public function getNewsletter(): ?bool
     {
         return $this->newsletter;
@@ -352,7 +420,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setTeam(?Team $team): self
     {
-        $team->setCreatedBy($this);
         $this->team = $team;
 
         return $this;
@@ -414,6 +481,84 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $receivedUserRelation->setRecipient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->email,
+            $this->password,
+        ));
+    }
+
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->email,
+            $this->password,
+            ) = unserialize($serialized);
+    }
+
+    public function getRedditUsername(): ?string
+    {
+        return $this->redditUsername;
+    }
+
+    public function setRedditUsername(?string $redditUsername): self
+    {
+        $this->redditUsername = $redditUsername;
+
+        return $this;
+    }
+
+    public function getTwitchUsername(): ?string
+    {
+        return $this->twitchUsername;
+    }
+
+    public function setTwitchUsername(?string $twitchUsername): self
+    {
+        $this->twitchUsername = $twitchUsername;
+
+        return $this;
+    }
+
+    public function getTwitterUsername(): ?string
+    {
+        return $this->twitterUsername;
+    }
+
+    public function setTwitterUsername(?string $twitterUsername): self
+    {
+        $this->twitterUsername = $twitterUsername;
+
+        return $this;
+    }
+
+    public function getDiscordServerToken(): ?string
+    {
+        return $this->discordServerToken;
+    }
+
+    public function setDiscordServerToken(?string $discordServerToken): self
+    {
+        $this->discordServerToken = $discordServerToken;
+
+        return $this;
+    }
+
+    public function getYoutubeUsername(): ?string
+    {
+        return $this->youtubeUsername;
+    }
+
+    public function setYoutubeUsername(?string $youtubeUsername): self
+    {
+        $this->youtubeUsername = $youtubeUsername;
 
         return $this;
     }

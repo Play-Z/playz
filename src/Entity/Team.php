@@ -9,11 +9,15 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=TeamRepository::class)
  * @UniqueEntity(fields={"name"}, message="Il existe déjà une équipe portant ce nom dans playz.")
+ * @Vich\Uploadable
  */
 class Team
 {
@@ -47,11 +51,6 @@ class Team
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $logo;
 
     /**
      * @ORM\Column(type="boolean")
@@ -95,6 +94,92 @@ class Team
      * @ORM\Column(type="integer")
      */
     private $emplacement = 10;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $path;
+
+    public function getPath(): ?string
+    {
+        return $this->path;
+    }
+
+    public function setPath(?string $path): self
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
+    /**
+     * @Vich\UploadableField(mapping="teamLogo", fileNameProperty="path")
+     * @Assert\File(
+     *     maxSize = "2M",
+     *     mimeTypes = {"image/png"},
+     *     mimeTypesMessage = "Please upload a valid image file (png)"
+     * )
+     *
+     * @var File $logo
+     */
+    private $logo;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Game::class, inversedBy="teams")
+     */
+    private $games;
+
+    /**
+     * @ORM\Column(type="string", length=40, nullable=true)
+     */
+    private $location;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Game::class, inversedBy="teams")
+     */
+    private $game;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $redditUsername;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $twitchUsername;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $twitterUsername;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $discordServerToken;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $youtubeUsername;
+
+    /**
+     * @param UploadedFile $logo
+     */
+    public function setLogo(?File $logo = null)
+    {
+        $this->logo = $logo;
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    /**
+     * @return UploadedFile
+     */
+    public function getLogo(): ?File
+    {
+        return $this->logo;
+    }
 
     public function __construct()
     {
@@ -145,18 +230,6 @@ class Team
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getLogo(): ?string
-    {
-        return $this->logo;
-    }
-
-    public function setLogo(?string $logo): self
-    {
-        $this->logo = $logo;
 
         return $this;
     }
@@ -259,6 +332,10 @@ class Team
      */
     public function setCreatedBy(User $createdBy): self
     {
+        if (!in_array('ROLE_ADMIN',$createdBy->getRoles())){
+            $createdBy->setRoles((array('ROLE_TEAM_CREATOR')));
+        }
+        $createdBy->setTeam($this);
         $this->createdBy = $createdBy;
         return $this;
     }
@@ -289,6 +366,90 @@ class Team
     public function setEmplacement(int $emplacement): self
     {
         $this->emplacement = $emplacement;
+
+        return $this;
+    }
+
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?string $location): self
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    public function getGame(): ?Game
+    {
+        return $this->game;
+    }
+
+    public function setGame(?Game $game): self
+    {
+        $this->game = $game;
+
+        return $this;
+    }
+
+    public function getRedditUsername(): ?string
+    {
+        return $this->redditUsername;
+    }
+
+    public function setRedditUsername(?string $redditUsername): self
+    {
+        $this->redditUsername = $redditUsername;
+
+        return $this;
+    }
+
+    public function getTwitchUsername(): ?string
+    {
+        return $this->twitchUsername;
+    }
+
+    public function setTwitchUsername(?string $twitchUsername): self
+    {
+        $this->twitchUsername = $twitchUsername;
+
+        return $this;
+    }
+
+    public function getTwitterUsername(): ?string
+    {
+        return $this->twitterUsername;
+    }
+
+    public function setTwitterUsername(?string $twitterUsername): self
+    {
+        $this->twitterUsername = $twitterUsername;
+
+        return $this;
+    }
+
+    public function getDiscordServerToken(): ?string
+    {
+        return $this->discordServerToken;
+    }
+
+    public function setDiscordServerToken(?string $discordServerToken): self
+    {
+        $this->discordServerToken = $discordServerToken;
+
+        return $this;
+    }
+
+    public function getYoutubeUsername(): ?string
+    {
+        return $this->youtubeUsername;
+    }
+
+    public function setYoutubeUsername(?string $youtubeUsername): self
+    {
+        $this->youtubeUsername = $youtubeUsername;
 
         return $this;
     }

@@ -14,6 +14,8 @@ RUN apt-get update && \
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
+COPY custom-dev.ini /usr/local/etc/php/conf.d/custom.ini
+
 WORKDIR /var/www
 
 CMD composer i -o ; wait-for-it db:5432 -- bin/console doctrine:migrations:migrate ;  php-fpm

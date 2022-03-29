@@ -5,7 +5,7 @@ namespace App\Controller\settings;
 use App\Entity\User;
 use App\Form\ChangeEmailType;
 use App\Form\ChangePasswordFormType;
-use App\Form\UserType;
+use App\Form\UserProfileType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +14,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
-#[Route('/account', name: 'user_account', methods: ['GET'])]
+#[Route('/account')]
 class UserAccountController extends AbstractController
 {
     #[Route('/', name: 'user_account', methods: ['GET','POST'])]
@@ -47,7 +47,6 @@ class UserAccountController extends AbstractController
                 }
             }
         }
-
 
         return $this->render('settings/account/account.html.twig', [
             'user' => $user->getSlug(),

@@ -3,12 +3,13 @@
 namespace App\Entity;
 
 use App\Entity\Traits\BlameableTrait;
-use App\Entity\Traits\VichUploadTrait;
 use App\Repository\GameRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -18,7 +19,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 class Game
 {
-    use VichUploadTrait;
     use BlameableTrait;
 
     /**
@@ -75,9 +75,67 @@ class Game
      */
     private $tournaments;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $path;
+
+    public function getPath(): ?string
+    {
+        return $this->path;
+    }
+
+    public function setPath(?string $path): self
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
+    /**
+     * @Vich\UploadableField(mapping="gameLogo", fileNameProperty="path")
+     *
+     * @Assert\File(
+     *     maxSize = "2M",
+     *     mimeTypes = {"image/png"},
+     *     mimeTypesMessage = "Please upload a valid image file (png)"
+     * )
+     *
+     * @var File $logo
+     */
+    private $logo;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Team::class, mappedBy="game")
+     */
+    private $teams;
+
+    /**
+     * @param UploadedFile $logo
+     */
+    public function setLogo(?File $logo = null)
+    {
+        $this->logo = $logo;
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    /**
+     * @return UploadedFile
+     */
+    public function getLogo(): ?File
+    {
+        return $this->logo;
+    }
+
     public function __construct()
     {
         $this->tournaments = new ArrayCollection();
+        $this->teams = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getName(): ?string
@@ -156,6 +214,36 @@ class Game
             // set the owning side to null (unless already changed)
             if ($tournament->getGame() === $this) {
                 $tournament->setGame(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Team[]
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(Team $team): self
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+            $team->setGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): self
+    {
+        if ($this->teams->removeElement($team)) {
+            // set the owning side to null (unless already changed)
+            if ($team->getGame() === $this) {
+                $team->setGame(null);
             }
         }
 

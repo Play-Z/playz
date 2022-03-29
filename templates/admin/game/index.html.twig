@@ -16,7 +16,11 @@
         <tbody>
         {% for game in games %}
             <tr>
-                <td><img src="{{ game.imageFile }}" width="64" height="auto" alt="Logo de {{ game.name }}"></td>
+                {% if game.path %}
+                    <td><img src="{{ vich_uploader_asset(game, 'logo') }}" width="64" height="auto" alt="Logo de {{ game.name }}"></td>
+                {% else %}
+                    <td>Pas de logo</td>
+                {% endif %}
                 <td>{{ game.name }}</td>
                 <td>{{ game.description }}</td>
                 <td>

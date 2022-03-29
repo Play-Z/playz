@@ -9,23 +9,31 @@
         <thead>
             <tr>
                 <th>Username</th>
-                <th>Organisation</th>
-                <th>Position</th>
                 <th>Pays</th>
                 <th>Equipe</th>
+                <th>Jeu</th>
             </tr>
         </thead>
         <tbody>
         {% for user in users %}
             <tr>
-                <td>{{ user.username }}</td>
-                <td>{{ user.organization }}</td>
-                <td>{{ user.organizationPosition }}</td>
+                <td><a href="{{ path('user_profile_show', {'slug': user.slug}) }}">{{ user.username }}</a></td>
                 <td>{{ user.country }}</td>
                 {% if user.team %}
                     <td>{{ user.team.name }}</td>
                 {% else %}
                     <td>Sans équipe</td>
+                {% endif %}
+                {% if user.team is defined and not null and user.team.game is defined and not null  %}
+                    <td>
+                        {% if user.team.game.path %}
+                            <img src="{{ vich_uploader_asset(user.team.game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ user.team.game.name }}">
+                        {% else %}
+                            {{ user.team.game.name }}
+                        {% endif %}
+                    </td>
+                {% else %}
+                    <td>Aucun jeu</td>
                 {% endif %}
                 <td>
                     <a href="{{ path('user_profile_show', {'slug': user.slug}) }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Voir</a>

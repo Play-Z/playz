@@ -37,6 +37,7 @@ services:
       retries: 3
       start_period: 30s
     volumes:
+      - ./docker/php-fpm/custom-dev.ini:/usr/local/etc/php/conf.d/custom.ini
       - ./:/var/www
       - app-cache:/var/www/var
 
@@ -62,5 +63,5 @@ services:
       - "1080:1080"
 
 volumes:
-  db-data: {}
-  app-cache: {}
+  db-data:
+  app-cache:

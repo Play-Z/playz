@@ -8,15 +8,34 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Logo</th>
-                <td>{{ team.logo }}</td>
+                {% if team.path %}
+                    <th>Logo</th>
+                    <td><img src="{{ vich_uploader_asset(team, 'logo') }}" width="64" height="auto" alt="Logo de l'équipe {{ team.name }}"></td>
+                {% else %}
+                    <th>Logo</th>
+                    <td>Pas de logo</td>
+                {% endif %}
             </tr>
             <tr>
                 <th>Name</th>
                 <td>{{ team.name }}</td>
             </tr>
+            {% if team.games is defined and not null %}
+                <tr>
+                    <th>Jeux</th>
+                    <td>
+                        {% for game in team.games %}
+                            {% if game.path %}
+                                <img src="{{ vich_uploader_asset(game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ game.name }}">
+                            {% else %}
+                                {{ game.name }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endif %}
             <tr>
-                <th>IsVerified</th>
+                <th>Equipe esport officielle</th>
                 <td>{{ team.isVerified ? 'Oui' : 'Non' }}</td>
             </tr>
             <tr>
@@ -24,30 +43,98 @@
                 <td>{{ team.public ? 'Publique' : 'Privée' }}</td>
             </tr>
             <tr>
+                <th>Créateur</th>
+                <td><a href="{{ path('user_profile_show', {'slug': team.createdBy.slug}) }}">{{ team.createdBy.username }}</a></td>
+            </tr>
+            <tr>
                 <th>Membres</th>
                 <td>
                     {% for user in team.users %}
-                        {{ user.username }},
+                        <a href="{{ path('user_profile_show', {'slug': user.slug}) }}">{{ user.username }} </a>
                     {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <th>Jeu</th>
+                <td>
+                {% if team.game is defined and not null %}
+                    {% if team.game.path %}
+                        <img src="{{ vich_uploader_asset(team.game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ team.game.name }}">
+                    {% else %}
+                        {{ team.game.name }}
+                    {% endif %}
+                {% endif %}
                 </td>
             </tr>
             <tr>
                 <th>Description</th>
                 <td>{{ team.description }}</td>
             </tr>
+            <tr>
+                <th>Réseaux sociaux</th>
+                <td>
+                    <ul style="display: inline-block;">
+                        {% if team.twitterUsername %}
+                            <li style="display: inline-block; height: 32px; width: 32px;">
+                                <a href="https://twitter.com/{{ team.twitterUsername }}">
+                                    <img src="/images/social-media/twitter/logo-blue.svg" alt="Logo twitter" />
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if team.twitchUsername %}
+                            <li style="display: inline-block; height: 32px; width: 32px;">
+                                <a href="https://www.twitch.tv/{{ team.twitchUsername }}">
+                                    <img src="/images/social-media/twitch/TwitchGlitchPurple.svg" alt="Logo twitch" />
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if team.redditUsername %}
+                            <li style="display: inline-block; height: 32px; width: 32px;">
+                                <a href="https://www.reddit.com/user/{{ team.redditUsername }}">
+                                    <img src="/images/social-media/reddit/Reddit_Mark_OnWhite.png" alt="Logo reddit" />
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if team.discordServerToken %}
+                            <li style="display: inline-block; height: 32px; width: 32px;">
+                                <a href="https://discord.gg/{{ team.discordServerToken }}">
+                                    <img src="/images/social-media/discord/Discord-Logo-Color.svg" alt="Logo discord" />
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if team.youtubeUsername %}
+                            <li style="display: inline-block; height: 32px; width: 32px;">
+                                <a href="https://www.youtube.com/c/{{ team.youtubeUsername }}">
+                                    <img src="/images/social-media/youtube/youtube_social_icon_red.png" alt="Logo youtube" />
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </td>
+            </tr>
         </tbody>
     </table>
 
     <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_index') }}">Retour</a>
 
-    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+    {% if is_granted('ROLE_USER') %}
         {% if app.user.team is null and team.public %}
             <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_join', {'slug': team.slug}) }}">Rejoindre</a>
         {% endif %}
     {% endif %}
 
     {% if is_granted('edit', team) %}
-    <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_edit', {'slug': team.slug}) }}">Modifier</a>
+    <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_edit', {'slug': team.slug}) }}">Modifier l'équipe</a>
+    {% endif %}
+
+    {% if is_granted('ROLE_TEAM_MANAGER') %}
+        <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_member_index', {'slug': team.slug}) }}">Modifier les membres de l'équipe</a>
+    {% endif %}
+
+    {% if is_granted('ROLE_USER') %}
+        {% if app.user.team == team %}
+            <a class="btn text-red-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_leave', {'slug': team.slug}) }}">Quitter l'équipe</a>
+        {% endif %}
     {% endif %}
 
     {% if is_granted('delete', team) %}
