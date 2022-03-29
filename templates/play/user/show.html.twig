@@ -97,6 +97,48 @@
                 <th>Pays</th>
                 <td>{{ user.country }}</td>
             </tr>
+            <tr>
+                <th>Réseaux sociaux</th>
+                <td>
+                    <ul style="display: inline-block;">
+                        {% if user.twitterUsername %}
+                            <li style="display: inline-block; height: 32px; width: 32px;">
+                                <a href="https://twitter.com/{{ user.twitterUsername }}">
+                                    <img src="/images/social-media/twitter/logo-blue.svg" alt="Logo twitter" />
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if user.twitchUsername %}
+                            <li style="display: inline-block; height: 32px; width: 32px;">
+                                <a href="https://www.twitch.tv/{{ user.twitchUsername }}">
+                                    <img src="/images/social-media/twitch/TwitchGlitchPurple.svg" alt="Logo twitch" />
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if user.redditUsername %}
+                            <li style="display: inline-block; height: 32px; width: 32px;">
+                                <a href="https://www.reddit.com/user/{{ user.redditUsername }}">
+                                    <img src="/images/social-media/reddit/Reddit_Mark_OnWhite.png" alt="Logo reddit" />
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if user.discordServerToken %}
+                            <li style="display: inline-block; height: 32px; width: 32px;">
+                                <a href="https://discord.gg/{{ user.discordServerToken }}">
+                                    <img src="/images/social-media/discord/Discord-Logo-Color.svg" alt="Logo discord" />
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if user.youtubeUsername %}
+                            <li style="display: inline-block; height: 32px; width: 32px;">
+                                <a href="https://www.youtube.com/c/{{ user.youtubeUsername }}">
+                                    <img src="/images/social-media/youtube/youtube_social_icon_red.png" alt="Logo youtube" />
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </td>
+            </tr>
         </tbody>
     </table>
 

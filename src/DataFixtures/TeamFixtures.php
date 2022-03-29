@@ -52,7 +52,11 @@ class TeamFixtures extends Fixture implements DependentFixtureInterface
                             'firstname' => $player['first_name'],
                             'lastname' => $player['last_name'],
                             'country' => $player['nationality'],
-                            'roles' => ['ROLE_TEAM_MEMBER']
+                            'roles' => ['ROLE_TEAM_MEMBER'],
+                            'redditUsername' => strtolower(str_replace(' ', '-', $player['name'])),
+                            'twitchUsername' => strtolower(str_replace(' ', '-', $player['name'])),
+                            'twitterUsername' => strtolower(str_replace(' ', '-', $player['name'])),
+                            'youtubeUsername' => strtolower(str_replace(' ', '-', $player['name'])),
                         ]
                     );
 
@@ -71,13 +75,21 @@ class TeamFixtures extends Fixture implements DependentFixtureInterface
                                     'firstname' => $players[0]['first_name'],
                                     'lastname' => $players[0]['last_name'],
                                     'country' => $players[0]['nationality'],
+                                    'redditUsername' => strtolower(str_replace(' ', '-', $players[0]['name'])),
+                                    'twitchUsername' => strtolower(str_replace(' ', '-', $players[0]['name'])),
+                                    'twitterUsername' => strtolower(str_replace(' ', '-', $players[0]['name'])),
+                                    'youtubeUsername' => strtolower(str_replace(' ', '-', $players[0]['name'])),
                                 ]),
                         'game' => GameFactory::find(
                             [
                                 'slug' => $data[$i]['current_videogame']['slug']
                             ]
                         ),
-                        'users' => $users//UserFactory::randomRange($playerNumber-1, $playerNumber-1)
+                        'users' => $users,
+                        'redditUsername' =>  strtolower(str_replace(' ', '-', $data[$i]['name'])),
+                        'twitchUsername' => strtolower(str_replace(' ', '-', $data[$i]['name'])),
+                        'twitterUsername' => strtolower(str_replace(' ', '-', $data[$i]['name'])),
+                        'youtubeUsername' => strtolower(str_replace(' ', '-', $data[$i]['name'])),
                     ]);
                 $manager->flush();
             }

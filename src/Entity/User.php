@@ -169,6 +169,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     private $image;
 
     /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $redditUsername;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $twitchUsername;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $twitterUsername;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $discordServerToken;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $youtubeUsername;
+
+    /**
      * @param UploadedFile $image
      */
     public function setImage(?File $image = null)
@@ -476,5 +501,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
             $this->email,
             $this->password,
             ) = unserialize($serialized);
+    }
+
+    public function getRedditUsername(): ?string
+    {
+        return $this->redditUsername;
+    }
+
+    public function setRedditUsername(?string $redditUsername): self
+    {
+        $this->redditUsername = $redditUsername;
+
+        return $this;
+    }
+
+    public function getTwitchUsername(): ?string
+    {
+        return $this->twitchUsername;
+    }
+
+    public function setTwitchUsername(?string $twitchUsername): self
+    {
+        $this->twitchUsername = $twitchUsername;
+
+        return $this;
+    }
+
+    public function getTwitterUsername(): ?string
+    {
+        return $this->twitterUsername;
+    }
+
+    public function setTwitterUsername(?string $twitterUsername): self
+    {
+        $this->twitterUsername = $twitterUsername;
+
+        return $this;
+    }
+
+    public function getDiscordServerToken(): ?string
+    {
+        return $this->discordServerToken;
+    }
+
+    public function setDiscordServerToken(?string $discordServerToken): self
+    {
+        $this->discordServerToken = $discordServerToken;
+
+        return $this;
+    }
+
+    public function getYoutubeUsername(): ?string
+    {
+        return $this->youtubeUsername;
+    }
+
+    public function setYoutubeUsername(?string $youtubeUsername): self
+    {
+        $this->youtubeUsername = $youtubeUsername;
+
+        return $this;
     }
 }

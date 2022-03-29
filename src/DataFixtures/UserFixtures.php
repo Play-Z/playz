@@ -33,6 +33,11 @@ class UserFixtures extends Fixture
             ->setFirstname('Admin')
             ->setCountry('France')
             ->setDescription('Hi ! I am the CEO of playz')
+            ->setRedditUsername('playz')
+            ->setTwitchUsername('playz')
+            ->setTwitterUsername('playz')
+            ->setDiscordServerToken('aWZEtUHvp4')
+            ->setYoutubeUsername('playzrtve')
         ;
         $admin->setPassword($this->userPasswordHasher->hashPassword($admin, 'test'));
         $manager->persist($admin);
@@ -48,6 +53,11 @@ class UserFixtures extends Fixture
             ->setFirstname('Player')
             ->setCountry('France')
             ->setDescription('Hi ! I am one of the moderator of the playz team !')
+            ->setRedditUsername('playz')
+            ->setTwitchUsername('playz')
+            ->setTwitterUsername('playz')
+            ->setDiscordServerToken('aWZEtUHvp4')
+            ->setYoutubeUsername('playzrtve')
         ;
         $player->setPassword($this->userPasswordHasher->hashPassword($player, 'test'));
         $manager->persist($player);
@@ -63,6 +73,11 @@ class UserFixtures extends Fixture
             ->setFirstname('Player1')
             ->setCountry('France')
             ->setDescription('Hi ! I am one of the moderator of the playz team !')
+            ->setRedditUsername('playz')
+            ->setTwitchUsername('playz')
+            ->setTwitterUsername('playz')
+            ->setDiscordServerToken('aWZEtUHvp4')
+            ->setYoutubeUsername('playzrtve')
         ;
         $player1->setPassword($this->userPasswordHasher->hashPassword($player1, 'test'));
         $manager->persist($player1);

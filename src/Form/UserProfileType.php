@@ -2,16 +2,11 @@
 
 namespace App\Form;
 
-use App\Entity\Game;
 use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Validator\Constraints\Image;
-use Vich\UploaderBundle\Form\Type\VichFileType;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class UserProfileType extends AbstractType
@@ -32,6 +27,16 @@ class UserProfileType extends AbstractType
             ->add('lastname')
             ->add('country')
             ->add('description', TextType::class)
+            ->add('twitterUsername')
+            ->add('twitchUsername')
+            ->add('redditUsername')
+            ->add('youtubeUsername', TextType::class, [
+                'label' => "Le nom contenu dans l'url personnalisée de votre chaine youtube (youtube.com/c/YouTubeCreators)",
+                'attr' => [
+                    'placeholder' => "YoutubeCreators"
+                ]
+            ])
+            ->add('discordServerToken')
         ;
     }
 
