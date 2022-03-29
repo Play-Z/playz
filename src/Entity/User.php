@@ -223,6 +223,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     private $youtubeUsername;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isClosed = false;
+
+    /**
      * @param UploadedFile $image
      */
     public function setImage(?File $image = null)
@@ -588,6 +593,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     public function setYoutubeUsername(?string $youtubeUsername): self
     {
         $this->youtubeUsername = $youtubeUsername;
+
+        return $this;
+    }
+
+    public function getIsClosed(): ?bool
+    {
+        return $this->isClosed;
+    }
+
+    public function setIsClosed(bool $isClosed): self
+    {
+        $this->isClosed = $isClosed;
 
         return $this;
     }
