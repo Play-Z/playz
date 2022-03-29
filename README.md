@@ -1,4 +1,4 @@
-git# PlayZ
+# PlayZ
 #### *the playz to play*
 
 ## Table of Contents
