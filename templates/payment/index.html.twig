@@ -15,32 +15,38 @@
 <div class="example-wrapper">
 
     <!-- Set up a container element for the button -->
-    <div id="paypal-button-container"></div>
-    <div>Valeur de l'abonnement premium mensuel : {{ priceMonth }} €</div>
+{#    {% if not is_granted("ROLE_ADMIN")  %}#}
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED")  %}
+            <div id="paypal-button-container"></div>
+            <div>Valeur de l'abonnement premium mensuel : {{ priceMonth }} €</div>
+        {% endif %}
+{#    {% endif %}#}
 {#    <div>Valeur de l'abonnement premium annuel : {{ priceYear }} €</div>#}
+    {% set paymentSuccess = true %}
+
     <script>
         paypal.Buttons({
-
-            // Sets up the transaction when a payment button is clicked
+            // Création de la transaction
             createOrder: function(data, actions) {
                 return actions.order.create({
                     purchase_units: [{
                         amount: {
                             /* Valeur du paiement */
-                            value: {{ priceMonth }} // Can reference variables or functions. Example: `value: document.getElementById('...').value`
+                            value: {{ priceMonth }}
                         }
                     }]
                 });
             },
 
-            // Finalize the transaction after payer approval
-            onApprove: function(data, actions) {
+            // Finalisation du paiement
+            onApprove: async function(data, actions) {
                 return actions.order.capture().then(function(orderData) {
-                    // Successful capture! For dev/demo purposes:
-                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                    // console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
                     var transaction = orderData.purchase_units[0].payments.captures[0];
-                    alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
-
+                    // if (transaction.status === 'COMPLETED'){
+                        alert('{{ app.user.username }}, votre transaction a bien été effectué')
+                    // }
+                    // alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
                     // When ready to go live, remove the alert and show a success message within this page. For example:
                     // var element = document.getElementById('paypal-button-container');
                     // element.innerHTML = '';

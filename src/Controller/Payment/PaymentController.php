@@ -14,9 +14,13 @@ class PaymentController extends AbstractController
 
         $priceMonth = 15;
         $priceYear = 80;
+        $paymentSuccess = false;
+        dump($paymentSuccess);
+//        if ($paymentSuccess){}
         return $this->render('payment/index.html.twig',[
             'priceMonth' => $priceMonth,
             'priceYear' => $priceYear,
+            'Payment_successfull' => $paymentSuccess
         ]);
     }
 }
