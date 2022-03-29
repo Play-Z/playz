@@ -48,7 +48,7 @@ class UserProfileVoter extends Voter
 
         switch ($attribute) {
             case self::VIEW:
-                return $this->canView($targetUser, $user);
+                return $this->canView($targetUser);
             case self::EDIT:
                 return $this->canEdit($targetUser, $user);
         }
@@ -56,9 +56,9 @@ class UserProfileVoter extends Voter
         return false;
     }
 
-    private function canView(User $targetUser, User $user)
+    private function canView(User $targetUser)
     {
-        return $this->canEdit($targetUser, $user);
+        return $targetUser->getIsClosed() === false;
     }
 
     private function canEdit(User $targetUser, User $user)
