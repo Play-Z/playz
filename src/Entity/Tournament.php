@@ -118,6 +118,13 @@ class Tournament
     private $logo;
 
     /**
+     * @var string|null
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
+
+    /**
      * @param UploadedFile $logo
      */
     public function setLogo(?File $logo = null)
@@ -341,5 +348,12 @@ class Tournament
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
 
 }

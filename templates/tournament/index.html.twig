@@ -1,0 +1,42 @@
+{% extends 'baseTemplate/tournament-base.html.twig' %}
+
+{% set page_title = 'Tournois' %}
+
+{% block title %}Mes tournois{% endblock %}
+
+{% block content %}
+    <h1>Tournois par jeu</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Logo</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for tournament in tournaments %}
+            <tr>
+                {% if tournament.path %}
+                    <td><img src="{{ vich_uploader_asset(tournament, 'logo') }}" width="64" height="auto" alt="Logo de {{ tournament.name }}"></td>
+                {% else %}
+                    <td>Pas de logo</td>
+                {% endif %}
+                <td>{{ tournament.name }}</td>
+                <td>
+                    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('play_tournament', {'slug': tournament.slug}) }}">Afficher</a>
+                    <a href="{{ path('tournament_edit', {'slug': tournament.slug}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">Vous n'avez créer aucun tournoi</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('tournament_new') }}">Créer un tournoi</a>
+
+{% endblock %}

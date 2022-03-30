@@ -12,6 +12,8 @@ class UserFixtures extends Fixture
 {
     const USER_ADMIN = 'ADMIN';
     const USER_USER = 'USER';
+    const USER_TOURNAMENT_MANAGER = 'TOURNAMENT_MANAGER';
+    const USER_ARBITER = 'ARBITER';
 
     /** @var UserPasswordHasherInterface $userPasswordHasher */
     private $userPasswordHasher;
@@ -63,25 +65,47 @@ class UserFixtures extends Fixture
         $manager->persist($player);
         $this->setReference(self::USER_USER, $player);
 
-        $player1 = (new User())
-            ->setUsername('Player1')
-            ->setEmail('player1@playz.com')
-            ->setRoles(['ROLE_USER'])
+        $tournamentManager = (new User())
+            ->setUsername('Manager')
+            ->setEmail('tournament@playz.com')
+            ->setRoles(['ROLE_TOURNAMENT_MANAGER'])
             ->setIsVerified(true)
             ->setNewsletter(false)
-            ->setLastname('Player1')
-            ->setFirstname('Player1')
+            ->setLastname('Manager')
+            ->setFirstname('Tournament')
             ->setCountry('France')
-            ->setDescription('Hi ! I am one of the moderator of the playz team !')
+            ->setDescription('Hi ! I am one of the tournament manager of the playz team !')
             ->setRedditUsername('playz')
             ->setTwitchUsername('playz')
             ->setTwitterUsername('playz')
             ->setDiscordServerToken('aWZEtUHvp4')
             ->setYoutubeUsername('playzrtve')
         ;
-        $player1->setPassword($this->userPasswordHasher->hashPassword($player1, 'test'));
-        $manager->persist($player1);
-        $this->setReference(self::USER_USER, $player1);
+        $tournamentManager->setPassword($this->userPasswordHasher->hashPassword($tournamentManager, 'test'));
+        $manager->persist($tournamentManager);
+        $this->setReference(self::USER_TOURNAMENT_MANAGER, $tournamentManager);
+
+        $manager->flush();
+
+        $arbiter = (new User())
+            ->setUsername('Arbiter')
+            ->setEmail('arbiter@playz.com')
+            ->setRoles(['ROLE_TOURNAMENT_ARBITER'])
+            ->setIsVerified(true)
+            ->setNewsletter(false)
+            ->setLastname('Arbiter')
+            ->setFirstname('Tournament')
+            ->setCountry('France')
+            ->setDescription('Hi ! I am one of the tournament manager of the playz team !')
+            ->setRedditUsername('playz')
+            ->setTwitchUsername('playz')
+            ->setTwitterUsername('playz')
+            ->setDiscordServerToken('aWZEtUHvp4')
+            ->setYoutubeUsername('playzrtve')
+        ;
+        $arbiter->setPassword($this->userPasswordHasher->hashPassword($arbiter, 'test'));
+        $manager->persist($arbiter);
+        $this->setReference(self::USER_ARBITER, $arbiter);
 
         $manager->flush();
     }
