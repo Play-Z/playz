@@ -19,7 +19,7 @@ class UserProfileController extends AbstractController
     public function index(UserRepository $userRepository)
     {
         return $this->render('play/user/index.html.twig', [
-            'user' => $userRepository->findBy(['isClosed' => false]),
+            'users' => $userRepository->findBy(['isClosed' => false]),
         ]);
     }
 
