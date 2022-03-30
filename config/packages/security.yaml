@@ -58,4 +58,5 @@ security:
 
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
+         - { path: ^/payment, roles: ROLE_USER }
          - { path: ^/settings, roles: ROLE_USER }

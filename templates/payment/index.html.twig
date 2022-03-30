@@ -41,11 +41,12 @@
             // Finalisation du paiement
             onApprove: async function(data, actions) {
                 return actions.order.capture().then(function(orderData) {
-                    // console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
                     var transaction = orderData.purchase_units[0].payments.captures[0];
-                    // if (transaction.status === 'COMPLETED'){
-                        alert('{{ app.user.username }}, votre transaction a bien été effectué')
-                    // }
+                    console.log(transaction.id)
+                    console.log( actions)
+                    console.log(orderData.id)
+                    alert('{{ app.user.username }}, votre transaction a bien été effectué')
+                    window.location.href = `./paymentSuccess/${orderData.id}`
                     // alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
                     // When ready to go live, remove the alert and show a success message within this page. For example:
                     // var element = document.getElementById('paypal-button-container');

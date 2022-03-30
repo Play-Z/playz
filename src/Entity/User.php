@@ -321,6 +321,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
         return $this;
     }
 
+    public function addRole(string $role): self
+    {
+        if (!in_array($role, $this->getRoles())){
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
+
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
