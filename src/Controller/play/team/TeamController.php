@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\EditTeamMemberType;
 use App\Form\EditTeamType;
 use App\Form\CreateTeamType;
+use App\Repository\UserRelationRepository;
 use App\Repository\UserRepository;
 use App\Service\TeamService;
 use App\Repository\TeamRepository;
@@ -30,12 +31,25 @@ class TeamController extends AbstractController
     }
 
     #[Route('/new', name: 'team_new', methods: ['GET','POST'])]
-    #[IsGranted('ROLE_USER')]
-    public function new(Request $request, UserRelationService $userRelationService): Response
+    public function new(Request $request, UserRelationService $userRelationService, UserRelationRepository $userRelationRepository): Response
     {
         $user = $this->getUser();
         $team = new Team();
-        $form = $this->createForm(CreateTeamType::class, $team);
+
+        $currentUser = $this->getUser();
+        $friendsRelation = $userRelationRepository->findAllFriendsOfUser($currentUser);
+        $friends = [];
+
+        foreach ($friendsRelation as $userRelation){
+            if($userRelation->getSender() !== $currentUser){
+                $friends[] = $userRelation->getSender();
+            }
+            elseif($userRelation->getRecipient() !== $currentUser){
+                $friends[] = $userRelation->getRecipient();
+            }
+        }
+
+        $form = $this->createForm(CreateTeamType::class, $team, ['friends' => $friends]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -106,7 +120,6 @@ class TeamController extends AbstractController
 
             foreach ($currentMembers as $member){
                 if (!in_array($member->getId(), $updatedMembers)){
-                    dd($member);
                     $team->removeUser($member);
                 }
             }
@@ -132,7 +145,7 @@ class TeamController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $userRelationService->deleteAllTeamUserRelation($team);
             $user = $this->getUser();
-            if (!in_array('ROLE_ADMIN',$user->getRoles())) {
+            if (!in_array('ROLE_ADMIN', $user->getRoles()) && !in_array('ROLE_TOURNAMENT_MANAGER', $user->getRoles()) && !in_array('ROLE_TOURNAMENT_ARBITER', $user->getRoles())) {
                 $user->setRoles(['ROLE_USER']);
             }
             $entityManager->remove($team);
@@ -150,7 +163,7 @@ class TeamController extends AbstractController
 
         if ($team->getPublic() === true) {
             if ($teamService->countTeamUsers($team)){
-                if (!in_array('ROLE_ADMIN',$user->getRoles())){
+                if (!in_array('ROLE_ADMIN', $user->getRoles()) && !in_array('ROLE_TOURNAMENT_MANAGER', $user->getRoles()) && !in_array('ROLE_TOURNAMENT_ARBITER', $user->getRoles())){
                     $user->setRoles((array('ROLE_TEAM_MEMBER')));
                 }
                 $team->addUser($user);
@@ -177,7 +190,7 @@ class TeamController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getUser();
-        if (!in_array('ROLE_ADMIN',$user->getRoles())) {
+        if (!in_array('ROLE_ADMIN', $user->getRoles()) && !in_array('ROLE_TOURNAMENT_MANAGER', $user->getRoles()) && !in_array('ROLE_TOURNAMENT_ARBITER', $user->getRoles())) {
             $user->setRoles(['ROLE_USER']);
         }
         $userRelationService->deleteTeamUserRelation($team, $user);
@@ -195,7 +208,7 @@ class TeamController extends AbstractController
             $members =$team->getUsers()->getValues();
             foreach ($members as $member){
                 if (in_array('ROLE_TEAM_MANAGER', $member->getRoles())){
-                    if (!in_array('ROLE_ADMIN',$user->getRoles())) {
+                    if (!in_array('ROLE_ADMIN', $user->getRoles()) && !in_array('ROLE_TOURNAMENT_MANAGER', $user->getRoles()) && !in_array('ROLE_TOURNAMENT_ARBITER', $user->getRoles())) {
                         $member->setRoles(['ROLE_TEAM_CREATOR']);
                     }
                     $team->setCreatedBy($member);
@@ -209,7 +222,7 @@ class TeamController extends AbstractController
             if (!$haveSetNewCreator){
                 $rand_key = array_rand($members);
                 $member = $members[$rand_key];
-                if (!in_array('ROLE_ADMIN',$user->getRoles())) {
+                if (!in_array('ROLE_ADMIN', $user->getRoles()) && !in_array('ROLE_TOURNAMENT_MANAGER', $user->getRoles()) && !in_array('ROLE_TOURNAMENT_ARBITER', $user->getRoles())) {
                     $member->setRoles(['ROLE_TEAM_CREATOR']);
                 }
                 $team->setCreatedBy($member);

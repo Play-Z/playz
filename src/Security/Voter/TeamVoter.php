@@ -59,7 +59,7 @@ class TeamVoter extends Voter
 
     private function canEdit(Team $targetTeam, User $user)
     {
-        return $targetTeam->getCreatedBy() === $user && $this->securityService->isGranted($user,'ROLE_TEAM_CREATOR');
+        return $targetTeam->getCreatedBy() === $user || $this->securityService->isGranted($user,'ROLE_TEAM_CREATOR');
     }
 
     private function canLeave(Team $targetTeam, User $user)
@@ -68,6 +68,6 @@ class TeamVoter extends Voter
     }
 
     private function canDelete(Team $targetTeam, User $user){
-        return $targetTeam->getCreatedBy() === $user && $this->securityService->isGranted($user,'ROLE_TEAM_CREATOR');
+        return $targetTeam->getCreatedBy() === $user || $this->securityService->isGranted($user,'ROLE_TEAM_CREATOR');
     }
 }
