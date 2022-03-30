@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -14,55 +15,43 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\CallbackTransformer;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class UserType extends AbstractType
+class EditUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
-        $hidePsw = $options["hidePsw"];
-         //hide password on the edit
-         if($hidePsw !== "update"){
-
-            $builder->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
-                'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
-            ])
-        ;
-        }
         $builder
+            ->add('image', VichImageType::class, [
+                'required' => false,
+                'allow_delete' => true,
+                'download_label' => true,
+                'download_uri' => true,
+                'image_uri' => true,
+                'asset_helper' => true,
+            ])
             ->add('username')
-            ->add('firstname')
-            ->add('lastname')
-            ->add('country')
-            ->add('organization')
-            ->add('organizationPosition')
-            ->add('description', TextType::class)
             ->add('email')
             ->add('roles', ChoiceType::class, [
                 'required' => true,
                 'multiple' => false,
                 'expanded' => false,
                 'choices'  => [
-                    'Membre' => 'ROLE_TEAM_MEMBER',
-                    'Modérateur' => 'ROLE_TEAM_MANAGER',
-                    'Créateur' => 'ROLE_TEAM_CREATOR',
+                    'Membre' => 'ROLE_USER',
+                    'Manageur de tournois' => 'ROLE_TOURNAMENT_MANAGER',
+                    'Administrateur' => 'ROLE_ADMIN',
                 ],
                 'label' => 'Role :'
             ])
+            ->add('firstname')
+            ->add('lastname')
+            ->add('country')
+            ->add('description')
+            ->add('twitterUsername')
+            ->add('twitchUsername')
+            ->add('redditUsername')
+            ->add('youtubeUsername')
+            ->add('discordServerToken')
         ;
             
         $builder->get('roles')
@@ -85,7 +74,6 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'hidePsw' => null,
         ]);
     }
 }

@@ -101,7 +101,7 @@ class TeamController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $updatedMembers = $request->request->get('edit_team')['users'];
+            $updatedMembers = $request->request->get('edit_team')['user'];
             $currentMembers = $userRepository->findBy(['team' => $team]);
 
             foreach ($currentMembers as $member){
