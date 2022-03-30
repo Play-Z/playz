@@ -96,7 +96,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     private $newsletter = false;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="user")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $team;
