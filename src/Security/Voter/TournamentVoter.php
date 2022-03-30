@@ -2,6 +2,7 @@
 
 namespace App\Security\Voter;
 
+use App\Entity\Tournament;
 use App\Entity\User;
 use App\Service\SecurityService;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -9,11 +10,9 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class UserProfileVoter extends Voter
+class TournamentVoter extends Voter
 {
-    const EDIT = 'edit';
     const VIEW = 'view';
-    const INSCRIPTION = 'inscription' ;
 
     private $security;
     private SecurityService $securityService;
@@ -29,7 +28,7 @@ class UserProfileVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::EDIT, self::VIEW, self::INSCRIPTION]) && $subject instanceof \App\Entity\User;
+        return in_array($attribute, [self::VIEW]);
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
@@ -44,34 +43,18 @@ class UserProfileVoter extends Voter
             return true;
         }
 
-
-        $targetUser = $subject;
+        $targetTournament = $subject;
 
         switch ($attribute) {
             case self::VIEW:
-                return $this->canView($targetUser);
-            case self::EDIT:
-                return $this->canEdit($targetUser, $user);
-            case self::INSCRIPTION :
-                return $this->canRegister( $user) ;
-
+                return $this->canView($user);
         }
 
         return false;
     }
 
-    private function canView(User $targetUser)
+    private function canView(User $user)
     {
-        return $targetUser->getIsClosed() === false;
-    }
-
-    private function canEdit(User $targetUser, User $user)
-    {
-        return $user === $targetUser;
-    }
-
-    private function canRegister(User $user)
-    {
-        return $this->securityService->isGranted($user,'ROLE_TEAM_CREATOR');
+        return $this->securityService->isGranted($user,'ROLE_TOURNAMENT_MANAGER');
     }
 }
