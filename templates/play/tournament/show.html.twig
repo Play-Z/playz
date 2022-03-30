@@ -42,32 +42,68 @@
         </tr>
         </tbody>
     </table>
-
-    {% if inscription %}
-        {%  if is_granted('ROLE_TEAM_CREATOR') or is_granted('ROLE_TOURNAMENT_ARBITER') %}
-            <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('play_inscription_tournament', {slug : tournament.slug , user_slug : app.user.slug}) }}">Inscription</a>
+    {% if  tournament.status == false %}
+        {% if inscription %}
+            {%  if is_granted('ROLE_TEAM_CREATOR') or is_granted('ROLE_TOURNAMENT_ARBITER') %}
+                <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('play_inscription_tournament', {slug : tournament.slug , user_slug : app.user.slug}) }}">Inscription</a>
+            {% else %}
+                <p>Vous ne pouvez pas vous inscrire, demandez à votre chef d'équipe!</p>
+                <p>Il est encore temps !</p>
+            {% endif %}
         {% else %}
-            <p>Vous ne pouvez pas vous inscrire, demandez à votre chef d'équipe!</p>
-            <p>Il est encore temps !</p>
+            <p>Les inscriptions sont maintenant fermés</p>
         {% endif %}
+
+
+        <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('tournament_index') }}">Retour</a>
+        <div>
+            <h2>Les équipes inscrites : </h2>
+            <ul>
+                {% for equipe in equipes %}
+                    <li>
+                        <p>
+                            {{ equipe.teams.name }}
+                        </p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     {% else %}
-        <p>Les inscriptions sont maintenant fermés</p>
+        <table>
+            <thead>
+               <tr>
+                   <th>Equipe 1</th>
+                   <th>contre</th>
+                   <th>Equipe 2</th>
+                   <th>Resultat</th>
+               </tr>
+            </thead>
+            <tbody>
+
+            {% for match in matches %}
+                <tr>
+                    <td>{{   match.getTeamOne().teams.name  }} </td>
+                    <td>VS</td>
+                    <td>{{   match.getTeamTwo().teams.name  }} </td>
+                    {% if match.status == false %}
+                        <td>En cours ...</td>
+                    {% else %}
+                        {% if match.getTeamOneWin == true %}
+                            <td>Victoire de {{   match.getTeamOne().teams.name  }}</td>
+                        {% elseif match.getTeamOneWin == false %}
+                            <td>Victoire de {{   match.getTeamTwo().teams.name  }}</td>
+                        {% else %}
+                            <td>En cours ...</td>
+                        {% endif %}
+                    {% endif %}
+
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
     {% endif %}
 
-
-    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('tournament_index') }}">Retour</a>
-    <div>
-        <h2>Les équipes inscrites : </h2>
-        <ul>
-            {% for equipe in equipes %}
-                <li>
-                    <p>
-                        {{ equipe.teams.name }}
-                    </p>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
 
 
 {% endblock %}

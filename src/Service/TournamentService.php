@@ -57,4 +57,28 @@ class TournamentService
         }
 
     }
+
+    public function startATournament(Tournament $tournament) {
+        $matches = [] ;
+        $teams = $tournament->getEquipes()->getValues() ;
+        foreach ($tournament->getTournamentMatches() as $key => $match) {
+
+            if(count($match->getMatchEnfants()->getValues() )=== 0) {
+                array_push($matches,$match) ;
+            }
+        }
+
+        foreach ($matches as  $key => $match) {
+
+            $match->setTeamOne($teams[$key*2]);
+            $match->setTeamTwo($teams[$key*2 + 1]);
+
+            $this->entityManager->persist($match);
+        }
+
+
+        $tournament->setStatus(true) ;
+        $this->entityManager->persist($tournament);
+        $this->entityManager->flush();
+    }
 }

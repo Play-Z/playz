@@ -24,7 +24,16 @@ class TournamentMatch
      */
     private $name;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $status;
 
+
+    /**
+     * @ORM\Column(type="boolean",  nullable=true)
+     */
+    private $team_one_win;
 
     /**
      * @ORM\ManyToOne(targetEntity=Tournament::class, inversedBy="tournamentMatches",cascade={"persist"})
@@ -41,6 +50,16 @@ class TournamentMatch
      */
     private $match_enfants;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=TournamentTeam::class, inversedBy="tournamentMatches")
+     */
+    private $team_one;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TournamentTeam::class, inversedBy="tournamentMatches")
+     */
+    private $team_two;
+
 
     public function __construct(String $name, Tournament $tournament, TournamentMatch $match_parent = null)
     {
@@ -50,6 +69,7 @@ class TournamentMatch
         $this->match_enfants = new ArrayCollection();
         if($match_parent != null)
             $this->match_parent = $match_parent ;
+        $this->status = false ;
     }
 
     public function getId(): ?int
@@ -123,6 +143,62 @@ class TournamentMatch
         }
 
         return $this;
+    }
+
+    public function getTeamOne(): ?TournamentTeam
+    {
+        return $this->team_one;
+    }
+
+    public function setTeamOne(?TournamentTeam $team_one): self
+    {
+        $this->team_one = $team_one;
+
+        return $this;
+    }
+
+    public function getTeamTwo(): ?TournamentTeam
+    {
+        return $this->team_two;
+    }
+
+    public function setTeamTwo(?TournamentTeam $team_two): self
+    {
+        $this->team_two = $team_two;
+
+        return $this;
+    }
+
+    /**
+     * @return false
+     */
+    public function getStatus(): bool
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param false $status
+     */
+    public function setStatus(bool $status): void
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTeamOneWin()
+    {
+        return $this->team_one_win;
+    }
+
+    /**
+     * @param mixed $team_one_win
+     */
+    public function setTeamOneWin($team_one_win): void
+    {
+        $this->team_one_win = $team_one_win;
     }
 
 

@@ -74,13 +74,10 @@ class ManagementTournamentController extends AbstractController
 
         if($tournament->getStartAt() <= new \DateTime() ) {
             if(count($tournament->getEquipes()) == $tournament->getMaxTeamParticipant()) {
-                $tournament->setStatus(true) ;
-                // TODO Start tournament as a Service like TournamentService.startTournament($tournament) ;
-                $em = $this->getDoctrine()->getManager() ;
-                $em->persist($tournament);
-                $em->flush();
 
+                $tournamentService->startATournament($tournament);
                 $this->addFlash('success','Le tournoi a bien été lancé');
+
             } else $this->addFlash('error','Le tournoi n`\'a pas pu être lancé. Il n\'y a pas assez d\'équipes inscrites ');
         } else $this->addFlash('error','Le tournoi n`\'a pas pu être lancé. La date de début n\'a pas été atteinte');
         return $this->redirectToRoute('tournament_dashboard') ;

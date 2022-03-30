@@ -30,12 +30,21 @@ class TournamentController extends AbstractController
     #[Route('/{slug}', name:'play_tournament')]
     public function showInscription(Tournament $tournament): Response
     {
+       $matches = [] ;
+        foreach ($tournament->getTournamentMatches() as  $match) {
+
+            if(count($match->getMatchEnfants()->getValues() )=== 0) {
+                array_push($matches,$match) ;
+            }
+        }
         return $this->render('play/tournament/show.html.twig',[
             'tournament' => $tournament,
             'inscription' => $tournament->getStartInscriptionAt() <= new \DateTime()  &&
                 !$tournament->getStatus()  && count($tournament->getEquipes()) < $tournament->getMaxTeamParticipant()
             ,
-            'equipes' => $tournament->getEquipes()
+            'equipes' => $tournament->getEquipes(),
+            'matches' => $matches
+
         ]) ;
     }
 
