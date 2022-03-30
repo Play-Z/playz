@@ -27,6 +27,7 @@
                 <td>
                     <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('play_tournament', {'slug': tournament.slug}) }}">Afficher</a>
                     <a href="{{ path('tournament_edit', {'slug': tournament.slug}) }}">Modifier</a>
+                    <a href="{{ path('tournament_start',{'slug': tournament.slug}) }}" style="display: block; padding: 2px 5px ; border-radius: 20px ; background-color: green; color: whitesmoke ; text-align: center;" >LANCER</a>
                 </td>
             </tr>
         {% else %}

@@ -32,31 +32,71 @@ class TournamentController extends AbstractController
     {
         return $this->render('play/tournament/show.html.twig',[
             'tournament' => $tournament,
-            'inscription' => $tournament->getStartInscriptionAt() <= new \DateTime()
+            'inscription' => $tournament->getStartInscriptionAt() <= new \DateTime()  &&
+                !$tournament->getStatus()  && count($tournament->getEquipes()) < $tournament->getMaxTeamParticipant()
+            ,
+            'equipes' => $tournament->getEquipes()
         ]) ;
     }
 
     #[ParamConverter('user', options: ['mapping' => ['user_slug' => 'slug']])]
-    #[Route('/tournament/{slug}/inscription/{user_slug}', name:'play_inscription_tournament')]
+    #[Route('/{slug}/inscription/{user_slug}', name:'play_inscription_tournament')]
     #[IsGranted(UserProfileVoter::INSCRIPTION, 'user' )]
-    public function doInscription(Tournament $tournament, User $user): Response
+    public function doInscription(Tournament $tournament, User $user, Request $request): Response
     {
         $tournament_team = new TournamentTeam() ;
 
-
-        $form = $this->createForm(InscriptionType::class,$tournament_team,  [
-            'team'=> $user->getTeam()->getUsers()
-        ]) ;
-        $form->handleRequest($form) ;
-        if($form->isSubmitted() && $form->isValid()) {
-            // TODO inscription of members
-            // ! Check if user selection is less or equal to tournament max players
+        $isTeamAlreadyRegister = false ;
+        foreach ($tournament->getEquipes() as $equipe) {
+            if($equipe->getTeams()->getId() === $user->getTeam()->getId() )
+                $isTeamAlreadyRegister = true ;
         }
+        if(!$isTeamAlreadyRegister) {
+            $form = $this->createForm(InscriptionType::class, $tournament_team, [
+                'team' => $user->getTeam()->getUsers()
+            ]);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
 
-        return $this->render('play/tournament/register.html.twig',[
-            'form' => $form->createView(),
-            'team' => $user->getTeam() ,
-            'tournament' => $tournament
-        ]) ;
+
+                if (count($tournament_team->getPlayers()) > $tournament->getMaxTeamPlayers()) {
+                    $this->addFlash('warning', 'Tu ne dois pas dépasser la limite de joueurs inscrit autorisé.');
+                    return $this->redirectToRoute('play_inscription_tournament', [
+                        'slug' => $tournament->getSlug(),
+                        'user_slug' => $user->getSlug()
+                    ]);
+                }
+                if (count($tournament->getEquipes()) + 1 <= $tournament->getMaxTeamParticipant()) {
+
+                    $tournament_team->addTournaments($tournament);
+                    $tournament_team->setTeams($user->getTeam());
+
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($tournament_team);
+                    $em->flush();
+
+                    $this->addFlash('success', 'Ton équipe a bien été inscrite ! ');
+                    return $this->redirectToRoute('play_tournament', [
+                        'slug' => $tournament->getSlug()
+                    ]);
+                }
+                return $this->redirectToRoute('play_tournament', [
+                    'slug' => $tournament->getSlug()
+                ]);
+            }
+
+
+            return $this->render('play/tournament/register.html.twig', [
+                'form' => $form->createView(),
+                'team' => $user->getTeam(),
+                'tournament' => $tournament
+            ]);
+        }
+        $this->addFlash('error','Ton équipe est déjà inscrite');
+        return $this->redirectToRoute('play_tournament', [
+        'slug' => $tournament->getSlug()
+        ]);
     }
+
+
 }
