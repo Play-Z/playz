@@ -102,6 +102,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     private $team;
 
     /**
+     * @ORM\ManyToMany(targetEntity=TournamentTeam::class, inversedBy="players")
+     */
+    private $tournamentTeams ;
+
+    /**
      * @ORM\OneToMany(targetEntity=UserRelation::class, mappedBy="sender")
      */
     private $sendedUserRelations;
@@ -136,6 +141,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    public function getTournamentTeams(): Collection
+    {
+        return $this->tournamentTeams;
+    }
+
+    public function addTournamentTeams(TournamentTeam $tournamentTeam): self
+    {
+        if (!$this->tournamentTeams->contains($tournamentTeam)) {
+            $this->tournamentTeams[] = $tournamentTeam;
+            $tournamentTeam->addPlayers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTournamentTeams(TournamentTeam $tournamentTeam): self
+    {
+        if ($this->tournamentTeams->removeElement($tournamentTeam)) {
+            $tournamentTeam->removePlayers($this);
+        }
+
+        return $this;
     }
 
     /**

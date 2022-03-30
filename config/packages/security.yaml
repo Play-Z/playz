@@ -7,7 +7,7 @@ security:
         ROLE_TOURNAMENT_MANAGER : ['ROLE_TOURNAMENT_ARBITER']
         ROLE_ADMIN : [
                     'ROLE_TOURNAMENT_ARBITER',
-                    'ROLE_TOURNAMENT_MANAGER'
+                    'ROLE_TOURNAMENT_MANAGER',
                     ]
 
     # https://symfony.com/doc/current/security/authenticator_manager.html

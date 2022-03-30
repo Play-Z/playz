@@ -1,0 +1,22 @@
+{% extends 'baseTemplate/play-base.html.twig' %}
+
+{% set page_title = 'Tournoi Inscription' %}
+
+{% block title %}Inscription tournoi!{% endblock %}
+
+{% block content %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+        .btn {background-color: brown ; display: block ; padding: 5px 10px ; border-radius: 20px ; text-align: center ; width: 20%}
+    </style>
+
+    <div class="example-wrapper">
+        <h1>Inscription {{ tournament.name }} !!!</h1>
+        <p>Veuillez selectionner {{ tournament.getMaxTeamPlayers() }} joueurs maximum </p>
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button class="btn bg-indigo-500 text-white active:bg-indigo-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">{{ button_label|default('Sauvegarder') }}</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

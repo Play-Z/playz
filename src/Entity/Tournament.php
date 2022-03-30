@@ -7,6 +7,7 @@ use App\Repository\TournamentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -70,6 +71,27 @@ class Tournament
      */
     private $path;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $startInscriptionAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $startAt;
+
+    /**
+    * @Gedmo\Timestampable(on="create")
+    * @ORM\Column(type="datetime")
+    */
+    private $createdAt;
+
     public function getPath(): ?string
     {
         return $this->path;
@@ -118,6 +140,72 @@ class Tournament
         $this->setStatus(false) ;
 
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStartInscriptionAt()
+    {
+        return $this->startInscriptionAt;
+    }
+
+    /**
+     * @param mixed $startInscriptionAt
+     */
+    public function setStartInscriptionAt($startInscriptionAt): void
+    {
+        $this->startInscriptionAt = $startInscriptionAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStartAt()
+    {
+        return $this->startAt;
+    }
+
+    /**
+     * @param mixed $startAt
+     */
+    public function setStartAt($startAt): void
+    {
+        $this->startAt = $startAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description): void
+    {
+        $this->description = $description;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
 
     /**
      * @return Collection|TournamentTeam[]
