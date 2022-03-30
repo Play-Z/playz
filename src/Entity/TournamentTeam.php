@@ -21,9 +21,9 @@ class TournamentTeam
 
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="tournamentTeams")
      */
-    private $players = [];
+    private $players ;
 
     /**
      * @ORM\ManyToMany(targetEntity=Tournament::class, mappedBy="equipes")
@@ -38,16 +38,29 @@ class TournamentTeam
     public function __construct()
     {
         $this->tournaments = new ArrayCollection();
+        $this->players = new ArrayCollection() ;
     }
 
-    public function getPlayers(): ?array
+    public function getPlayers()
     {
         return $this->players;
     }
 
-    public function setPlayers(array $players): self
+    public function addPlayers(User $players): self
     {
-        $this->players = $players;
+        if (!$this->players->contains($players)) {
+            $this->players[] = $players;
+            $players->addTournamentTeams($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlayers(User $players): self
+    {
+        if ($this->players->removeElement($players)) {
+            $players->removeTournamentTeams($this);
+        }
 
         return $this;
     }
@@ -62,7 +75,7 @@ class TournamentTeam
     {
         if (!$this->tournaments->contains($tournaments)) {
             $this->tournaments[] = $tournaments;
-            $tournaments->addEquipe($this);
+            $tournaments->addEquipes($this);
         }
 
         return $this;
@@ -71,7 +84,7 @@ class TournamentTeam
     public function removeTournaments(Tournament $tournaments): self
     {
         if ($this->tournaments->removeElement($tournaments)) {
-            $tournaments->removeEquipe($this);
+            $tournaments->removeEquipes($this);
         }
 
         return $this;

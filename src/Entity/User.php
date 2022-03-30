@@ -96,10 +96,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     private $newsletter = false;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="user")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $team;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=TournamentTeam::class, inversedBy="players")
+     */
+    private $tournamentTeams ;
 
     /**
      * @ORM\OneToMany(targetEntity=UserRelation::class, mappedBy="sender")
@@ -136,6 +141,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    public function getTournamentTeams(): Collection
+    {
+        return $this->tournamentTeams;
+    }
+
+    public function addTournamentTeams(TournamentTeam $tournamentTeam): self
+    {
+        if (!$this->tournamentTeams->contains($tournamentTeam)) {
+            $this->tournamentTeams[] = $tournamentTeam;
+            $tournamentTeam->addPlayers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTournamentTeams(TournamentTeam $tournamentTeam): self
+    {
+        if ($this->tournamentTeams->removeElement($tournamentTeam)) {
+            $tournamentTeam->removePlayers($this);
+        }
+
+        return $this;
     }
 
     /**
@@ -192,6 +221,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $youtubeUsername;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isClosed = false;
 
     /**
      * @param UploadedFile $image
@@ -559,6 +593,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     public function setYoutubeUsername(?string $youtubeUsername): self
     {
         $this->youtubeUsername = $youtubeUsername;
+
+        return $this;
+    }
+
+    public function getIsClosed(): ?bool
+    {
+        return $this->isClosed;
+    }
+
+    public function setIsClosed(bool $isClosed): self
+    {
+        $this->isClosed = $isClosed;
 
         return $this;
     }

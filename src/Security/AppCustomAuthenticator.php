@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,10 +24,12 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
     public const LOGIN_ROUTE = 'app_login';
 
     private UrlGeneratorInterface $urlGenerator;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    public function __construct(UrlGeneratorInterface $urlGenerator, EntityManagerInterface $entityManager)
     {
         $this->urlGenerator = $urlGenerator;
+        $this->entityManager = $entityManager;
     }
 
     public function authenticate(Request $request): PassportInterface
@@ -50,14 +53,17 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
+        $token->getUser()->setIsClosed(false);
+        $this->entityManager->flush();
+
         if (in_array("ROLE_ADMIN", $token->getRoleNames())) {
             return new RedirectResponse($this->urlGenerator->generate('admin_dashboard'));
         }
         elseif(in_array("ROLE_TOURNAMENT_MANAGER", $token->getRoleNames())) {
             return new RedirectResponse($this->urlGenerator->generate('tournament_dashboard'));
         }
-        elseif (in_array("ROLE_PLAYER", $token->getRoleNames())) {
-            return new RedirectResponse($this->urlGenerator->generate('play_dashboard'));
+        elseif (in_array("ROLE_USER", $token->getRoleNames())) {
+            return new RedirectResponse($this->urlGenerator->generate('dashboard'));
         }
 
         return new RedirectResponse($this->urlGenerator->generate('home'));

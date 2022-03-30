@@ -16,7 +16,7 @@ class TournamentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('image', VichImageType::class, [
+            ->add('logo', VichImageType::class, [
                 'required' => false,
                 'allow_delete' => true,
                 'download_label' => true,
@@ -25,6 +25,7 @@ class TournamentType extends AbstractType
                 'asset_helper' => true
             ])
             ->add('name')
+            ->add('description')
             ->add('max_team_participant',ChoiceType::class, [
                 'choices'=> [
                     4=>4,
@@ -49,6 +50,8 @@ class TournamentType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
             ])
+            ->add('startAt')
+            ->add('startInscriptionAt')
         ;
     }
 

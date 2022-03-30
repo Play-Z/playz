@@ -51,7 +51,7 @@ class CreateTeamType extends AbstractType
                 'asset_helper' => true
             ])
             ->add('name')
-            ->add('users', ChoiceType::class, [
+            ->add('user', ChoiceType::class, [
                 // looks for choices from this entity
                 'choices' => $friends,
 

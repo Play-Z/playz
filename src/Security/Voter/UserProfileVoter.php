@@ -13,6 +13,7 @@ class UserProfileVoter extends Voter
 {
     const EDIT = 'edit';
     const VIEW = 'view';
+    const INSCRIPTION = 'inscription' ;
 
     private $security;
     private SecurityService $securityService;
@@ -28,7 +29,7 @@ class UserProfileVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::EDIT, self::VIEW]) && $subject instanceof \App\Entity\User;
+        return in_array($attribute, [self::EDIT, self::VIEW, self::INSCRIPTION]) && $subject instanceof \App\Entity\User;
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
@@ -39,30 +40,38 @@ class UserProfileVoter extends Voter
             return false;
         }
 
-
         if ($this->security->isGranted('ROLE_ADMIN')) {
             return true;
         }
+
 
         $targetUser = $subject;
 
         switch ($attribute) {
             case self::VIEW:
-                return $this->canView($targetUser, $user);
+                return $this->canView($targetUser);
             case self::EDIT:
                 return $this->canEdit($targetUser, $user);
+            case self::INSCRIPTION :
+                return $this->canRegister( $user) ;
+
         }
 
         return false;
     }
 
-    private function canView(User $targetUser, User $user)
+    private function canView(User $targetUser)
     {
-        return $this->canEdit($targetUser, $user);
+        return $targetUser->getIsClosed() === false;
     }
 
     private function canEdit(User $targetUser, User $user)
     {
         return $user === $targetUser;
+    }
+
+    private function canRegister(User $user)
+    {
+        return $this->securityService->isGranted($user,'ROLE_TEAM_CREATOR');
     }
 }

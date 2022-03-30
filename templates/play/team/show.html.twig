@@ -20,20 +20,6 @@
                 <th>Name</th>
                 <td>{{ team.name }}</td>
             </tr>
-            {% if team.games is defined and not null %}
-                <tr>
-                    <th>Jeux</th>
-                    <td>
-                        {% for game in team.games %}
-                            {% if game.path %}
-                                <img src="{{ vich_uploader_asset(game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ game.name }}">
-                            {% else %}
-                                {{ game.name }}
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                </tr>
-            {% endif %}
             <tr>
                 <th>Equipe esport officielle</th>
                 <td>{{ team.isVerified ? 'Oui' : 'Non' }}</td>
