@@ -76,11 +76,14 @@ class TournamentController extends AbstractController
                     ]);
                 }
                 if (count($tournament->getEquipes()) + 1 <= $tournament->getMaxTeamParticipant()) {
-
+                    $em = $this->getDoctrine()->getManager();
                     $tournament_team->addTournaments($tournament);
                     $tournament_team->setTeams($user->getTeam());
+                    foreach ($tournament_team->getPlayers() as $player) {
+                        $player->addTournamentTeams($tournament_team) ;
+                        $em->persist($player);
+                    }
 
-                    $em = $this->getDoctrine()->getManager();
                     $em->persist($tournament_team);
                     $em->flush();
 
