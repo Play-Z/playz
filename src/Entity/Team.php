@@ -125,11 +125,6 @@ class Team
     private $logo;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Game::class, inversedBy="teams")
-     */
-    private $games;
-
-    /**
      * @ORM\Column(type="string", length=40, nullable=true)
      */
     private $location;
