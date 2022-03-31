@@ -27,7 +27,16 @@ class UserProfileController extends AbstractController
     public function show(User $user): Response
     {
         if ($user->getIsClosed() !== true){
+
+            $tournamentsTeams = $user->getTournamentTeams()->getValues();
+            $tournaments = [];
+
+            foreach ($tournamentsTeams as $tournamentsTeam){
+                $tournaments = $tournamentsTeam->getTournaments()->getValues();
+            }
+
             return $this->render('play/user/show.html.twig', [
+                'tournaments' => $tournaments,
                 'user' => $user,
             ]);
         }
