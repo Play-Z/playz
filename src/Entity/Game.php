@@ -29,7 +29,7 @@ class Game
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, unique=true)
      * @Assert\Unique(groups="string")
      * @Assert\NotBlank()
      * @Assert\NotNull()

@@ -11,9 +11,9 @@ class UserTest extends PantherTestCase
     public function testLoginUser()
     {
         $pantherClient = static::createPantherClient();
+        $pantherClient->manage()->window()->maximize();
         $pantherClient->request('GET', '/login');
         $pantherClient->submitForm('Sign in', ['email' => 'user.test@playz.com', 'password' => 'test']);
-        $crawler = new Crawler();
 
         $this->assertSame(self::$baseUri.'/play/', $pantherClient->getCurrentURL());
         $this->assertSelectorExists('#logout-link');
@@ -25,9 +25,8 @@ class UserTest extends PantherTestCase
     public function testEditProfile()
     {
         $pantherClient = static::createPantherClient();
-        $crawler = new Crawler();
+        $pantherClient->manage()->window()->maximize();
 
-        $pantherClient->takeScreenshot('screen.png');
         $crawler = $pantherClient->clickLink('Profil');
         $crawler = $pantherClient->clickLink('Modifier');
 
@@ -45,22 +44,12 @@ class UserTest extends PantherTestCase
     public function testLogout()
     {
         $pantherClient = static::createPantherClient();
+        $pantherClient->manage()->window()->maximize();
         $pantherClient->request('GET', '/');
-        $crawler = new Crawler();
 
         $crawler = $pantherClient->clickLink('Se deconnecter');
 
         $this->assertSame(self::$baseUri.'/', $pantherClient->getCurrentURL());
         $this->assertSelectorNotExists('#logout-link');
-    }
-
-    public function testLoginAdmin()
-    {
-        $pantherClient = static::createAdditionalPantherClient();
-        $pantherClient->request('GET', '/login');
-        $pantherClient->submitForm('Sign in', ['email' => 'admin.test@playz.com', 'password' => 'test']);
-        $crawler = new Crawler();
-
-        $this->assertSame(self::$baseUri.'/admin/', $pantherClient->getCurrentURL());
     }
 }

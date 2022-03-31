@@ -15,16 +15,17 @@
         </thead>
         <tbody>
         {% for game in games %}
-            <tr>
+            <tr id="game-{{ game.name }}">
                 {% if game.path %}
                     <td><img src="{{ vich_uploader_asset(game, 'logo') }}" width="64" height="auto" alt="Logo de {{ game.name }}"></td>
                 {% else %}
                     <td>Pas de logo</td>
                 {% endif %}
-                <td>{{ game.name }}</td>
-                <td>
+                <td class="game-name">{{ game.name }}</td>
+                <td class="game-description">{{ game.description }}</td>
+                <td class="game-actions">
                     <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('game_show', {'slug': game.slug}) }}">Afficher</a>
-                    <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('admin_game_edit', {'slug': game.slug}) }}">Modifier</a>
+                    <a class="edit-button text-red-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('game_edit', {'slug': game.slug}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
