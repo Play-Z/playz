@@ -78,8 +78,17 @@ class TeamController extends AbstractController
     #[Route('/{slug}', name: 'team_show', methods: ['GET'])]
     public function show(Team $team): Response
     {
+        $tournamentTeams = $team->getTournamentTeams()->getValues();
+        $tournaments = [];
+
+        foreach ($tournamentTeams as $tournamentTeam)
+        {
+            $tournaments = $tournamentTeam->getTournaments()->getValues();
+        }
+
         return $this->render('play/team/show.html.twig', [
             'team' => $team,
+            'tournaments' => $tournaments,
         ]);
     }
 

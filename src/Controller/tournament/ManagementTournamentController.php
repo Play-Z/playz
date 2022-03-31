@@ -53,19 +53,44 @@ class ManagementTournamentController extends AbstractController
     #[Route('/edit/{slug}', name: 'tournament_edit')]
     public function edit(Request $request, Tournament $tournament, TournamentService $tournamentService): Response
     {
-        dd('TODO implement edit tournament');
-        // TODO implement edit tournament
-        // We have to see if we can just edit the front fields (description, name) or if we can modify the tournament generation
-        $form = $this->createForm(EditTournamentType::class, $tournament);
-        $form->handleRequest($request);
+        if(!$tournament->getStatus()) {
+            $form = $this->createForm(EditTournamentType::class, $tournament);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager() ;
+                $em->persist($tournament);
+                $em->flush();
+                $this->addFlash('success','Le tournoi a bien été modifié.');
+                $this->redirectToRoute('tournament_dashboard') ;
+            }
+            return $this->renderForm('tournament/edit.html.twig', [
+                'form' => $form,
+                'tournament' => $tournament
+            ]);
+        } else {
+            return $this->renderForm('tournament/edit.html.twig', [
 
+                'tournament' => $tournament
+            ]);
         }
 
-        return $this->renderForm('tournament/edit.html.twig', [
-            'form' => $form,
-        ]);
+
+    }
+
+    #[Route('/start/{slug}', name: 'tournament_start')]
+    public function start(Request $request, Tournament $tournament, TournamentService $tournamentService): Response
+    {
+
+        if($tournament->getStartAt() <= new \DateTime() ) {
+            if(count($tournament->getEquipes()) == $tournament->getMaxTeamParticipant()) {
+
+                $tournamentService->startATournament($tournament);
+                $this->addFlash('success','Le tournoi a bien été lancé');
+
+            } else $this->addFlash('error','Le tournoi n`\'a pas pu être lancé. Il n\'y a pas assez d\'équipes inscrites ');
+        } else $this->addFlash('error','Le tournoi n`\'a pas pu être lancé. La date de début n\'a pas été atteinte');
+        return $this->redirectToRoute('tournament_dashboard') ;
     }
 
 }
