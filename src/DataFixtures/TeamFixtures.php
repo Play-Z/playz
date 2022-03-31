@@ -85,7 +85,7 @@ class TeamFixtures extends Fixture implements DependentFixtureInterface
                                 'slug' => $data[$i]['current_videogame']['slug']
                             ]
                         ),
-                        'user' => $users,
+                        'users' => $users,
                         'redditUsername' =>  strtolower(str_replace(' ', '-', $data[$i]['name'])),
                         'twitchUsername' => strtolower(str_replace(' ', '-', $data[$i]['name'])),
                         'twitterUsername' => strtolower(str_replace(' ', '-', $data[$i]['name'])),

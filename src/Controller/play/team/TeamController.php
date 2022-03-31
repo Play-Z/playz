@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\EditTeamMemberType;
 use App\Form\EditTeamType;
 use App\Form\CreateTeamType;
+use App\Repository\TournamentRepository;
 use App\Repository\UserRelationRepository;
 use App\Repository\UserRepository;
 use App\Service\TeamService;
@@ -78,8 +79,17 @@ class TeamController extends AbstractController
     #[Route('/{slug}', name: 'team_show', methods: ['GET'])]
     public function show(Team $team): Response
     {
+        $tournamentTeams = $team->getTournamentTeams()->getValues();
+        $tournaments = [];
+
+        foreach ($tournamentTeams as $tournamentTeam)
+        {
+            $tournaments = $tournamentTeam->getTournaments()->getValues();
+        }
+
         return $this->render('play/team/show.html.twig', [
             'team' => $team,
+            'tournaments' => $tournaments,
         ]);
     }
 
