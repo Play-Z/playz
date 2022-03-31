@@ -7,7 +7,6 @@ use App\Entity\User;
 use App\Form\EditTeamMemberType;
 use App\Form\EditTeamType;
 use App\Form\CreateTeamType;
-use App\Repository\TournamentRepository;
 use App\Repository\UserRelationRepository;
 use App\Repository\UserRepository;
 use App\Service\TeamService;
