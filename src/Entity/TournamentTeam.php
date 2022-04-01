@@ -31,9 +31,9 @@ class TournamentTeam
     private $tournaments;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="tournamentTeams")
+     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="tournamentTeam")
      */
-    private $teams;
+    private $team;
 
     /**
      * @ORM\OneToMany(targetEntity=TournamentMatch::class, mappedBy="team_one")
@@ -96,14 +96,14 @@ class TournamentTeam
         return $this;
     }
 
-    public function getTeams(): ?Team
+    public function getTeam(): ?Team
     {
-        return $this->teams;
+        return $this->team;
     }
 
-    public function setTeams(?Team $teams): self
+    public function setTeam(?Team $team): self
     {
-        $this->teams = $teams;
+        $this->team = $team;
 
         return $this;
     }

@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\InscriptionType;
 use App\Form\Tournament1Type;
 use App\Repository\TournamentRepository;
+use App\Repository\TournamentTeamRepository;
 use App\Security\Voter\UserProfileVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -57,7 +58,7 @@ class TournamentController extends AbstractController
 
         $isTeamAlreadyRegister = false ;
         foreach ($tournament->getEquipes() as $equipe) {
-            if($equipe->getTeams()->getId() === $user->getTeam()->getId() )
+            if($equipe->getTeam()->getId() === $user->getTeam()->getId() )
                 $isTeamAlreadyRegister = true ;
         }
         if(!$isTeamAlreadyRegister) {
@@ -110,5 +111,90 @@ class TournamentController extends AbstractController
         ]);
     }
 
+    #[ParamConverter('user', options: ['mapping' => ['user_slug' => 'slug']])]
+    #[Route('/{slug}/inscription/{user_slug}/edit', name:'play_edit_inscription_tournament')]
+    #[IsGranted(UserProfileVoter::EDITINSCRIPTION, 'user')]
+    public function editInscription(Tournament $tournament, User $user, Request $request): Response
+    {
+        $userTeam = $user->getTeam();
+        $tournamentTeams = $tournament->getEquipes()->getValues();
 
+        foreach ($tournamentTeams as $tournamentTeam) {
+            if ($tournamentTeam->getTeam() === $userTeam) {
+                $toUpdateTournamentTeam = $tournamentTeam;
+            }
+        }
+        if (isset($toUpdateTournamentTeam)) {
+            $teamTournamentPlayers = $toUpdateTournamentTeam->getPlayers()->getValues();
+            $form = $this->createForm(InscriptionType::class, $toUpdateTournamentTeam, [
+                'team' => $userTeam->getUsers()
+            ]);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                if (count($toUpdateTournamentTeam->getPlayers()) > $tournament->getMaxTeamPlayers()) {
+                    $this->addFlash('warning', 'Vous ne pouvez pas dépasser la limite de joueurs inscrit autorisé.');
+                    return $this->redirectToRoute('play_edit_inscription_tournament', [
+                        'slug' => $tournament->getSlug(),
+                        'user_slug' => $user->getSlug()
+                    ]);
+                }
+                $em = $this->getDoctrine()->getManager();
+                $newTournamentTeam = $toUpdateTournamentTeam->getPlayers()->getValues();
+                foreach ($teamTournamentPlayers as $player) {
+                    if (in_array($player, $newTournamentTeam)){
+                        $player->addTournamentTeams($toUpdateTournamentTeam) ;
+                    }
+                    else{
+                        $player->removeTournamentTeams($toUpdateTournamentTeam);
+                    }
+                }
+                $em->flush();
+                $this->addFlash('success', 'Les joueurs inscrient ont bien été modifié ! ');
+                return $this->redirectToRoute('play_tournament', [
+                    'slug' => $tournament->getSlug()
+                ]);
+            }
+
+            return $this->render('play/tournament/edit-register.html.twig', [
+                'form' => $form->createView(),
+                'team' => $user->getTeam(),
+                'tournament' => $tournament
+            ]);
+        }
+        $this->addFlash('error','Ton équipe n\'est pas inscrite');
+        return $this->redirectToRoute('play_tournament', [
+            'slug' => $tournament->getSlug()
+        ]);
+    }
+
+    #[ParamConverter('user', options: ['mapping' => ['user_slug' => 'slug']])]
+    #[Route('/{slug}/inscription/{user_slug}/delete', name:'play_delete_inscription_tournament')]
+    #[IsGranted(UserProfileVoter::DELETEINSCRIPTION, 'user')]
+    public function deleteInscription(Tournament $tournament, User $user, Request $request): Response
+    {
+        $userTeam = $user->getTeam();
+        $tournamentTeams = $tournament->getEquipes()->getValues();
+
+        foreach ($tournamentTeams as $tournamentTeam) {
+            if ($tournamentTeam->getTeam() === $userTeam) {
+                $toUpdateTournamentTeam = $tournamentTeam;
+            }
+        }
+        if (isset($toUpdateTournamentTeam)) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($toUpdateTournamentTeam);
+            $entityManager->flush();
+
+            $this->addFlash('success', "L'annulation de votre inscription a bien été pris en compte");
+            return $this->redirectToRoute('play_tournament', [
+                'slug' => $tournament->getSlug()
+            ]);
+        }
+        $this->addFlash('error','Ton équipe n\'est pas inscrite');
+        return $this->redirectToRoute('play_tournament', [
+            'slug' => $tournament->getSlug()
+        ]);
+    }
 }
