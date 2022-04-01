@@ -1,0 +1,13 @@
+{% extends 'baseTemplate/tournament-base.html.twig' %}
+
+{% block title %}Nouveau Tournoi{% endblock %}
+
+{% block content %}
+    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">editer un match</h1>
+    <h2>Team 1 : {{ match.getTeamOne().getTeams().name }}</h2>
+    <hp>VS</hp>
+    <h2>Team 2 : {{ match.getTeamTwo().getTeams().name }}</h2>
+    {{ include('tournament/_form.html.twig') }}
+
+    <a href="{{ path('tournament_dashboard') }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Retour</a>
+{% endblock %}

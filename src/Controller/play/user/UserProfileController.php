@@ -23,13 +23,26 @@ class UserProfileController extends AbstractController
         ]);
     }
 
-    #[IsGranted(UserProfileVoter::VIEW, 'user')]
     #[Route('/{slug}', name: 'user_profile_show', methods: ['GET'])]
     public function show(User $user): Response
     {
-        return $this->render('play/user/show.html.twig', [
-            'user' => $user,
-        ]);
+        if ($user->getIsClosed() !== true){
+
+            $tournamentsTeams = $user->getTournamentTeams()->getValues();
+            $tournaments = [];
+
+            foreach ($tournamentsTeams as $tournamentsTeam){
+                $tournaments = $tournamentsTeam->getTournaments()->getValues();
+            }
+
+            return $this->render('play/user/show.html.twig', [
+                'tournaments' => $tournaments,
+                'user' => $user,
+            ]);
+        }
+        else{
+            throw $this->createNotFoundException('Cet utilisateur n\'existe pas');
+        }
     }
 
     #[IsGranted(UserProfileVoter::EDIT, 'user')]
