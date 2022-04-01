@@ -34,6 +34,7 @@ So are you ready to join **THE PLAYZ TO PLAY?**
 - [Php-8.0](https://www.php.net/manual-lookup.php?pattern=php+unit&scope=quickref)
 - [Docker](https://docs.docker.com/)
 - [Git](https://git-scm.com/doc)
+- [Panther](https://github.com/symfony/panther)
 
 
 ## Requirement for starting
@@ -69,6 +70,15 @@ OR
 
 //For constent scss compilation :
 docker-compose exec php npm run watch
+```
+
+#### End to End Test (need php and Chrome or Firefox on the local machine)
+```bash
+git checkout feature/tests
+
+docker-compose exec php composer install
+
+php bin/phpunit
 ```
 
 #### Configuration
@@ -159,6 +169,13 @@ https://symfony.com/doc/current/security/voters.html
 https://symfony.com/doc/current/controller.html#flash-messages
 
 ## Bundle d'aide
+
+#### Faker
+https://fakerphp.github.io/
+
+#### ZenstruckFoundryBundle
+https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html
+https://github.com/zenstruck/foundry
 
 #### Gedmo
 https://symfony.com/bundles/StofDoctrineExtensionsBundle/current/index.html
