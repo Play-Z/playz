@@ -7,8 +7,10 @@ use App\Entity\TournamentTeam;
 use App\Entity\User;
 use App\Form\InscriptionType;
 use App\Form\Tournament1Type;
+use App\Repository\TournamentMatchRepository;
 use App\Repository\TournamentRepository;
 use App\Security\Voter\UserProfileVoter;
+use App\Service\TournamentService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,15 +30,13 @@ class TournamentController extends AbstractController
     }
 
     #[Route('/{slug}', name:'play_tournament')]
-    public function showInscription(Tournament $tournament): Response
+    public function showInscription(Tournament $tournament, TournamentMatchRepository $tournamentMatchRepository): Response
     {
-       $matches = [] ;
-        foreach ($tournament->getTournamentMatches() as  $match) {
+       $matches =  $tournamentMatchRepository->findBy([
+           'name'=>1,
+           'tournaments'=>$tournament
+       ]); ;
 
-            if(count($match->getMatchEnfants()->getValues() )=== 0) {
-                array_push($matches,$match) ;
-            }
-        }
         return $this->render('play/tournament/show.html.twig',[
             'tournament' => $tournament,
             'inscription' => $tournament->getStartInscriptionAt() <= new \DateTime()  &&

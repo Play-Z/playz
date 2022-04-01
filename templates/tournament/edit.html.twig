@@ -7,7 +7,37 @@
     {% if tournament.status == false %}
         {{ include('tournament/_form.html.twig') }}
     {% else %}
-        // TODO Dire qui a gagné quelle match
+        <table>
+            <tr>
+                <td>Equipe1</td>
+                <td>contre</td>
+                <td>Equipe2</td>
+                <td>status</td>
+                <td>action</td>
+            </tr>
+        {% for match in matches %}
+            <tr>
+                <td>{{  match.getTeamOne().getTeams().name  }}</td>
+                <td><h2>CONTRE    .   </h2></td>
+                <td>{{ match.getTeamTwo().getTeams().name }}</td>
+                <td>
+                    {{ match.status ?
+                        match.getTeamOneWin() ?
+                            'Vainqueur équipe1'   :
+                            'Vainqueur équipe2'
+                    : 'en cours!' }}
+                </td>
+                {% if match.status  == true %}
+                    <td></td>
+                {% else %}
+                    <td>
+                        <a href="{{ path('tournament_set_victory',{id : match.id , t_slug : tournament.slug}) }}">Déclarer un vainqueur</a>
+                    </td>
+                {% endif %}
+
+            </tr>
+        {% endfor %}
+        </table>
     {% endif %}
     <a href="{{ path('tournament_dashboard') }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Retour</a>
 {% endblock %}

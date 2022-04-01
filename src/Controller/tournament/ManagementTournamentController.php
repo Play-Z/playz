@@ -3,8 +3,11 @@
 namespace App\Controller\tournament;
 
 use App\Entity\Tournament;
+use App\Entity\TournamentMatch;
 use App\Form\EditTournamentType;
+use App\Form\TournamentMatchSetVictoryType;
 use App\Form\TournamentType;
+use App\Repository\TournamentMatchRepository;
 use App\Repository\TournamentRepository;
 use App\Security\Voter\TournamentVoter;
 use App\Service\TournamentService;
@@ -51,7 +54,7 @@ class ManagementTournamentController extends AbstractController
     }
 
     #[Route('/edit/{slug}', name: 'tournament_edit')]
-    public function edit(Request $request, Tournament $tournament, TournamentService $tournamentService): Response
+    public function edit(Request $request, Tournament $tournament,TournamentService $tournamentService): Response
     {
         if(!$tournament->getStatus()) {
             $form = $this->createForm(EditTournamentType::class, $tournament);
@@ -69,8 +72,10 @@ class ManagementTournamentController extends AbstractController
                 'tournament' => $tournament
             ]);
         } else {
-            return $this->renderForm('tournament/edit.html.twig', [
 
+
+            return $this->renderForm('tournament/edit.html.twig', [
+                'matches' => $tournamentService->getMatchesOfEtape($tournament),
                 'tournament' => $tournament
             ]);
         }
@@ -81,16 +86,51 @@ class ManagementTournamentController extends AbstractController
     #[Route('/start/{slug}', name: 'tournament_start')]
     public function start(Request $request, Tournament $tournament, TournamentService $tournamentService): Response
     {
-
         if($tournament->getStartAt() <= new \DateTime() ) {
             if(count($tournament->getEquipes()) == $tournament->getMaxTeamParticipant()) {
-
                 $tournamentService->startATournament($tournament);
                 $this->addFlash('success','Le tournoi a bien été lancé');
 
             } else $this->addFlash('error','Le tournoi n`\'a pas pu être lancé. Il n\'y a pas assez d\'équipes inscrites ');
         } else $this->addFlash('error','Le tournoi n`\'a pas pu être lancé. La date de début n\'a pas été atteinte');
         return $this->redirectToRoute('tournament_dashboard') ;
+    }
+
+    #[Route('/edit/{t_slug}/set-victory/{id}' , name:'tournament_set_victory')]
+    public function setVictory(TournamentMatch $tournamentMatch, Request $request) {
+        $form = $this->createForm(TournamentMatchSetVictoryType::class,$tournamentMatch) ;
+        $form->handleRequest($request) ;
+        if($form->isSubmitted() && $form->isValid()  ) {
+            $em = $this->getDoctrine()->getManager() ;
+            $tournamentMatch->setStatus(true);
+            $parentMatch =  $tournamentMatch->getMatchParent() ;
+            if($parentMatch->getTeamOne() != null) {
+                if($tournamentMatch->getTeamOneWin() == true)
+                    $parentMatch->setTeamTwo($tournamentMatch->getTeamOne());
+                else {
+                    $parentMatch->setTeamTwo($tournamentMatch->getTeamTwo());
+                }
+            } else {
+                if($tournamentMatch->getTeamOneWin() == true)
+                    $parentMatch->setTeamOne($tournamentMatch->getTeamOne());
+                else {
+                    $parentMatch->setTeamOne($tournamentMatch->getTeamTwo());
+                }
+            }
+
+            $em->persist($parentMatch);
+            $em->persist($tournamentMatch);
+            $em->flush();
+
+            $this->addFlash('success','Match victory has been set successfully !');
+            return $this->redirectToRoute('tournament_edit',[
+                'slug' => $tournamentMatch->getTournaments()->getSlug()
+            ]) ;
+        }
+        return $this->renderForm('tournament/editMatch.html.twig',[
+            'match' => $tournamentMatch,
+            'form' => $form
+        ]) ;
     }
 
 }
