@@ -63,7 +63,7 @@ class Team
     private $public = false;
 
     /**
-     * @ORM\OneToMany(targetEntity=TournamentTeam::class, mappedBy="teams")
+     * @ORM\OneToMany(targetEntity=TournamentTeam::class, mappedBy="team")
      */
     private $tournamentTeams;
 
