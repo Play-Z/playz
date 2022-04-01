@@ -86,16 +86,16 @@
 
             {% for match in matches %}
                 <tr>
-                    <td>{{   match.getTeamOne().teams.name  }} </td>
+                    <td>{{   match.getTeamOne().team.name  }} </td>
                     <td>VS</td>
-                    <td>{{   match.getTeamTwo().teams.name  }} </td>
+                    <td>{{   match.getTeamTwo().team.name  }} </td>
                     {% if match.status == false %}
                         <td>En cours ...</td>
                     {% else %}
                         {% if match.getTeamOneWin == true %}
-                            <td>Victoire de {{   match.getTeamOne().teams.name  }}</td>
+                            <td>Victoire de {{   match.getTeamOne().team.name  }}</td>
                         {% elseif match.getTeamOneWin == false %}
-                            <td>Victoire de {{   match.getTeamTwo().teams.name  }}</td>
+                            <td>Victoire de {{   match.getTeamTwo().team.name  }}</td>
                         {% else %}
                             <td>En cours ...</td>
                         {% endif %}
