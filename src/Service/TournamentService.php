@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Tournament;
 use App\Entity\TournamentMatch;
+use App\Entity\TournamentTeam;
 use App\Repository\TournamentMatchRepository;
 use App\Repository\TournamentRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -104,5 +105,16 @@ class TournamentService
        }while($matches == null) ;
 
        return $matches ;
+   }
+
+   public function removePlayersOfTournamentTeam(TournamentTeam $team) {
+
+       //Removing players from a TournamentTeam
+       foreach ($team->getPlayers() as $player) {
+           $player->removeTournamentTeams($team);
+           $this->entityManager->persist($player);
+           var_dump("une team a été vidé de ses joueurs");
+       }
+       $this->entityManager->flush();
    }
 }

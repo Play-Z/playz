@@ -68,7 +68,7 @@ class TournamentController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
 
 
-                if (count($tournament_team->getPlayers()) > $tournament->getMaxTeamPlayers()) {
+                if (count($tournament_team->getPlayers()) != $tournament->getMaxTeamPlayers()) {
                     $this->addFlash('warning', 'Tu ne dois pas dépasser la limite de joueurs inscrit autorisé.');
                     return $this->redirectToRoute('play_inscription_tournament', [
                         'slug' => $tournament->getSlug(),

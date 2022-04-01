@@ -11,6 +11,7 @@ use App\Repository\TournamentMatchRepository;
 use App\Repository\TournamentRepository;
 use App\Security\Voter\TournamentVoter;
 use App\Service\TournamentService;
+use JetBrains\PhpStorm\Pure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -131,6 +132,42 @@ class ManagementTournamentController extends AbstractController
             'match' => $tournamentMatch,
             'form' => $form
         ]) ;
+    }
+
+    #[Route('/cancel/{slug}' , name:'tournament_cancel')]
+    public function cancelTournament(Tournament $tournament, TournamentMatchRepository $matchRepository ,TournamentService $service)
+    {
+        if(!$tournament->getStatus()) {
+            $em = $this->getDoctrine()->getManager();
+            $count = 1 ;
+            while($count < $tournament->getMaxTeamParticipant()) {
+                $matches = $matchRepository->findBy(['name'=> $count, 'tournaments' => $tournament]) ;
+                foreach ($matches as $match) {
+                    if($match->getTeamOne() != null) {
+                        $team = $match->getTeamOne();
+                        $service->removePlayersOfTournamentTeam($team);
+                        $team->removeTournamentMatch($match);
+                        $em->remove($team);
+                    }
+                    if($match->getTeamTwo() != null) {
+                        $team = $match->getTeamTwo();
+                        $service->removePlayersOfTournamentTeam($team);
+                        $team->removeTournamentMatch($match);
+                        $em->remove($team);
+                    }
+                    $em->remove($match);
+                    $em->flush();
+
+                }
+                $count++ ;
+            }
+            $em->remove($tournament);
+            $em->flush();
+            $this->addFlash('success','Le tournoi a bien été supprimé!');
+        } else {
+            $this->addFlash('waring','Le tournoi a déjà commencé. Tu ne peux pas l\'annuler');
+        }
+        return $this->redirectToRoute('tournament_dashboard') ;
     }
 
 }
