@@ -27,8 +27,20 @@
             <td>{{ tournament.description }}</td>
         </tr>
         <tr>
-            <th>Date de début</th>
+            <th>Nombre d'équipes</th>
+            <td>{{ tournament.maxTeamParticipant }}</td>
+        </tr>
+        <tr>
+            <th>Nombre de joueurs par équipe</th>
+            <td>{{ tournament.maxTeamPlayers }}</td>
+        </tr>
+        <tr>
+            <th>Lancement du tournoi</th>
             <td>{{ tournament.startAt | date('d F Y  \\à g:ia') }}</td>
+        </tr>
+        <tr>
+            <th>Ouverture des inscriptions</th>
+            <td>{{ tournament.startInscriptionAt | date('d F Y  \\à g:ia') }}</td>
         </tr>
         <tr>
             <th>Jeux</th>
@@ -65,9 +77,7 @@
             <ul>
                 {% for equipe in equipes %}
                     <li>
-                        <p>
-                            {{ equipe.team.name }}
-                        </p>
+                        <a href="{{ path('team_show', {'slug': equipe.team.slug}) }}">{{ equipe.team.name }}</a>
                     </li>
                 {% endfor %}
             </ul>
@@ -86,9 +96,9 @@
 
             {% for match in matches %}
                 <tr>
-                    <td>{{   match.getTeamOne().team.name  }} </td>
+                    <td><a href="{{ path('team_show', {'slug': match.getTeamOne().team.slug}) }}">{{   match.getTeamOne().team.name  }}</a></td>
                     <td>VS</td>
-                    <td>{{   match.getTeamTwo().team.name  }} </td>
+                    <td><a href="{{ path('team_show', {'slug': match.getTeamTwo().team.slug}) }}">{{   match.getTeamTwo().team.name  }} </a></td>
                     {% if match.status == false %}
                         <td>En cours ...</td>
                     {% else %}
