@@ -50,6 +50,8 @@ final class UserFactory extends ModelFactory
             'isVerified' => true,
             'description' => self::faker()->sentence(),
             'country' => self::faker()->country(),
+            'age' => self::faker()->numberBetween(16, 40),
+            'gender' => self::faker()->randomElement(['Homme','Femme'])
         ];
     }
 

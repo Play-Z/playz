@@ -9,16 +9,17 @@
         <thead>
             <tr>
                 <th>Username</th>
-                <th>Pays</th>
                 <th>Equipe</th>
                 <th>Jeu</th>
+                <th>Pays</th>
+                <th>Age</th>
+                <th>Genre</th>
             </tr>
         </thead>
         <tbody>
         {% for user in users %}
             <tr>
                 <td><a href="{{ path('user_profile_show', {'slug': user.slug}) }}">{{ user.username }}</a></td>
-                <td>{{ user.country }}</td>
                 {% if user.team %}
                     <td>{{ user.team.name }}</td>
                 {% else %}
@@ -35,6 +36,9 @@
                 {% else %}
                     <td>Aucun jeu</td>
                 {% endif %}
+                <td>{{ user.country|country_name }}</td>
+                <td>{{ user.age }}</td>
+                <td>{{ user.gender }}</td>
                 <td>
                     <a href="{{ path('user_profile_show', {'slug': user.slug}) }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Voir</a>
                 </td>

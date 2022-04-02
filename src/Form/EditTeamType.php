@@ -7,6 +7,7 @@ use App\Entity\Team;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -43,7 +44,9 @@ class EditTeamType extends AbstractType
                 'label' => 'Jeu principal'
             ])
             ->add('public', CheckboxType::class, [
-                'label'    => 'Equipe publique ?'
+                'label'    => 'Equipe publique ?',
+                'required' => false
+
             ])
             ->add('emplacement', IntegerType::class, [
                 'attr' => [
@@ -51,6 +54,9 @@ class EditTeamType extends AbstractType
                     'max' => '10'
                 ],
                 'label' => "Nombre d'emplacements dans l'équipe"
+            ])
+            ->add('location', CountryType::class, [
+                'label' => "Pays"
             ])
             ->add('description')
             ->add('twitterUsername', TextType::class, [
