@@ -12,8 +12,6 @@ class PlayDashboardController extends AbstractController
     #[Route('/dashboard', name: 'dashboard')]
     public function index(): Response
     {
-        return $this->render('play/dashboard/index.html.twig', [
-            'controller_name' => 'PlayDashboardController',
-        ]);
+        return $this->render('play/dashboard/index.html.twig');
     }
 }

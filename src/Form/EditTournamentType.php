@@ -7,6 +7,7 @@ use App\Entity\Tournament;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -24,7 +25,9 @@ class EditTournamentType extends AbstractType
                 'image_uri' => true,
                 'asset_helper' => true
             ])
-            ->add('name')
+            ->add('name', TextType::class, [
+                'label' => "Nom du tournoi"
+            ])
             ->add('description')
             ->add('startAt')
             ->add('startInscriptionAt')
