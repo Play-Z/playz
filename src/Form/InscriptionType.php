@@ -38,6 +38,7 @@ class InscriptionType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
                 //'data'=>$team
+                'label' => 'Joueurs à inscrire au tournoi'
 
             ])
         ;

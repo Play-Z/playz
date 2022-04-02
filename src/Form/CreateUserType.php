@@ -30,7 +30,9 @@ class CreateUserType extends AbstractType
                 'image_uri' => true,
                 'asset_helper' => true,
             ])
-            ->add('username')
+            ->add('username', TextType::class, [
+                'label' => "Nom d'utilisateur"
+            ])
             ->add('email')
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -39,6 +41,7 @@ class CreateUserType extends AbstractType
                 'required' => true,
                 'first_options'  => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password'],
+                'label' => 'Mot de passe'
             ])
             ->add('roles', ChoiceType::class, [
                 'required' => true,

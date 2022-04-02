@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Game;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -21,7 +22,9 @@ class AdminGameType extends AbstractType
                 'image_uri' => true,
                 'asset_helper' => true
             ])
-            ->add('name')
+            ->add('name', TextType::class, [
+                'label' => "Nom"
+            ])
             ->add('description')
         ;
     }

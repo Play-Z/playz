@@ -8,8 +8,10 @@ use App\Entity\User;
 use App\Repository\UserRelationRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
@@ -41,6 +43,7 @@ class CreateTeamType extends AbstractType
                 // used to render a select box, check boxes or radios
                 'multiple' => true,
                 'expanded' => true,
+                'label' => 'Amis à inviter dans votre équipe'
             ]);
         }
 
@@ -53,7 +56,9 @@ class CreateTeamType extends AbstractType
                 'image_uri' => true,
                 'asset_helper' => true
             ])
-            ->add('name')
+            ->add('name', TextType::class, [
+                'label' => "Nom d'équipe"
+            ])
             ->add('game', EntityType::class, [
                 // looks for choices from this entity
                 'class' => Game::class,
@@ -64,16 +69,19 @@ class CreateTeamType extends AbstractType
                 // used to render a select box, check boxes or radios
                 'multiple' => false,
                 'expanded' => false,
+                'label' => "Jeu principal"
             ])
-            ->add('public')
+            ->add('public', CheckboxType::class, [
+                'label'    => 'Equipe publique ?'
+            ])
             ->add('emplacement', IntegerType::class, [
                 'attr' => [
                     'min' => '1',
                     'max' => '10'
                 ],
+                'label' => "Nombre d'emplacements dans l'équipe"
             ])
             ->add('description')
-            ->add('logo')
         ;
     }
 
