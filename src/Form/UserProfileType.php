@@ -4,6 +4,9 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,8 +34,24 @@ class UserProfileType extends AbstractType
             ->add('lastname', TextType::class, [
                 'label' => "Nom de famille"
             ])
-            ->add('country', TextType::class, [
+            ->add('country', CountryType::class, [
                 'label' => "Pays"
+            ])
+            ->add('age', IntegerType::class, [
+                'attr' => [
+                    'min' => '12',
+                    'max' => '100'
+                ],
+                'label' => "Age"
+            ])
+            ->add('gender', ChoiceType::class, [
+                'multiple' => false,
+                'expanded' => false,
+                'choices'  => [
+                    'Homme' => 'Homme',
+                    'Femme' => 'Femme',
+                ],
+                'label' => 'Genre :'
             ])
             ->add('description', TextType::class)
             ->add('twitterUsername', TextType::class, [
