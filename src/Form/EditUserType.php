@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -51,8 +53,24 @@ class EditUserType extends AbstractType
             ->add('lastname', TextType::class, [
                 'label' => "Nom"
             ])
-            ->add('country', TextType::class, [
+            ->add('country', CountryType::class, [
                 'label' => "Pays"
+            ])
+            ->add('age', IntegerType::class, [
+                'attr' => [
+                    'min' => '12',
+                    'max' => '100'
+                ],
+                'label' => "Age"
+            ])
+            ->add('gender', ChoiceType::class, [
+                'multiple' => false,
+                'expanded' => false,
+                'choices'  => [
+                    'Homme' => 'Homme',
+                    'Femme' => 'Femme',
+                ],
+                'label' => 'Genre :'
             ])
             ->add('description')
             ->add('twitterUsername', TextType::class, [

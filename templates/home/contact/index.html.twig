@@ -1,0 +1,20 @@
+{% extends 'baseTemplate/home-base.html.twig' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block content %}
+    <div>
+        <div>
+            <h1>Contactez nous</h1>
+        </div>
+
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi a nec vitae integer libero pharetra.
+            Imperdiet
+            tempor quam at sit. Dignissim nulla morbi sodales iaculis lacus ut mollis fermentum commodo.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi a nec vitae integer libero pharetra.
+        </p>
+
+        {{ include('home/contact/_form.html.twig') }}
+    </div>
+{% endblock %}

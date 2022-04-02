@@ -228,6 +228,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     private $isClosed = false;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $age;
+
+    /**
+     * @ORM\Column(type="string", length=30, nullable=true)
+     */
+    private $gender;
+
+    /**
      * @param UploadedFile $image
      */
     public function setImage(?File $image = null)
@@ -605,6 +615,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     public function setIsClosed(bool $isClosed): self
     {
         $this->isClosed = $isClosed;
+
+        return $this;
+    }
+
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
+
+    public function setAge(?int $age): self
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(?string $gender): self
+    {
+        $this->gender = $gender;
 
         return $this;
     }

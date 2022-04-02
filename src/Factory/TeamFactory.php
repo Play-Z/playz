@@ -40,7 +40,6 @@ final class TeamFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'name' => self::faker()->randomElement(['']),
             'path' => self::faker()->randomElement(['cloud9_logo.png', 'fnatic_logo.png', 'g2_esports_logo.png', 'karmine_corp_logo.png', 'sk_telecom_t1_logo.png', 'solary_logo.png', 'vitality_logo.png']),
             'emplacement' => 10,
             'public' => self::faker()->boolean(),
