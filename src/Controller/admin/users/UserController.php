@@ -61,7 +61,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/{slug}/edit', name: 'user_edit', methods: ['GET','POST'])]
-    public function edit(Request $request, User $user, UserPasswordHasherInterface $userPasswordHasherInterface, MailerInterface $mailer): Response
+    public function edit(Request $request, User $user, UserPasswordHasherInterface $userPasswordHasherInterface, MailerInterface $mailer, ResetPasswordHelperInterface $resetPasswordHelper): Response
     {
         $form = $this->createForm(EditUserType::class, $user);
         $form->handleRequest($request);
@@ -72,7 +72,7 @@ class UserController extends AbstractController
             $user->setIsVerified(true);
 
             try {
-                $resetToken = $this->resetPasswordHelper->generateResetToken($user);
+                $resetToken = $resetPasswordHelper->generateResetToken($user);
             } catch (ResetPasswordExceptionInterface $e) {
                 $this->addFlash('error', "Erreur lors de l'envoi du mail");
 
