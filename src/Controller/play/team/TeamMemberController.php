@@ -70,6 +70,7 @@ class TeamMemberController extends AbstractController
             $userRelationService->deleteTeamUserRelation($team, $user);
             $team->removeUser($user);
             $entityManager->flush();
+            $this->addFlash('success', "L'utilisateur a bien été viré de votre équipe !");
         }
 
         return $this->redirectToRoute('team_member_index', ['slug' => $team->getSlug()], Response::HTTP_SEE_OTHER);
