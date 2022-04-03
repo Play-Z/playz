@@ -54,6 +54,7 @@ class PaypalService {
             ]
         );
         $orderData = json_decode($response->getBody()->getContents());
+        
         return $orderData->status === 'COMPLETED';
     }
 }

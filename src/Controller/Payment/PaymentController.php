@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Service\PaypalService;
 use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Validator\Constraints\Date;
 
 class PaymentController extends AbstractController
 {
@@ -26,15 +27,21 @@ class PaymentController extends AbstractController
     public function checkPayment($id, PaypalService $paypalService, Security $security, UserRepository $userRepository): Response
     {
         $paypalService->verifyOrder($id);
+        $user = $userRepository->findByEmail($security->getUser()->getUserIdentifier());
         if (!$paypalService->verifyOrder($id)){
             /* set page erreur paiement */
+            $user->addRole('ROLE_SUBSCRIBE');
+            $user->setDateSubscribe(new Date());
         }
-        $user = $userRepository->findByEmail($security->getUser()->getUserIdentifier());
-        $user->addRole('ROLE_SUBSCRIBE');
+
+        /* set time out of 1 month */
+//        if ($user->getRoles('ROLE_SUBSCRIBE') && set_time_limit(10)){
+//            $user->getRoles();
+//            $user->setRoles('');
+//        }
 
         $em = $this->getDoctrine()->getManager();
         $em->flush();
-
         return $this->render('payment/paymentSuccess.html.twig');
     }
 }
