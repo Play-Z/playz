@@ -21,6 +21,7 @@
         <testsuite name="Project Test Suite">
             <directory>./tests/UserTest.php</directory>
             <directory>./tests/GameTest.php</directory>
+            <directory>./tests/TeamTest.php</directory>
         </testsuite>
     </testsuites>
 

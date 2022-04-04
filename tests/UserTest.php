@@ -15,7 +15,7 @@ class UserTest extends PantherTestCase
         $pantherClient->request('GET', '/login');
         $pantherClient->submitForm('Sign in', ['email' => 'user.test@playz.com', 'password' => 'test']);
 
-        $this->assertSame(self::$baseUri.'/play/', $pantherClient->getCurrentURL());
+        $this->assertSame(self::$baseUri.'/play/dashboard', $pantherClient->getCurrentURL());
         $this->assertSelectorExists('#logout-link');
     }
 

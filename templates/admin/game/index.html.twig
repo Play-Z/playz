@@ -24,7 +24,7 @@
                 <td class="game-name">{{ game.name }}</td>
                 <td class="game-description">{{ game.description }}</td>
                 <td class="game-actions">
-                    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('game_show', {'slug': game.slug}) }}">Afficher</a>
+                    <a class="show-button text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('admin_game_show', {'slug': game.slug}) }}">Afficher</a>
                     <a class="edit-button text-red-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('game_edit', {'slug': game.slug}) }}">Modifier</a>
                 </td>
             </tr>

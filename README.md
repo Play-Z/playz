@@ -76,6 +76,13 @@ docker-compose exec php npm run watch
 ```bash
 git checkout feature/tests
 
+docker-compose exec php php bin/console d:s:u --force
+
+docker-compose exec php php bin/console d:f:l 
+# press y
+
+docker-compose exec php composer require --dev dbrekelmans/bdi && vendor/bin/bdi detect drivers
+
 docker-compose exec php composer install
 
 php bin/phpunit

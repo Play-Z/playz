@@ -20,7 +20,7 @@ class GameTest extends PantherTestCase
     /**
      * @depends testLoginAdmin
      */
-    public function testIndexGames()
+    public function testAdminIndexGames()
     {
         $pantherClient = static::createPantherClient();
         $pantherClient->manage()->window()->maximize();
@@ -33,7 +33,7 @@ class GameTest extends PantherTestCase
     /**
      * @depends testLoginAdmin
      */
-    public function testCreateGame()
+    public function testAdminCreateGame()
     {
         $pantherClient = static::createPantherClient();
         $pantherClient->manage()->window()->maximize();
@@ -42,7 +42,7 @@ class GameTest extends PantherTestCase
         $crawler = $pantherClient->clickLink('Créer un jeu');
 
         $this->assertSame(self::$baseUri.'/admin/game/new', $pantherClient->getCurrentURL());
-        $pantherClient->submitForm('Sauvegarder', ['game[name]' => 'JeuTest', 'game[description]' => 'Mon jeu test']);
+        $pantherClient->submitForm('Sauvegarder', ['admin_game[name]' => 'JeuTest', 'admin_game[description]' => 'Mon jeu test']);
 
         $crawler = $pantherClient->request('GET', '/admin/game');
         $this->assertSame('JeuTest', $crawler->filter("#game-JeuTest")->children('.game-name')->text());
@@ -52,7 +52,25 @@ class GameTest extends PantherTestCase
     /**
      * @depends testLoginAdmin
      */
-    public function testEditGame(){
+    public function testAdminShowGame(){
+        $pantherClient = static::createPantherClient();
+        $pantherClient->manage()->window()->maximize();
+
+        $crawler = $pantherClient->clickLink('Jeux');
+        $link = $crawler->filter("#game-JeuTest")->children('.game-actions')->children('.show-button')->link();
+        $pantherClient->click($link);
+
+        $this->assertSame(self::$baseUri.'/admin/game/jeutest', $pantherClient->getCurrentURL());
+
+        $crawler = $pantherClient->request('GET', '/admin/game/jeutest');
+        $this->assertSame('JeuTest', $crawler->filter("#game-title")->text());
+        $this->assertSame('Mon jeu test', $crawler->filter("#game-description")->text());
+    }
+
+    /**
+     * @depends testLoginAdmin
+     */
+    public function testAdminEditGame(){
         $pantherClient = static::createPantherClient();
         $pantherClient->manage()->window()->maximize();
 
@@ -61,7 +79,7 @@ class GameTest extends PantherTestCase
         $pantherClient->click($link);
 
         $this->assertSame(self::$baseUri.'/admin/game/jeutest/edit', $pantherClient->getCurrentURL());
-        $pantherClient->submitForm('Sauvegarder', ['game[name]' => 'JeuTestEdit', 'game[description]' => 'Mon jeu test modifier']);
+        $pantherClient->submitForm('Sauvegarder', ['admin_game[name]' => 'JeuTestEdit', 'admin_game[description]' => 'Mon jeu test modifier']);
 
         $crawler = $pantherClient->request('GET', '/admin/game');
         $this->assertSame('JeuTestEdit', $crawler->filter("#game-JeuTestEdit")->children('.game-name')->text());
@@ -71,7 +89,7 @@ class GameTest extends PantherTestCase
     /**
      * @depends testLoginAdmin
      */
-    public function testDeleteGame(){
+    public function testAdminDeleteGame(){
         $pantherClient = static::createPantherClient();
         $pantherClient->manage()->window()->maximize();
 
@@ -86,12 +104,20 @@ class GameTest extends PantherTestCase
         $form = $crawler->selectButton('Supprimer')->form();
 
         $pantherClient->click($form);
-//        $pantherClient->wait()->until(WebDriverExpectedCondition::alertIsPresent());
-//        $pantherClient->getWebDriver()->switchTo()->alert()->accept();
-
-        //$crawler = $pantherClient->request('GET', '/admin/game');
 
         $this->assertSelectorNotExists($gameName, 'JeuTestEdit');
         $this->assertSelectorNotExists($gameDescription, 'Mon jeu test modifier');
+    }
+
+    public function testLogout()
+    {
+        $pantherClient = static::createPantherClient();
+        $pantherClient->manage()->window()->maximize();
+        $pantherClient->request('GET', '/');
+
+        $crawler = $pantherClient->clickLink('Se deconnecter');
+
+        $this->assertSame(self::$baseUri.'/', $pantherClient->getCurrentURL());
+        $this->assertSelectorNotExists('#logout-link');
     }
 }

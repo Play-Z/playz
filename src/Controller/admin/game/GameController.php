@@ -52,7 +52,7 @@ class GameController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug}/edit', name: 'admin_game_edit', methods: ['GET','POST'])]
+    #[Route('/{slug}/edit', name: 'game_edit', methods: ['GET','POST'])]
     public function edit(Request $request, Game $game): Response
     {
         $form = $this->createForm(AdminGameType::class, $game);
