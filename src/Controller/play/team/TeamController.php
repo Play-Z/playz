@@ -65,6 +65,7 @@ class TeamController extends AbstractController
             $entityManager->persist($team);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Votre équipe a bien été créer !');
             return $this->redirectToRoute('team_show', ['slug' => $team->getSlug()], Response::HTTP_SEE_OTHER);
         }
 
@@ -103,7 +104,7 @@ class TeamController extends AbstractController
             $entityManager->flush();
             $this->addFlash(
                 'success',
-                "L'équipe a bien été modifier"
+                "Votre équipe a bien été modifier"
             );
             return $this->redirectToRoute('team_show', ['slug' => $team->getSlug()], Response::HTTP_SEE_OTHER);
         }
@@ -134,7 +135,7 @@ class TeamController extends AbstractController
             $entityManager->flush();
             $this->addFlash(
                 'success',
-                "L'équipe a bien été modifier"
+                "Les membres de votre équipe ont bien été modifier"
             );
             return $this->redirectToRoute('team_show', ['slug' => $team->getSlug()], Response::HTTP_SEE_OTHER);
         }
@@ -158,6 +159,7 @@ class TeamController extends AbstractController
             }
             $entityManager->remove($team);
             $entityManager->flush();
+            $this->addFlash('success', 'Votre équipe a bien été supprimer !');
         }
 
         return $this->redirectToRoute('team_index', [], Response::HTTP_SEE_OTHER);
