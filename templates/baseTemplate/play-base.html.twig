@@ -1,64 +1,19 @@
 {% extends 'baseTemplate/base.html.twig' %}
 
 {% block body %}
-<nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-800">
-    <div class="container mx-auto flex flex-wrap items-center justify-between">
-        <a href="/" class="flex">
-            <h1>PlayZ</h1>
-        </a>
-        <div class="hidden md:flex justify-between items-center w-full md:w-auto md:order-1" id="mobile-menu-2">
-            <ul class="flex-col md:flex-row flex md:space-x-8 mt-4 md:mt-0 md:text-sm md:font-medium">
-                <li>
-                    <a href="{{ path('dashboard') }}" class="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-blue-700" aria-current="page">Découvrir</a>
-                </li>
-                <li>
-                    <a href="{{ path('tournament_index') }}" class="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-blue-700" aria-current="page">Parcourir les tournois</a>
-                </li>
-                <li>
-                    <a href="{{ path('team_index') }}" class="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-blue-700" aria-current="page">Parcourir les equipes</a>
-                </li>
-                <li>
-                    <a href="{{ path('user_profile_index') }}" class="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-blue-700" aria-current="page">Parcourir les joueurs</a>
-                </li>
-                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                <li>
-                    <a href="#" class="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-blue-700">Mes tournois</a>
-                </li>
-                <li>
-                    <a href="#" class="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-blue-700">Mes matchs</a>
-                </li>
-                {% endif %}
-                <li>
-                    <a href="{{ path('tournament_dashboard') }}" class="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-blue-700">Organiser</a>
-                </li>
-            </ul>
-        </div>
-        <div class="ml-10 flex items-baseline space-x-4">
-            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                <a href="{{ path('user_profile_show', {'slug': app.user.slug} ) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Profil</a>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('admin_dashboard' ) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Pannel Administrateur</a>
-                {% endif %}
-                <a href="{{ path('user_account') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Paramètres</a>
-                {% if app.user.team is defined and app.user.team is not null %}
-                    <a href="{{ path('team_show', {'slug': app.user.team.slug}) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Mon équipe</a>
-                {% endif %}
-                <a href="{{ path('app_logout') }}" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Se deconnecter</a>
-            {% else %}
-                <a href="{{ path('app_register') }}" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">S'inscrire</a>
-                <a href="{{ path('app_login') }}" class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">Se connecter</a>
-            {% endif %}
-        </div>
-    </div>
-</nav>
-    {% block content %}
 
-    {% endblock %}
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="flash-{{ label }}">
-                {{ message }}
-            </div>
+{{ include('components/navbar-play.html.twig') }}
+    <div class="relative">
+        {% block content %}
+
+        {% endblock %}
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="flash-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
+    </div>
+{{ include('components/footer.html.twig') }}
 {% endblock %}
