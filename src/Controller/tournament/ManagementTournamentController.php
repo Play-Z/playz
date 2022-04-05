@@ -44,7 +44,8 @@ class ManagementTournamentController extends AbstractController
             $tournamentService->createMatchesForATournament($tournament->getMaxTeamParticipant(), $tournament, false);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($tournament);
-            //$entityManager->flush();
+            $entityManager->flush();
+            $this->addFlash('success', 'Votre tournoi a bien été créer !');
 
             return $this->redirectToRoute('tournament_dashboard', [], Response::HTTP_CREATED);
         }
@@ -123,7 +124,7 @@ class ManagementTournamentController extends AbstractController
             $em->persist($tournamentMatch);
             $em->flush();
 
-            $this->addFlash('success','Match victory has been set successfully !');
+            $this->addFlash('success','Le vainqueur du match a été établi avec succès !');
             return $this->redirectToRoute('tournament_edit',[
                 'slug' => $tournamentMatch->getTournaments()->getSlug()
             ]) ;

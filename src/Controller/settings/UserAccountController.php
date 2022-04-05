@@ -35,6 +35,7 @@ class UserAccountController extends AbstractController
 
                 $user->setPassword($encodedPassword);
                 $this->getDoctrine()->getManager()->flush();
+                $this->addFlash('success', 'Votre mot de passe a bien été modifié !');
             }
         }
         else{
@@ -44,6 +45,7 @@ class UserAccountController extends AbstractController
                 if ($emailForm->get('password')->getData() == $user->getPassword()){
                     $user->setEmail($emailForm->get('email')->getData());
                     $this->getDoctrine()->getManager()->flush();
+                    $this->addFlash('success', 'Votre email a bien été modifié !');
                 }
             }
         }

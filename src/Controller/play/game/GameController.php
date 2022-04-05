@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\play;
+namespace App\Controller\play\game;
 
 use App\Entity\Game;
 use App\Repository\GameRepository;
