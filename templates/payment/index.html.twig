@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<title>Hello PaymentController!</title>
+
+<!-- client id = AfacXPAMghvRJMdVwY_2C_yvYE92wK2ygsIROGyc3m02m8Dup3i1mtL--gOfx8jE8dkVpyng8REoXNz7 -->
+<script src="https://www.paypal.com/sdk/js?client-id=AfacXPAMghvRJMdVwY_2C_yvYE92wK2ygsIROGyc3m02m8Dup3i1mtL--gOfx8jE8dkVpyng8REoXNz7&currency=EUR"></script>
+
+{% block body %}
+
+    <style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+
+    <!-- Set up a container element for the button -->
+{#    {% if not is_granted("ROLE_ADMIN")  %}#}
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED")  %}
+            <div id="paypal-button-container"></div>
+            <div>Valeur de l'abonnement premium mensuel : {{ priceMonth }} €</div>
+        {% endif %}
+{#    {% endif %}#}
+{#    <div>Valeur de l'abonnement premium annuel : {{ priceYear }} €</div>#}
+    {% set paymentSuccess = true %}
+
+    <script>
+        paypal.Buttons({
+            // Création de la transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            /* Valeur du paiement */
+                            value: {{ priceMonth }}
+                        }
+                    }]
+                });
+            },
+
+            // Finalisation du paiement
+            onApprove: async function(data, actions) {
+                return actions.order.capture().then(function(orderData) {
+                    var transaction = orderData.purchase_units[0].payments.captures[0];
+                    console.log(transaction.id)
+                    console.log( actions)
+                    console.log(orderData.id)
+                    alert('{{ app.user.username }}, votre transaction a bien été effectué')
+                    window.location.href = `./paymentSuccess/${orderData.id}`
+                    // alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+                    // When ready to go live, remove the alert and show a success message within this page. For example:
+                    // var element = document.getElementById('paypal-button-container');
+                    // element.innerHTML = '';
+                    // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                    // Or go to another URL:  actions.redirect('thank_you.html');
+                });
+            }
+        }).render('#paypal-button-container');
+
+    </script>
+
+</div>
+{% endblock %}
