@@ -40,10 +40,33 @@ class TournamentTest extends PantherTestCase
             'tournament[startAt]'=> new \DateTime() ,
             'tournament[startInscriptionAt]' => new \DateTime('2022-01-01 15:00:00')
         ]) ;
+        $crawl = $client->request('GET','/tournament/') ;
+        $this->assertSame('ODT Tournament creation', $crawl->filter("#odt-tournament-creation")->text());
+
+    }
+
+    /**
+     * @depends testConnexionAdmin
+     */
+    public function testShowTournament() {
+        $client = static::createPantherClient();
+        $client->manage()->window()->maximize() ;
 
         $crawl = $client->request('GET','/play/tournament/') ;
+        $this->assertSame('ODT Tournament creation', $crawl->filter("#odt-tournament-creation")->text());
 
+    }
 
+    /**
+     * @depends  testConnexionAdmin
+     */
+    public function testAnnulationTournament() {
+        $client = static::createPantherClient();
+        $client->manage()->window()->maximize() ;
+
+        $client->request('GET','/tournament') ;
+        $crawler = $client->clickLink('ANNULER') ;
+        $this->assertSame(self::$baseUri.'/tournament/cancel/odt-tournament-creation',$client->getCurrentURL());
     }
 
 }

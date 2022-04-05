@@ -33,7 +33,7 @@
                         {{ tournament.game.name }}
                     {% endif %}
                 </td>
-                <td>{{ tournament.name }}</td>
+                <td id="{{ tournament.slug }}">{{ tournament.name }}</td>
                 <td>{{ tournament.maxTeamParticipant }}</td>
                 <td>{{ tournament.maxTeamPlayers }}</td>
                 <td>{{ tournament.startInscriptionAt | date('d F Y  \\à g:ia') }}</td>
