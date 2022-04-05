@@ -75,11 +75,10 @@ class UserRelationRepository extends ServiceEntityRepository
 
         $query = $entityManager->createQuery(
             '
-                SELECT ur, s, r, t
+                SELECT ur, s, r
                 FROM App\Entity\UserRelation ur
                 INNER JOIN ur.recipient r
                 INNER JOIN ur.sender s
-                INNER JOIN s.team t
                 WHERE ur.id = :id
                 '
         )->setParameters(['id'=> $id]);
@@ -125,7 +124,7 @@ class UserRelationRepository extends ServiceEntityRepository
 
         $query = $entityManager->createQuery(
             '
-                SELECT ur, s, r, t
+                SELECT ur, r, s
                 FROM App\Entity\UserRelation ur
                 INNER JOIN ur.recipient r
                 INNER JOIN ur.sender s
@@ -143,13 +142,13 @@ class UserRelationRepository extends ServiceEntityRepository
 
         $query = $entityManager->createQuery(
             '
-                SELECT ur, s, r, t
+                SELECT ur, r
                 FROM App\Entity\UserRelation ur
                 INNER JOIN ur.recipient r
                 INNER JOIN ur.sender s
-                INNER JOIN s.team t
+                INNER JOIN r.team t
                 WHERE t = :team AND ur.type = :type
-                AND r = :user
+                AND r = :user OR s = :user
                 '
         )->setParameters(['team'=> $team, 'user' => $user, 'type' => 'team']);
 

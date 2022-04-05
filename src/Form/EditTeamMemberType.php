@@ -23,6 +23,7 @@ class EditTeamMemberType extends AbstractType
     {
         $builder
             ->add('roles', ChoiceType::class, [
+                'label' => "Role dans l'équipe :",
                 'required' => true,
                 'multiple' => false,
                 'expanded' => false,

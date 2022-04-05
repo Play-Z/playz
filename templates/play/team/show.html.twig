@@ -53,8 +53,29 @@
                 </td>
             </tr>
             <tr>
+                <th>Tournois</th>
+                {% for tournament in tournaments %}
+                    <tr>
+                        {% if tournament.path %}
+                            <td><a href="{{ path('play_tournament', {'slug': tournament.slug}) }}"><img src="{{ vich_uploader_asset(tournament, 'logo') }}" width="64" height="auto" alt="Logo de {{ tournament.name }}"></a></td>
+                        {% else %}
+                            <td>Pas de logo</td>
+                        {% endif %}
+                        <td><a href="{{ path('play_tournament', {'slug': tournament.slug}) }}">{{ tournament.name }}</a></td>
+            </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="8">Cette équipe n'a participer à aucun tournoi</td>
+                    </tr>
+                {% endfor %}
+            </tr>
+            <tr>
                 <th>Description</th>
                 <td>{{ team.description }}</td>
+            </tr>
+            <tr>
+                <th>Pays</th>
+                <td>{{ team.location|country_name }}</td>
             </tr>
             <tr>
                 <th>Réseaux sociaux</th>

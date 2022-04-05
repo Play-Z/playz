@@ -15,7 +15,9 @@ class ChangeEmailType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class)
-            ->add('password', PasswordType::class)
+            ->add('password', PasswordType::class, [
+                'label' => "Mot de passe"
+            ])
         ;
     }
 

@@ -63,7 +63,7 @@ class Team
     private $public = false;
 
     /**
-     * @ORM\OneToMany(targetEntity=TournamentTeam::class, mappedBy="teams")
+     * @ORM\OneToMany(targetEntity=TournamentTeam::class, mappedBy="team")
      */
     private $tournamentTeams;
 
@@ -123,11 +123,6 @@ class Team
      * @var File $logo
      */
     private $logo;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Game::class, inversedBy="teams")
-     */
-    private $games;
 
     /**
      * @ORM\Column(type="string", length=40, nullable=true)
@@ -332,8 +327,8 @@ class Team
      */
     public function setCreatedBy(User $createdBy): self
     {
-        if (!in_array('ROLE_ADMIN',$createdBy->getRoles())){
-            $createdBy->setRoles((array('ROLE_TEAM_CREATOR')));
+        if (!in_array('ROLE_ADMIN', $createdBy->getRoles()) && !in_array('ROLE_TOURNAMENT_MANAGER', $createdBy->getRoles()) && !in_array('ROLE_TOURNAMENT_ARBITER', $createdBy->getRoles())) {
+            $createdBy->setRoles(['ROLE_TEAM_CREATOR']);
         }
         $createdBy->setTeam($this);
         $this->createdBy = $createdBy;

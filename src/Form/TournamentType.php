@@ -7,6 +7,7 @@ use App\Entity\Tournament;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -24,9 +25,12 @@ class TournamentType extends AbstractType
                 'image_uri' => true,
                 'asset_helper' => true
             ])
-            ->add('name')
+            ->add('name', TextType::class, [
+                'label' => "Nom d'utilisateur"
+            ])
             ->add('description')
             ->add('max_team_participant',ChoiceType::class, [
+                'label' => "Nombre d'équipes dans le tournoi",
                 'choices'=> [
                     4=>4,
                     8=>8,
@@ -36,6 +40,7 @@ class TournamentType extends AbstractType
                 ]
             ])
             ->add('max_team_players',ChoiceType::class, [
+                'label' => "Nombre de joueurs par équipes",
                 'choices'=> [
                     1=>1,
                     2=>2,
@@ -49,6 +54,7 @@ class TournamentType extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
+                'label' => 'Jeu du tournoi'
             ])
             ->add('startAt')
             ->add('startInscriptionAt')

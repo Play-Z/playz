@@ -11,8 +11,8 @@
                 <th>Equipe</th>
                 <th>Créateur</th>
                 <th>Membres</th>
+                <th>Pays</th>
                 <th>Jeu</th>
-                <th>Description</th>
                 <th>Visibilité équipe</th>
                 <th>Equipe esport officielle</th>
                 <th></th>
@@ -35,6 +35,7 @@
                             <a href="{{ path('user_profile_show', {'slug': user.slug}) }}">{{ user.username }}</a>
                         {% endfor %}
                 </td>
+                <td>{{ team.location|country_name }}</td>
                 <td>
                 {% if team.game is defined and not null %}
                     {% if team.game.path %}
@@ -44,7 +45,6 @@
                     {% endif %}
                 {% endif %}
                 </td>
-                <td>{{ team.description }}</td>
                 <td>{{ team.public ? 'Publique' : 'Privée' }}</td>
                 <td>{{ team.isVerified ? 'Oui' : 'Non' }}</td>
                 <td>

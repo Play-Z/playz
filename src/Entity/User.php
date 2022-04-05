@@ -231,6 +231,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      * @ORM\Column(type="date", nullable=true)
      */
     private $dateSubscribe;
+  
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $age;
+
+    /**
+     * @ORM\Column(type="string", length=30, nullable=true)
+     */
+    private $gender;
 
     /**
      * @param UploadedFile $image
@@ -632,7 +642,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     public function setDateSubscribe(?\DateTimeInterface $dateSubscribe): self
     {
         $this->dateSubscribe = $dateSubscribe;
+    }
+  
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
 
+    public function setAge(?int $age): self
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(?string $gender): self
+    {
+        $this->gender = $gender;
+      
         return $this;
     }
 }

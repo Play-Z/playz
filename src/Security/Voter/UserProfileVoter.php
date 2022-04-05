@@ -14,6 +14,8 @@ class UserProfileVoter extends Voter
     const EDIT = 'edit';
     const VIEW = 'view';
     const INSCRIPTION = 'inscription' ;
+    const EDITINSCRIPTION = 'editInscription';
+    const DELETEINSCRIPTION = 'deleteInscription';
 
     private $security;
     private SecurityService $securityService;
@@ -29,7 +31,7 @@ class UserProfileVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::EDIT, self::VIEW, self::INSCRIPTION]) && $subject instanceof \App\Entity\User;
+        return in_array($attribute, [self::EDIT, self::VIEW, self::INSCRIPTION, self::EDITINSCRIPTION, self::DELETEINSCRIPTION]) && $subject instanceof \App\Entity\User;
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
@@ -53,8 +55,11 @@ class UserProfileVoter extends Voter
             case self::EDIT:
                 return $this->canEdit($targetUser, $user);
             case self::INSCRIPTION :
-                return $this->canRegister( $user) ;
-
+                return $this->canRegister($user);
+            case self::EDITINSCRIPTION :
+                return $this->canEditRegister($user);
+            case self::DELETEINSCRIPTION :
+                return $this->canDeleteRegister($user);
         }
 
         return false;
@@ -73,5 +78,15 @@ class UserProfileVoter extends Voter
     private function canRegister(User $user)
     {
         return $this->securityService->isGranted($user,'ROLE_TEAM_CREATOR');
+    }
+
+    private function canEditRegister(User $user)
+    {
+        return self::canRegister($user);
+    }
+
+    private function canDeleteRegister(User $user)
+    {
+        return self::canEditRegister($user);
     }
 }

@@ -4,6 +4,9 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,21 +25,53 @@ class UserProfileType extends AbstractType
                 'image_uri' => true,
                 'asset_helper' => true,
             ])
-            ->add('username')
-            ->add('firstname')
-            ->add('lastname')
-            ->add('country')
+            ->add('username', TextType::class, [
+                'label' => "Nom d'utilisateur"
+            ])
+            ->add('firstname', TextType::class, [
+                'label' => "Prénom"
+            ])
+            ->add('lastname', TextType::class, [
+                'label' => "Nom de famille"
+            ])
+            ->add('country', CountryType::class, [
+                'label' => "Pays"
+            ])
+            ->add('age', IntegerType::class, [
+                'attr' => [
+                    'min' => '12',
+                    'max' => '100'
+                ],
+                'label' => "Age"
+            ])
+            ->add('gender', ChoiceType::class, [
+                'multiple' => false,
+                'expanded' => false,
+                'choices'  => [
+                    'Homme' => 'Homme',
+                    'Femme' => 'Femme',
+                ],
+                'label' => 'Genre :'
+            ])
             ->add('description', TextType::class)
-            ->add('twitterUsername')
-            ->add('twitchUsername')
-            ->add('redditUsername')
+            ->add('twitterUsername', TextType::class, [
+                'label' => "Nom d'utilisateur Twitter"
+            ])
+            ->add('twitchUsername', TextType::class, [
+                'label' => "Nom d'utilisateur Twitch"
+            ])
+            ->add('redditUsername', TextType::class, [
+                'label' => "Nom d'utilisateur Reddit"
+            ])
             ->add('youtubeUsername', TextType::class, [
                 'label' => "Le nom contenu dans l'url personnalisée de votre chaine youtube (youtube.com/c/YouTubeCreators)",
                 'attr' => [
                     'placeholder' => "YoutubeCreators"
                 ]
             ])
-            ->add('discordServerToken')
+            ->add('discordServerToken', TextType::class, [
+                'label' => "Code d'invitation de votre serveur Discord"
+            ])
         ;
     }
 

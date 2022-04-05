@@ -52,6 +52,7 @@ class TeamFixtures extends Fixture implements DependentFixtureInterface
                             'firstname' => $player['first_name'],
                             'lastname' => $player['last_name'],
                             'country' => $player['nationality'],
+                            'age' => $player['age'],
                             'roles' => ['ROLE_TEAM_MEMBER'],
                             'redditUsername' => strtolower(str_replace(' ', '-', $player['name'])),
                             'twitchUsername' => strtolower(str_replace(' ', '-', $player['name'])),
@@ -75,6 +76,7 @@ class TeamFixtures extends Fixture implements DependentFixtureInterface
                                     'firstname' => $players[0]['first_name'],
                                     'lastname' => $players[0]['last_name'],
                                     'country' => $players[0]['nationality'],
+                                    'age' => $players[0]['age'],
                                     'redditUsername' => strtolower(str_replace(' ', '-', $players[0]['name'])),
                                     'twitchUsername' => strtolower(str_replace(' ', '-', $players[0]['name'])),
                                     'twitterUsername' => strtolower(str_replace(' ', '-', $players[0]['name'])),
@@ -85,7 +87,7 @@ class TeamFixtures extends Fixture implements DependentFixtureInterface
                                 'slug' => $data[$i]['current_videogame']['slug']
                             ]
                         ),
-                        'user' => $users,
+                        'users' => $users,
                         'redditUsername' =>  strtolower(str_replace(' ', '-', $data[$i]['name'])),
                         'twitchUsername' => strtolower(str_replace(' ', '-', $data[$i]['name'])),
                         'twitterUsername' => strtolower(str_replace(' ', '-', $data[$i]['name'])),

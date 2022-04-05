@@ -4,11 +4,15 @@ namespace App\Form;
 
 use App\Entity\Game;
 use App\Entity\Team;
+use App\Entity\User;
 use App\Repository\UserRelationRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
@@ -27,18 +31,21 @@ class CreateTeamType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $friends = $options['friends'];
 
-        $currentUser = $this->security->getUser();
-        $friendsRelation = $this->userRelationRepository->findAllFriendsOfUser($currentUser);
-        $friends = [];
+        if (!empty($friends)){
+            $builder->add('users', EntityType::class, [
+                'class' => User::class ,
+                'choices' => $friends,
 
-        foreach ($friendsRelation as $userRelation){
-            if($userRelation->getSender() !== $currentUser){
-                $friends[] = $userRelation->getSender();
-            }
-            elseif($userRelation->getRecipient() !== $currentUser){
-                $friends[] = $userRelation->getRecipient();
-            }
+                // uses the User.username property as the visible option string
+                'choice_label' => 'username',
+
+                // used to render a select box, check boxes or radios
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'Amis à inviter dans votre équipe'
+            ]);
         }
 
         $builder
@@ -50,18 +57,8 @@ class CreateTeamType extends AbstractType
                 'image_uri' => true,
                 'asset_helper' => true
             ])
-            ->add('name')
-            ->add('user', ChoiceType::class, [
-                // looks for choices from this entity
-                'choices' => $friends,
-
-                // uses the User.username property as the visible option string
-                'choice_label' => 'username',
-
-                // used to render a select box, check boxes or radios
-                 'multiple' => true,
-                 'expanded' => true,
-                 'data' => $friends,
+            ->add('name', TextType::class, [
+                'label' => "Nom d'équipe"
             ])
             ->add('game', EntityType::class, [
                 // looks for choices from this entity
@@ -73,16 +70,23 @@ class CreateTeamType extends AbstractType
                 // used to render a select box, check boxes or radios
                 'multiple' => false,
                 'expanded' => false,
+                'label' => "Jeu principal"
             ])
-            ->add('public')
+            ->add('public', CheckboxType::class, [
+                'label'    => 'Equipe publique ?',
+                'required' => false
+            ])
             ->add('emplacement', IntegerType::class, [
                 'attr' => [
                     'min' => '1',
                     'max' => '10'
                 ],
+                'label' => "Nombre d'emplacements dans l'équipe"
+            ])
+            ->add('location', CountryType::class, [
+                'label' => "Pays"
             ])
             ->add('description')
-            ->add('logo')
         ;
     }
 
@@ -90,6 +94,7 @@ class CreateTeamType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Team::class,
+            'friends' => User::class,
         ]);
     }
 }
