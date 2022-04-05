@@ -149,10 +149,10 @@ docker-compose exec php php bin/console make:auth
 #### Contrôle d'accèss par role
 https://symfony.com/doc/current/security.html#securing-controllers-and-other-code
 
-####Validation des formulaires avec les Assert
+#### Validation des formulaires avec les Assert
 https://symfony.com/doc/current/validation.html
 
-####Création de test d'accessibilité avec les voters
+#### Création de test d'accessibilité avec les voters
 https://symfony.com/doc/current/security/voters.html
 
 ## Gestion des messages flash
