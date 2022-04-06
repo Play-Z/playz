@@ -43,7 +43,7 @@
                                 {% if app.user.team is defined and app.user.team is not null %}
                                     <a href="{{ path('team_show', {'slug': app.user.team.slug}) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Mon équipe</a>
                                 {% endif %}
-                                <a href="{{ path('app_logout') }}" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Se deconnecter</a>
+                                <a href="{{ path('app_logout') }}" id="logout-link" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Se deconnecter</a>
                             {% else %}
                                 <a href="{{ path('app_register') }}" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">S'inscrire</a>
                                 <a href="{{ path('app_login') }}" class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">Se connecter</a>

@@ -29,4 +29,16 @@ class TeamTest extends PantherTestCase
         $this->assertSame(self::$baseUri.'/play/team/', $pantherClient->getCurrentURL());
         $this->assertSame('Equipes', $crawler->filter('#team-index-title')->text());
     }
+
+    public function testLogout()
+    {
+        $pantherClient = static::createPantherClient();
+        $pantherClient->manage()->window()->maximize();
+        $pantherClient->request('GET', '/');
+
+        $crawler = $pantherClient->clickLink('Se deconnecter');
+
+        $this->assertSame(self::$baseUri.'/', $pantherClient->getCurrentURL());
+        $this->assertSelectorNotExists('#logout-link');
+    }
 }

@@ -52,4 +52,53 @@ class UserTest extends PantherTestCase
         $this->assertSame(self::$baseUri.'/', $pantherClient->getCurrentURL());
         $this->assertSelectorNotExists('#logout-link');
     }
+
+    public function testLoginAdmin()
+    {
+        $pantherClient = static::createPantherClient();
+        $pantherClient->request('GET', '/login');
+        $pantherClient->submitForm('Sign in', ['email' => 'admin.test@playz.com', 'password' => 'test']);
+
+        $this->assertSame(self::$baseUri.'/admin/', $pantherClient->getCurrentURL());
+    }
+
+    /**
+     * @depends testLoginAdmin
+     */
+    public function testAdminEditUserError()
+    {
+        $pantherClient = static::createPantherClient();
+        $pantherClient->manage()->window()->maximize();
+
+        $crawler = $pantherClient->clickLink('Utilisateurs');
+        $crawler = $pantherClient->clickLink('Créer un utilisateur');
+
+        $pantherClient->submitForm('Sauvegarder', ['create_user[email]' => 'admin@playz', 'create_user[username]' => 'AdminTest', 'create_user[password][first]' => 'testtest', 'create_user[password][second]' => 'testtest']);
+
+        $crawler = $pantherClient->request('GET', '/admin/user/new');
+        $this->assertSame(self::$baseUri.'/admin/user/new', $pantherClient->getCurrentURL());
+        //$this->assertSelectorTextContains('.text-red-700', "Cette valeur n'est pas une adresse email valide.");
+    }
+
+    public function testAdminLogout()
+    {
+        $pantherClient = static::createPantherClient();
+        $pantherClient->manage()->window()->maximize();
+        $pantherClient->request('GET', '/');
+
+        $crawler = $pantherClient->clickLink('Se deconnecter');
+
+        $this->assertSame(self::$baseUri.'/', $pantherClient->getCurrentURL());
+        $this->assertSelectorNotExists('#logout-link');
+    }
+
+    public function testFalseLogUser()
+    {
+        $pantherClient = static::createPantherClient();
+        $pantherClient->manage()->window()->maximize();
+        $pantherClient->request('GET', '/login');
+        $pantherClient->submitForm('Sign in', ['email' => 'usertestfalse@playz.com', 'password' => 'test']);
+
+        $this->assertSelectorTextContains('.alert-danger', 'Identifiants invalides.');
+    }
 }
