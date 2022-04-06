@@ -53,6 +53,9 @@ class UserTest extends PantherTestCase
         $this->assertSelectorNotExists('#logout-link');
     }
 
+    /**
+     * @depends testLogout
+     */
     public function testLoginAdmin()
     {
         $pantherClient = static::createPantherClient();
@@ -80,6 +83,9 @@ class UserTest extends PantherTestCase
         //$this->assertSelectorTextContains('.text-red-700', "Cette valeur n'est pas une adresse email valide.");
     }
 
+    /**
+     * @depends testLoginAdmin
+     */
     public function testAdminLogout()
     {
         $pantherClient = static::createPantherClient();
@@ -92,6 +98,9 @@ class UserTest extends PantherTestCase
         $this->assertSelectorNotExists('#logout-link');
     }
 
+    /**
+     * @depends testLogout
+     */
     public function testFalseLogUser()
     {
         $pantherClient = static::createPantherClient();

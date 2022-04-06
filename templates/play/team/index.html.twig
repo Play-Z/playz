@@ -20,7 +20,7 @@
         </thead>
         <tbody>
         {% for team in teams %}
-            <tr>
+            <tr id="team-{{ team.name }}">
                 <td>
                     <a href="{{ path('team_show', {'slug': team.slug}) }}">
                         {% if team.path %}
@@ -63,7 +63,7 @@
     </table>
 
     {% if app.user and app.user.team is null or not app.user %}
-        <a href="{{ path('team_new') }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Creer une équipe</a>
+        <a href="{{ path('team_new') }}" id="create-team-link" class="text-indigo-500 background-transparent font-bold px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Créer une équipe</a>
     {% endif %}
 
 {% endblock %}

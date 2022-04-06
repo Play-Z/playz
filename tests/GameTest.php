@@ -50,7 +50,7 @@ class GameTest extends PantherTestCase
     }
 
     /**
-     * @depends testLoginAdmin
+     * @depends testAdminCreateGame
      */
     public function testAdminShowGame(){
         $pantherClient = static::createPantherClient();
@@ -68,7 +68,7 @@ class GameTest extends PantherTestCase
     }
 
     /**
-     * @depends testLoginAdmin
+     * @depends testAdminCreateGame
      */
     public function testAdminEditGame(){
         $pantherClient = static::createPantherClient();
@@ -87,7 +87,7 @@ class GameTest extends PantherTestCase
     }
 
     /**
-     * @depends testLoginAdmin
+     * @depends testAdminCreateGame
      */
     public function testAdminDeleteGame(){
         $pantherClient = static::createPantherClient();

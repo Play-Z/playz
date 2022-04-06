@@ -3,7 +3,7 @@
 {% block title %}Equipe {{ team.name }}{% endblock %}
 
 {% block content %}
-    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">{{ team.name }}</h1>
+    <h1 id="team-title" class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">{{ team.name }}</h1>
 
     <table class="table">
         <tbody>
@@ -140,7 +140,7 @@
 
     {% if is_granted('ROLE_USER') %}
         {% if app.user.team == team %}
-            <a class="btn text-red-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_leave', {'slug': team.slug}) }}">Quitter l'équipe</a>
+            <a id="leave-team" class="btn text-red-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_leave', {'slug': team.slug}) }}">Quitter l'équipe</a>
         {% endif %}
     {% endif %}
 
