@@ -106,6 +106,28 @@ class ManagementTournamentController extends AbstractController
             $em = $this->getDoctrine()->getManager() ;
             $tournamentMatch->setStatus(true);
             $parentMatch =  $tournamentMatch->getMatchParent() ;
+
+            if($parentMatch == null) {
+                if($tournamentMatch->getTeamOneWin() == true) {
+                    $team =  $tournamentMatch->getTeamOne()->getTeam() ;
+                    $team->setNbWin($team->getNbWin() + 1);
+                    foreach ($team->getUsers() as $user) {
+                        $user->setNbWin($user->getNbWin()+1);
+                        $em->persist($user);
+                    }
+                    $em->persist($team);
+                } else
+                {
+                    $team =  $tournamentMatch->getTeamTwo()->getTeam() ;
+                    $team->setNbWin($team->getNbWin() + 1);
+                    foreach ($team->getUsers() as $user) {
+                        $user->setNbWin($user->getNbWin()+1);
+                        $em->persist($user);
+                    }
+                    $em->persist($team);
+                }
+            }
+
             if($parentMatch->getTeamOne() != null) {
                 if($tournamentMatch->getTeamOneWin() == true)
                     $parentMatch->setTeamTwo($tournamentMatch->getTeamOne());
