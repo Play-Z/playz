@@ -243,6 +243,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     private $gender;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nbParticipation;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nbWin;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $elo;
+
+    /**
      * @param UploadedFile $image
      */
     public function setImage(?File $image = null)
@@ -263,6 +278,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     {
         $this->sendedUserRelations = new ArrayCollection();
         $this->receivedUserRelations = new ArrayCollection();
+        $this->nbWin = 0 ;
+        $this->nbParticipation = 0 ;
+        $this->elo = 2  ;
     }
 
     public function getId(): ?int
@@ -665,6 +683,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     {
         $this->gender = $gender;
       
+        return $this;
+    }
+
+    public function getNbParticipation(): ?int
+    {
+        return $this->nbParticipation;
+    }
+
+    public function setNbParticipation(?int $nbParticipation): self
+    {
+        $this->nbParticipation = $nbParticipation;
+
+        return $this;
+    }
+
+    public function getNbWin(): ?int
+    {
+        return $this->nbWin;
+    }
+
+    public function setNbWin(?int $nbWin): self
+    {
+        $this->nbWin = $nbWin;
+
+        return $this;
+    }
+
+    public function getElo(): ?int
+    {
+        return $this->elo;
+    }
+
+    public function setElo(?int $elo): self
+    {
+        $this->elo = $elo;
+
         return $this;
     }
 }
