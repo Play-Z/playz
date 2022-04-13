@@ -41,7 +41,8 @@ class TournamentController extends AbstractController
         return $this->render('play/tournament/show.html.twig',[
             'tournament' => $tournament,
             'inscription' => $tournament->getStartInscriptionAt() <= new \DateTime()  &&
-                !$tournament->getStatus()  && count($tournament->getEquipes()) < $tournament->getMaxTeamParticipant()
+                !$tournament->getStatus()  && count($tournament->getEquipes()) < $tournament->getMaxTeamParticipant() &&
+                $tournament->getStartAt()->sub(new \DateInterval('P2D')) > new \DateTime()
             ,
             'equipes' => $tournament->getEquipes(),
             'matches' => $matches
@@ -174,6 +175,12 @@ class TournamentController extends AbstractController
     #[IsGranted(UserProfileVoter::DELETEINSCRIPTION, 'user')]
     public function deleteInscription(Tournament $tournament, User $user, Request $request): Response
     {
+        if( $tournament->getStartAt()->sub(new \DateInterval('P2D')) <= new \DateTime() ) {
+            $this->addFlash('error','Il est trop tard pour se dé-inscrire');
+            return $this->redirectToRoute('play_tournament', [
+                'slug' => $tournament->getSlug()
+            ]);
+        }
         $userTeam = $user->getTeam();
         $tournamentTeams = $tournament->getEquipes()->getValues();
 

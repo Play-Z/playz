@@ -28,7 +28,9 @@
 
                     <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('play_tournament', {'slug': tournament.slug}) }}">Afficher</a>
                     {% if tournament.status == false %}
-                        Le tournoi est terminé.
+                        {% if tournament.status is not null %}
+                            Le tournoi est terminé.
+                        {% endif %}
                     {% endif %}
                     {%  if tournament.status is null %}
                         <a href="{{ path('tournament_cancel',{'slug': tournament.slug}) }}" style="display: block; padding: 2px 5px ; border-radius: 20px ; background-color: red; color: whitesmoke ; text-align: center;">ANNULER</a>
