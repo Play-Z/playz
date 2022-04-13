@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Team;
+use App\Entity\Tournament;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -24,6 +25,19 @@ class ScoreService
      */
     public function getPlayerOrTeamRatio(Team|User $entry) {
         return $entry->getNbParticipation() == 0 ? null : ( $entry->getNbWin() / $entry->getNbParticipation() ) * 100 ;
+    }
+
+    public function getEloAvg(Tournament $tournament) {
+        $teams = $tournament->getEquipes()->getValues() ;
+
+       $elos = [] ;
+        foreach ($teams as $team) {
+            $elos[$team->getTeam()->getName()]["team_elo"] = $team->getTeam()->getElo();
+            foreach ($team->getTeam()->getUsers() as $player) {
+                $elos[$team->getTeam()->getName()][] = $player->getElo() ;
+            }
+        }
+        dd($elos) ;
     }
 
 }

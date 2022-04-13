@@ -48,7 +48,7 @@ class Tournament
     private $price;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $status;
 
@@ -144,7 +144,6 @@ class Tournament
     public function __construct()
     {
         $this->tournamentMatches = new ArrayCollection();
-        $this->setStatus(false) ;
 
     }
 

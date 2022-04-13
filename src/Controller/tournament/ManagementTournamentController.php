@@ -75,6 +75,9 @@ class ManagementTournamentController extends AbstractController
             ]);
         } else {
 
+            if($tournament->getStatus() == false) {
+                return $this->redirectToRoute('tournament_dashboard') ;
+            }
 
             return $this->renderForm('tournament/edit.html.twig', [
                 'matches' => $tournamentService->getMatchesOfEtape($tournament),
@@ -103,12 +106,15 @@ class ManagementTournamentController extends AbstractController
         $form = $this->createForm(TournamentMatchSetVictoryType::class,$tournamentMatch) ;
         $form->handleRequest($request) ;
         if($form->isSubmitted() && $form->isValid()  ) {
+
             $em = $this->getDoctrine()->getManager() ;
             $tournamentMatch->setStatus(true);
             $parentMatch =  $tournamentMatch->getMatchParent() ;
 
             if($parentMatch == null) {
+                $tournamentMatch->getTournaments()->setStatus(false) ;
                 if($tournamentMatch->getTeamOneWin() == true) {
+
                     $team =  $tournamentMatch->getTeamOne()->getTeam() ;
                     $team->setNbWin($team->getNbWin() + 1);
                     foreach ($team->getUsers() as $user) {
@@ -127,22 +133,24 @@ class ManagementTournamentController extends AbstractController
                     $em->persist($team);
                 }
             }
-
-            if($parentMatch->getTeamOne() != null) {
-                if($tournamentMatch->getTeamOneWin() == true)
-                    $parentMatch->setTeamTwo($tournamentMatch->getTeamOne());
-                else {
-                    $parentMatch->setTeamTwo($tournamentMatch->getTeamTwo());
+            else {
+                if($parentMatch->getTeamOne() != null) {
+                    if($tournamentMatch->getTeamOneWin() == true)
+                        $parentMatch->setTeamTwo($tournamentMatch->getTeamOne());
+                    else {
+                        $parentMatch->setTeamTwo($tournamentMatch->getTeamTwo());
+                    }
+                } else {
+                    if($tournamentMatch->getTeamOneWin() == true)
+                        $parentMatch->setTeamOne($tournamentMatch->getTeamOne());
+                    else {
+                        $parentMatch->setTeamOne($tournamentMatch->getTeamTwo());
+                    }
                 }
-            } else {
-                if($tournamentMatch->getTeamOneWin() == true)
-                    $parentMatch->setTeamOne($tournamentMatch->getTeamOne());
-                else {
-                    $parentMatch->setTeamOne($tournamentMatch->getTeamTwo());
-                }
+                $em->persist($parentMatch);
             }
 
-            $em->persist($parentMatch);
+
             $em->persist($tournamentMatch);
             $em->flush();
 

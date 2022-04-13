@@ -72,8 +72,8 @@ class TournamentService
 
         $teams = $tournament->getEquipes()->getValues() ;
         foreach ($teams as $team) {
-            $team->setNbParticipation($team->getNbParticipation()+1);
-            foreach ($team->getUsers() as $user) {
+            $team->getTeam()->setNbParticipation($team->getTeam()->getNbParticipation()+1);
+            foreach ($team->getTeam()->getUsers() as $user) {
                 $user->setNbParticipation($user->getNbParticipation()+1);
             }
         }
