@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserProfileType;
 use App\Repository\UserRepository;
 use App\Security\Voter\UserProfileVoter;
+use App\Service\ScoreService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +25,7 @@ class UserProfileController extends AbstractController
     }
 
     #[Route('/{slug}', name: 'user_profile_show', methods: ['GET'])]
-    public function show(User $user): Response
+    public function show(User $user, ScoreService $scoreService): Response
     {
         if ($user->getIsClosed() !== true){
 
@@ -38,6 +39,7 @@ class UserProfileController extends AbstractController
             return $this->render('play/user/show.html.twig', [
                 'tournaments' => $tournaments,
                 'user' => $user,
+                'ratio' => $scoreService->getPlayerOrTeamRatio($user)
             ]);
         }
         else{

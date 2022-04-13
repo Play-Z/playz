@@ -11,6 +11,8 @@
                 <th>Username</th>
                 <th>Equipe</th>
                 <th>Jeu</th>
+                <th>Ratio</th>
+                <th>Elo</th>
                 <th>Pays</th>
                 <th>Age</th>
                 <th>Genre</th>
@@ -36,6 +38,16 @@
                 {% else %}
                     <td>Aucun jeu</td>
                 {% endif %}
+                <td>
+                    {% if user.nbParticipation > 0 %}
+                        <td>{{ (user.nbWin / user.nbParticipation)*100 }}% Victoire</td>
+                    {% else %}
+                     <td>aucune statistique disponible</td>
+                    {% endif %}
+                </td>
+                <td>
+                    A venir ...
+                </td>
                 <td>{{ user.country|country_name }}</td>
                 <td>{{ user.age }}</td>
                 <td>{{ user.gender }}</td>

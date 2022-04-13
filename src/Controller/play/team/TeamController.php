@@ -8,6 +8,7 @@ use App\Form\EditTeamType;
 use App\Form\CreateTeamType;
 use App\Repository\UserRelationRepository;
 use App\Repository\UserRepository;
+use App\Service\ScoreService;
 use App\Service\TeamService;
 use App\Repository\TeamRepository;
 use App\Security\Voter\TeamVoter;
@@ -76,7 +77,7 @@ class TeamController extends AbstractController
     }
 
     #[Route('/{slug}', name: 'team_show', methods: ['GET'])]
-    public function show(Team $team): Response
+    public function show(Team $team, ScoreService $scoreService): Response
     {
         $tournamentTeams = $team->getTournamentTeams()->getValues();
         $tournaments = [];
@@ -89,6 +90,7 @@ class TeamController extends AbstractController
         return $this->render('play/team/show.html.twig', [
             'team' => $team,
             'tournaments' => $tournaments,
+            'ratio' => $scoreService->getPlayerOrTeamRatio($team)
         ]);
     }
 

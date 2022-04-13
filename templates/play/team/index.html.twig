@@ -13,6 +13,8 @@
                 <th>Membres</th>
                 <th>Pays</th>
                 <th>Jeu</th>
+                <th>Ratio</th>
+                <th>Elo</th>
                 <th>Visibilité équipe</th>
                 <th>Equipe esport officielle</th>
                 <th></th>
@@ -44,6 +46,16 @@
                         {{ team.game.name }}
                     {% endif %}
                 {% endif %}
+                </td>
+                <td>
+                {% if team.nbParticipation > 0 %}
+                    <td>{{ (team.nbWin / team.nbParticipation)*100 }}% Victoire</td>
+                {% else %}
+                    <td>aucune statistique disponible</td>
+                {% endif %}
+                </td>
+                <td>
+                    A venir ...
                 </td>
                 <td>{{ team.public ? 'Publique' : 'Privée' }}</td>
                 <td>{{ team.isVerified ? 'Oui' : 'Non' }}</td>
