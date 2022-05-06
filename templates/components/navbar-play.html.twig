@@ -1,5 +1,45 @@
+<style>
+    .divider {
+        border-left: 2px ghostwhite solid;
+    }
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    .dropdown button {
+        display: flex;
+        align-items: center;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        min-width: 500px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+
+    .dropdown-content a {
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: flex;
+        align-items: center;
+    }
+    .dropdown-content > div {
+        width: 100%;
+    }
+    .dropdown-content > div > p {
+        text-align: center;
+
+    }
+
+</style>
 <div class="sticky top-0 z-50 min-h-full">
-<nav class="bg-gray-800">
+    <nav class="bg-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
@@ -9,21 +49,52 @@
                     <div class="hidden md:block">
                         <div class="ml-10 flex items-baseline space-x-4">
                             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                            <a href="{{ path('tournament_index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Parcourir les tournois</a>
+                            <div class=" dropdown">
+                                <button class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Parcourir<svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button></button>
+                                <div class="dropdown-content bg-gray-800">
+                                    <div>
+                                        <p class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium">Fonctionnalités</p>
+                                        <ul>
+                                            <li>
+                                                <a href="{{ path('dashboard') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Nos tournois</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ path('tournament_dashboard') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Organiser</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                   <div class="divider">
+                                       <p class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium">Playerz</p>
+                                       <ul>
+                                           <li>
+                                               <a href="{{ path('team_index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Les équipes</a>
+                                           </li>
+                                           <li>
+                                               <a href="{{ path('user_profile_index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Les joueurs</a>
+                                           </li>
+                                       </ul>
+                                   </div>
+                                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                        <div class="divider">
 
-                            <a href="{{ path('team_index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Parcourir les equipes</a>
+                                            <p  class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium">Activitées</p>
 
-                            <a href="{{ path('user_profile_index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Parcourir les joueurs</a>
+                                            <ul>
+                                                <li>
+                                                    <a href="{{ path('user_profile_index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">mes tournois</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ path('user_profile_index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"> mes matchs</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    {% endif %}
 
-                            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                                <a href="{{ path('user_profile_index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Mes tournois</a>
-                                <a href="{{ path('user_profile_index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Mes matchs</a>
-                            {% endif %}
+                                </div>
+                            </div>
 
-
-                            <a href="{{ path('dashboard') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Jouer</a>
-
-                            <a href="{{ path('tournament_dashboard') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Tarifs</a>
+                            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Tarifs</a>
+                            <a href="{{ path('contact_index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Contact</a>
                         </div>
                     </div>
                 </div>
@@ -37,7 +108,7 @@
                             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                                 <a href="{{ path('user_profile_show', {'slug': app.user.slug} ) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Profil</a>
                                 {% if is_granted('ROLE_ADMIN') %}
-                                    <a href="{{ path('admin_dashboard' ) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Pannel Administrateur</a>
+                                    <a href="{{ path('admin_dashboard' ) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Admin</a>
                                 {% endif %}
                                 <a href="{{ path('user_account') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Paramètres</a>
                                 {% if app.user.team is defined and app.user.team is not null %}

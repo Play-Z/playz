@@ -21,6 +21,14 @@
                 <td>{{ team.name }}</td>
             </tr>
             <tr>
+                <th>Ratio</th>
+                {% if ratio != null %}
+                    <td>{{ ratio }}% Victoire</td>
+                {% else %}
+                    <td>aucune statistique disponible</td>
+                {% endif %}
+            </tr>
+            <tr>
                 <th>Equipe esport officielle</th>
                 <td>{{ team.isVerified ? 'Oui' : 'Non' }}</td>
             </tr>

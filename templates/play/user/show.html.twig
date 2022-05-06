@@ -21,6 +21,14 @@
                 <td>{{ user.username }}</td>
             </tr>
             <tr>
+                <th>Ratio</th>
+                {% if ratio != null %}
+                    <td>{{ ratio }}% Victoire</td>
+                {% else %}
+                    <td>aucune statistique disponible</td>
+                {% endif %}
+            </tr>
+            <tr>
                 <th>Tournois</th>
                 {% for tournament in tournaments %}
             <tr>

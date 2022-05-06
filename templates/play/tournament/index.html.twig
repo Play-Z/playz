@@ -20,6 +20,7 @@
         </thead>
         <tbody>
         {% for tournament in tournaments %}
+
             <tr>
                 {% if tournament.path %}
                     <td><img src="{{ vich_uploader_asset(tournament, 'logo') }}" width="64" height="auto" alt="Logo de {{ tournament.name }}"></td>
