@@ -24,6 +24,16 @@
             <th>Description</th>
             <td>{{ game.description }}</td>
         </tr>
+        <tr>
+            <th>Mode de jeux</th>
+            {% if game.gametypes %}
+                {% for type in game.gametypes %}
+                    <td> {{ type.name }} </td>
+                {% endfor %}
+            {% else %}
+                <td>Aucun mode de jeu</td>
+            {% endif %}
+        </tr>
         </tbody>
     </table>
 
