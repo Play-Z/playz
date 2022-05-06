@@ -111,6 +111,11 @@ class Game
     private $teams;
 
     /**
+     * @ORM\OneToMany(targetEntity=GameType::class, mappedBy="game")
+     */
+    private $gameTypes;
+
+    /**
      * @param UploadedFile $logo
      */
     public function setLogo(?File $logo = null)
@@ -131,6 +136,7 @@ class Game
     {
         $this->tournaments = new ArrayCollection();
         $this->teams = new ArrayCollection();
+        $this->gameTypes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -244,6 +250,36 @@ class Game
             // set the owning side to null (unless already changed)
             if ($team->getGame() === $this) {
                 $team->setGame(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|GameType[]
+     */
+    public function getGameTypes(): Collection
+    {
+        return $this->gameTypes;
+    }
+
+    public function addGameType(GameType $gameType): self
+    {
+        if (!$this->gameTypes->contains($gameType)) {
+            $this->gameTypes[] = $gameType;
+            $gameType->setGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGameType(GameType $gameType): self
+    {
+        if ($this->gameTypes->removeElement($gameType)) {
+            // set the owning side to null (unless already changed)
+            if ($gameType->getGame() === $this) {
+                $gameType->setGame(null);
             }
         }
 

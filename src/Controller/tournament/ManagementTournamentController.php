@@ -67,7 +67,7 @@ class ManagementTournamentController extends AbstractController
                 $em->persist($tournament);
                 $em->flush();
                 $this->addFlash('success','Le tournoi a bien été modifié.');
-                $this->redirectToRoute('tournament_dashboard') ;
+                return $this->redirectToRoute('tournament_dashboard') ;
             }
             return $this->renderForm('tournament/edit.html.twig', [
                 'form' => $form,

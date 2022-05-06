@@ -1,0 +1,33 @@
+{% extends 'baseTemplate/admin-base.html.twig' %}
+
+{% block title %}Modes de jeux{% endblock %}
+
+{% block content %}
+    <div class="px-10">
+        <h1>Type de jeux</h1>
+        <div class="grid grid-cols-5 gap-10 ">
+            {% for game in games %}
+
+                <div class="max-w-sm rounded overflow-hidden shadow-lg">
+                    <img class="w-full" width="150" height="150" src="{{ vich_uploader_asset(game, 'logo') }}" alt="Image du jeu : {{ game.name }}">
+                    <div class="px-6 py-4">
+                        <div class="font-bold text-xl mb-2">{{ game.name }}</div>
+                        <p class="text-gray-700 text-base">
+                            {{ game.description }}
+                        </p>
+                    </div>
+                    <div class="px-6 pt-4 pb-2">
+                        {% for type in game.gametypes %}
+                            <span class="inline-block bg-blue-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                                <a href="{{ path('gametype_edit',{game_slug: game.slug, slug: type.slug}) }}" >{{ type.name }}</a>
+                                <a href="{{ path('gametype_delete',{game_slug: game.slug, slug: type.slug}) }}" class=" inline-block px-3 py-1 rounded-full text-red-700 bg-red-200" href="">x</a>
+                            </span>
+                        {% endfor %}
+                    </div>
+                    <a class="px-4" href="{{ path('gametype_add',{slug:game.slug}) }}">Ajouter un mode jeu</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
