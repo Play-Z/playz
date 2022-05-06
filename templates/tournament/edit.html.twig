@@ -17,9 +17,9 @@
             </tr>
         {% for match in matches %}
             <tr>
-                <td>{{  match.getTeamOne().getTeams().name  }}</td>
+                <td>{{  match.getTeamOne().getTeam().name  }}</td>
                 <td><h2>CONTRE    .   </h2></td>
-                <td>{{ match.getTeamTwo().getTeams().name }}</td>
+                <td>{{ match.getTeamTwo().getTeam().name }}</td>
                 <td>
                     {{ match.status ?
                         match.getTeamOneWin() ?

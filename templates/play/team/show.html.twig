@@ -147,4 +147,15 @@
     {% if is_granted('delete', team) %}
         {{ include('play/team/_delete_form.html.twig') }}
     {% endif %}
+
+    <div id="twitch-embed"></div>
+    <script src="https://embed.twitch.tv/embed/v1.js"></script>
+    <script type="text/javascript">
+        new Twitch.Embed("twitch-embed", {
+            width: 750,
+            height: 500,
+            channel: "{{ team.twitchUsername }}",
+            theme: "dark",
+        });
+    </script>
 {% endblock %}
