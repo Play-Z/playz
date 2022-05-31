@@ -175,6 +175,11 @@ class Team
     private $nbWin;
 
     /**
+     * @ORM\OneToMany(targetEntity=Announcement::class, mappedBy="teamAnnouncement")
+     */
+    private $announcements;
+
+    /**
      * @param UploadedFile $logo
      */
     public function setLogo(?File $logo = null)
@@ -198,6 +203,7 @@ class Team
         $this->elo = 2 ;
         $this->nbParticipation = 0 ;
         $this->nbWin = 0 ;
+        $this->announcements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -499,6 +505,36 @@ class Team
     public function setNbWin(?int $nbWin): self
     {
         $this->nbWin = $nbWin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Announcement[]
+     */
+    public function getAnnouncements(): Collection
+    {
+        return $this->announcements;
+    }
+
+    public function addAnnouncement(Announcement $announcement): self
+    {
+        if (!$this->announcements->contains($announcement)) {
+            $this->announcements[] = $announcement;
+            $announcement->setTeamAnnouncement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnnouncement(Announcement $announcement): self
+    {
+        if ($this->announcements->removeElement($announcement)) {
+            // set the owning side to null (unless already changed)
+            if ($announcement->getTeamAnnouncement() === $this) {
+                $announcement->setTeamAnnouncement(null);
+            }
+        }
 
         return $this;
     }

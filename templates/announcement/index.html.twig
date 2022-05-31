@@ -1,0 +1,41 @@
+{% extends 'baseTemplate/tournament-base.html.twig' %}
+
+{% set page_title = 'Annonce' %}
+
+{% block title %}Annonces{% endblock %}
+
+{% block content %}
+
+{% block body %}
+    <h1>Les Annonces</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for announcement in announcements %}
+            <tr>
+                <td>{{ announcement.id }}</td>
+                <td>{{ announcement.title }}</td>
+                <td>{{ announcement.description }}</td>
+                <td>
+                    <a href="{{ path('announcement_show', {'id': announcement.id}) }}">show</a>
+                    <a href="{{ path('announcement_edit', {'id': announcement.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('announcement_new') }}">Create new</a>
+{% endblock %}
