@@ -127,11 +127,11 @@ class TournamentService
                 $randomizedTeams = array_rand($teams,4);
                 foreach ($randomizedTeams as $randomizedTeam){
                     $pouleEquipe = new PouleEquipe;
-//                    $pouleEquipe
+                    $pouleEquipe->setTournamentTeam($teams[$randomizedTeam]);
+                    $pouleEquipe->setPoule($poule);
                     $pouleTeam[] = $teams[$randomizedTeam];
                     unset($teams[$randomizedTeam]);
                 }
-//                dd($pouleTeam);
             }
             $poule->addPouleEquipe($pouleTeam);
             /* add team to poule */
@@ -139,7 +139,7 @@ class TournamentService
 //            dump($poule);
         }
 
-//        exit();
+        exit();
         $teams = $tournament->getEquipes()->getValues() ;
         foreach ($teams as $team) {
             $team->getTeam()->setNbParticipation($team->getTeam()->getNbParticipation()+1);
