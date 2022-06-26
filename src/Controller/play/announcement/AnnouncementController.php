@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\play\announcement;
 
 use App\Entity\Announcement;
 use App\Form\AnnouncementType;
@@ -16,7 +16,7 @@ class AnnouncementController extends AbstractController
     #[Route('/', name: 'announcement_index', methods: ['GET'])]
     public function index(AnnouncementRepository $announcementRepository): Response
     {
-        return $this->render('announcement/index.html.twig', [
+        return $this->render('play/announcement/index.html.twig', [
             'announcements' => $announcementRepository->findAll(),
         ]);
     }
@@ -36,7 +36,7 @@ class AnnouncementController extends AbstractController
             return $this->redirectToRoute('announcement_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('announcement/new.html.twig', [
+        return $this->renderForm('play/announcement/new.html.twig', [
             'announcement' => $announcement,
             'form' => $form,
         ]);
@@ -45,7 +45,7 @@ class AnnouncementController extends AbstractController
     #[Route('/{id}', name: 'announcement_show', methods: ['GET'])]
     public function show(Announcement $announcement): Response
     {
-        return $this->render('announcement/show.html.twig', [
+        return $this->render('play/announcement/show.html.twig', [
             'announcement' => $announcement,
         ]);
     }
@@ -62,7 +62,7 @@ class AnnouncementController extends AbstractController
             return $this->redirectToRoute('announcement_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('announcement/edit.html.twig', [
+        return $this->renderForm('play/announcement/edit.html.twig', [
             'announcement' => $announcement,
             'form' => $form,
         ]);

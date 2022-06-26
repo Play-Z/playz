@@ -7,8 +7,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Repository\AnnouncementRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * @ORM\Entity(repositoryClass=AnnouncementRepository::class)
+ * @Vich\Uploadable()
  */
 class Announcement
 {
@@ -40,6 +43,20 @@ class Announcement
      * @ORM\JoinColumn(nullable=false)
      */
     private $tournamentAnnouncement;
+
+    private $path;
+
+    public function getPath(): ?string
+    {
+        return $this->path;
+    }
+
+    public function setPath(?string $path): self
+    {
+        $this->path = $path;
+
+        return $this;
+    }
 
     /**
      * @Vich\UploadableField(mapping="userImage", fileNameProperty="path")

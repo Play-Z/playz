@@ -61,6 +61,7 @@
                                             <li>
                                                 <a href="{{ path('tournament_dashboard') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Organiser</a>
                                             </li>
+                                            
                                         </ul>
                                     </div>
                                    <div class="divider">
@@ -72,6 +73,9 @@
                                            <li>
                                                <a href="{{ path('user_profile_index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Les joueurs</a>
                                            </li>
+                                           <li>
+                                                <a href="{{ path('announcement_index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Les annonces</a>
+                                            </li>
                                        </ul>
                                    </div>
                                     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}

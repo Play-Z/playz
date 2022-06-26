@@ -1,0 +1,14 @@
+{% extends 'baseTemplate/home-base.html.twig' %}
+
+{% set page_title = 'Modification d\'une annonce' %}
+
+{% block title %}Modification de l'annonce {{announcement.title}}{% endblock %}
+
+{% block content %}
+
+    {{ include('announcement/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    <a href="{{ path('announcement_index') }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Retour</a>
+
+    {{ include('announcement/_delete_form.html.twig') }}
+{% endblock %}

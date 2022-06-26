@@ -1,0 +1,37 @@
+{% extends 'baseTemplate/home-base.html.twig' %}
+
+{% set page_title = 'Annonce (détails)' %}
+
+{% block title %}{{announcement.title}}{% endblock %}
+
+{% block content %}
+<div class="p-6 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
+    <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
+            <tbody>
+                <tr>
+                    {% if announcement.path %}
+                        <th>Image</th>
+                        <td><img src="{{ vich_uploader_asset(announcement, 'image') }}" width="64" height="auto"></td>
+                    {% else %}
+                        <th>Image</th>
+                        <td>Pas de logo</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th>Titre</th>
+                    <td>{{ announcement.title }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ announcement.description }}</td>
+                </tr>
+            </tbody>
+    </table>
+</div>
+<a href="{{ path('announcement_index') }}" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Retour</a>
+
+<a href="{{ path('announcement_edit', {'id': announcement.id}) }}" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">Modifier</a>
+
+{{ include('announcement/_delete_form.html.twig') }}
+    
+{% endblock %}

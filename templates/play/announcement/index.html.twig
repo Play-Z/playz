@@ -1,0 +1,51 @@
+{% extends 'baseTemplate/home-base.html.twig' %}
+
+{% set page_title = 'Annonce' %}
+
+{% block title %}Annonces{% endblock %}
+
+{% block content %}
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <h1 class= "text-5xl font-normal text-center leading-normal mt-0 mb-2 text-indigo-500">Les Annonces</h1>
+    
+    <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
+        
+        {% for announcement in announcements %}
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th>Image</th>
+                <th>Titre</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        <div class="border-collapse border border-slate-500 ">
+            <tr>
+               {% if announcement.path %}
+                    <th>Image</th>
+                    <td><img src="{{ vich_uploader_asset(announcement, 'image') }}" width="64" height="auto"></td>
+                {% else %}
+                    <th>Pas d'image</th>
+                {% endif %}
+                <td>{{ announcement.title }}</td>
+                <td>{{ announcement.description }}</td>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <td>
+                        <a href="{{ path('announcement_show', {'id': announcement.id}) }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Voir</a>
+                        <a href="{{ path('announcement_edit', {'id': announcement.id}) }}" class="text-yellow-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Modifier</a>
+                    </td>
+                {% endif %}
+            </tr>
+        </div>
+        {% else %}
+            <tr>
+                <td colspan="4">Pas d'annonce pour le moment ! </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('announcement_new')}}"  class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 text-center">Nouvelle annonce</a>
+    {% endif %}
+<div>
+{% endblock %}
