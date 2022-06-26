@@ -64,6 +64,43 @@ class TournamentService
 
     }
 
+    public function createMatchesForATournamentPoule
+    (Int $max_team, Tournament $tournament,  Bool $isCallFromrecursive , $etape = 0,  $parents_matchs = null )
+    {
+        if($isCallFromrecursive == false) {
+            $nbPoules = $max_team / 4;
+            $total_match =  6 * $nbPoules;
+            $etape = log($max_team,2);
+
+            for ($i = 1;$i <= $nbPoules; $i++){
+                new Poule;
+                $this->createMatchesForATournamentPoule();
+            }
+            $this->entityManager->flush();
+            if($total_match - 2 > 0)
+                $this->createMatchesForATournament($total_match-2,$tournament,true ,$etape-2,array(
+                    $demi1,
+                    $demi2
+                )) ;
+        } else {
+            $matches = [] ;
+
+            foreach($parents_matchs as $match) {
+                $matches[] = new TournamentMatch($etape,$tournament,$match) ;
+                $matches[] = new TournamentMatch($etape,$tournament,$match) ;
+            }
+            foreach ($matches as $match){
+
+                $this->entityManager->persist($match);
+            }
+            $this->entityManager->flush();
+
+            if($max_team - count($matches)  > 0 )
+                $this->createMatchesForATournament($max_team - (count($matches) ),$tournament,true,$etape-1,$matches) ;
+        }
+
+    }
+
     public function startATournament(Tournament $tournament) {
         $matches = $this->tournamentMatchRepository->findBy([
             'name'=>1,
@@ -80,6 +117,33 @@ class TournamentService
 
         foreach ($matches as  $key => $match) {
 
+            $match->setTeamOne($teams[$key*2]);
+            $match->setTeamTwo($teams[$key*2 + 1]);
+
+            $this->entityManager->persist($match);
+        }
+
+
+        $tournament->setStatus(true) ;
+        $this->entityManager->persist($tournament);
+        $this->entityManager->flush();
+    }
+
+    public function startAPouleTournament(Tournament $tournament) {
+        $matches = $this->tournamentMatchRepository->findBy([
+            'name'=>1,
+            'tournaments'=>$tournament
+        ]);
+
+        $teams = $tournament->getEquipes()->getValues() ;
+        foreach ($teams as $team) {
+            $team->getTeam()->setNbParticipation($team->getTeam()->getNbParticipation()+1);
+            foreach ($team->getTeam()->getUsers() as $user) {
+                $user->setNbParticipation($user->getNbParticipation()+1);
+            }
+        }
+
+        foreach ($matches as  $key => $match) {
             $match->setTeamOne($teams[$key*2]);
             $match->setTeamTwo($teams[$key*2 + 1]);
 

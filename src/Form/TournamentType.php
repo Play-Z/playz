@@ -58,6 +58,7 @@ class TournamentType extends AbstractType
             ])
             ->add('startAt')
             ->add('startInscriptionAt')
+            ->add('PouleType')
         ;
     }
 
