@@ -44,6 +44,9 @@ class Announcement
      */
     private $tournamentAnnouncement;
 
+     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
     private $path;
 
     public function getPath(): ?string

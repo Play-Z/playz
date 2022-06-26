@@ -21,9 +21,9 @@
         <tbody>
         <div class="border-collapse border border-slate-500 ">
             <tr>
+                {# {{dump(announcement)}} #}
                {% if announcement.path %}
-                    <th>Image</th>
-                    <td><img src="{{ vich_uploader_asset(announcement, 'image') }}" width="64" height="auto"></td>
+                    <td><img src="{{ vich_uploader_asset(announcement, 'image') }}" width="64" height="auto" style="margin: 0 auto;"></td>
                 {% else %}
                     <th>Pas d'image</th>
                 {% endif %}
