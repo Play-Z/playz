@@ -20,7 +20,7 @@ class Poule
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Tournament::class, inversedBy="poules")
+     * @ORM\ManyToOne(targetEntity=Tournament::class, inversedBy="poules", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $tournament;

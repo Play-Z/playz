@@ -3,7 +3,9 @@
 namespace App\Service;
 
 use App\Entity\Tournament;
+use App\Entity\Poule;
 use App\Entity\TournamentMatch;
+use App\Entity\PouleEquipe;
 use App\Entity\TournamentTeam;
 use App\Repository\TournamentMatchRepository;
 use App\Repository\TournamentRepository;
@@ -64,40 +66,21 @@ class TournamentService
 
     }
 
-    public function createMatchesForATournamentPoule
+    public function createPoule
     (Int $max_team, Tournament $tournament,  Bool $isCallFromrecursive , $etape = 0,  $parents_matchs = null )
     {
-        if($isCallFromrecursive == false) {
             $nbPoules = $max_team / 4;
             $total_match =  6 * $nbPoules;
             $etape = log($max_team,2);
 
+            /*Création des poules*/
             for ($i = 1;$i <= $nbPoules; $i++){
-                new Poule;
-                $this->createMatchesForATournamentPoule();
+                $poule = new Poule;
+                $poule->setName('poule '.$i);
+                $tournament->addPoule($poule);
+                $this->entityManager->persist($tournament);
             }
             $this->entityManager->flush();
-            if($total_match - 2 > 0)
-                $this->createMatchesForATournament($total_match-2,$tournament,true ,$etape-2,array(
-                    $demi1,
-                    $demi2
-                )) ;
-        } else {
-            $matches = [] ;
-
-            foreach($parents_matchs as $match) {
-                $matches[] = new TournamentMatch($etape,$tournament,$match) ;
-                $matches[] = new TournamentMatch($etape,$tournament,$match) ;
-            }
-            foreach ($matches as $match){
-
-                $this->entityManager->persist($match);
-            }
-            $this->entityManager->flush();
-
-            if($max_team - count($matches)  > 0 )
-                $this->createMatchesForATournament($max_team - (count($matches) ),$tournament,true,$etape-1,$matches) ;
-        }
 
     }
 
@@ -124,17 +107,39 @@ class TournamentService
         }
 
 
-        $tournament->setStatus(true) ;
+        $tournament->setStatus(true);
         $this->entityManager->persist($tournament);
         $this->entityManager->flush();
     }
 
     public function startAPouleTournament(Tournament $tournament) {
-        $matches = $this->tournamentMatchRepository->findBy([
-            'name'=>1,
-            'tournaments'=>$tournament
-        ]);
+        /* Create poule match, all teams confront themself */
 
+        $poules = $tournament->getPoules();
+        $teams = $tournament->getEquipes()->getValues();
+        $test = array_rand($teams,4);
+//        dump($poules->getValues());
+//        dump($teams);
+//        dump($test);
+//        dump(shuffle($teams));
+        foreach ($poules as $poule){
+            for ($i = 1; $i <= 4; $i++){
+                $randomizedTeams = array_rand($teams,4);
+                foreach ($randomizedTeams as $randomizedTeam){
+                    $pouleEquipe = new PouleEquipe;
+//                    $pouleEquipe
+                    $pouleTeam[] = $teams[$randomizedTeam];
+                    unset($teams[$randomizedTeam]);
+                }
+//                dd($pouleTeam);
+            }
+            $poule->addPouleEquipe($pouleTeam);
+            /* add team to poule */
+//            $poule->addPouleMatch();
+//            dump($poule);
+        }
+
+//        exit();
         $teams = $tournament->getEquipes()->getValues() ;
         foreach ($teams as $team) {
             $team->getTeam()->setNbParticipation($team->getTeam()->getNbParticipation()+1);
@@ -150,8 +155,7 @@ class TournamentService
             $this->entityManager->persist($match);
         }
 
-
-        $tournament->setStatus(true) ;
+        $tournament->setStatus(true);
         $this->entityManager->persist($tournament);
         $this->entityManager->flush();
     }

@@ -41,10 +41,10 @@ class ManagementTournamentController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($tournament->getPouleType() === true){
-                $tournamentService->createMatchesForATournamentPoule($tournament->getMaxTeamParticipant(), $tournament, false);
+                $tournamentService->createPoule($tournament->getMaxTeamParticipant(), $tournament, false);
+            }else{
+                $tournamentService->createMatchesForATournament($tournament->getMaxTeamParticipant(), $tournament, false);
             }
-
-            $tournamentService->createMatchesForATournament($tournament->getMaxTeamParticipant(), $tournament, false);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($tournament);
             $entityManager->flush();
@@ -52,7 +52,6 @@ class ManagementTournamentController extends AbstractController
 
             return $this->redirectToRoute('tournament_dashboard', [], Response::HTTP_CREATED);
         }
-
         return $this->renderForm('tournament/new.html.twig', [
             'form' => $form,
         ]);
@@ -90,25 +89,25 @@ class ManagementTournamentController extends AbstractController
 
 
     }
+
     #[Route('/start/{slug}', name: 'tournament_start')]
     public function start(Request $request, Tournament $tournament, TournamentService $tournamentService): Response
     {
-
         if (new \DateTime('',new DateTimeZone('Europe/Paris')) ===  new \DateTime()){
             $date = new \DateTime('',new DateTimeZone('Europe/Paris'));
         }else{
             $date = new \DateTime();
         }
-        if($tournament->getStartAt() <= $date) {
+//        if($tournament->getStartAt() <= $date) {
             if(count($tournament->getEquipes()) == $tournament->getMaxTeamParticipant()) {
-                if($tournament->getTypePoule() === true){
+                if($tournament->getPouleType() === true){
                     $tournamentService->startAPouleTournament($tournament);
                 }else{
                     $tournamentService->startATournament($tournament);
                 }
                 $this->addFlash('success','Le tournoi a bien été lancé');
             } else $this->addFlash('error','Le tournoi n`\'a pas pu être lancé. Il n\'y a pas assez d\'équipes inscrites ');
-        } else $this->addFlash('error','Le tournoi n`\'a pas pu être lancé. La date de début n\'a pas été atteinte');
+//        } else $this->addFlash('error','Le tournoi n`\'a pas pu être lancé. La date de début n\'a pas été atteinte');
         return $this->redirectToRoute('tournament_dashboard') ;
     }
 
@@ -126,7 +125,7 @@ class ManagementTournamentController extends AbstractController
                 $tournamentMatch->getTournaments()->setStatus(false) ;
                 if($tournamentMatch->getTeamOneWin() == true) {
 
-                    $team =  $tournamentMatch->getTeamOne()->getTeam() ;
+                    $team =  $tournamentMatch->getTeamOne()->getTeam();
                     $team->setNbWin($team->getNbWin() + 1);
                     foreach ($team->getUsers() as $user) {
                         $user->setNbWin($user->getNbWin()+1);

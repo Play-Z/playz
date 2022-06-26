@@ -125,7 +125,7 @@ class Tournament
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity=Poule::class, mappedBy="tournament", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Poule::class, mappedBy="tournament", orphanRemoval=true, cascade={"persist"})
      */
     private $poules;
 
