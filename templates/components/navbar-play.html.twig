@@ -49,14 +49,14 @@
                     <div class="hidden md:block">
                         <div class="ml-10 flex items-baseline space-x-4">
                             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                            <div class=" dropdown">
+                            <div class=" dropdown m-auto">
                                 <button class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Parcourir<svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button></button>
                                 <div class="dropdown-content bg-gray-800">
                                     <div>
                                         <p class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium">Fonctionnalités</p>
                                         <ul>
                                             <li>
-                                                <a href="{{ path('dashboard') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Nos tournois</a>
+                                                <a href="{{ path('tournament_index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Nos tournois</a>
                                             </li>
                                             <li>
                                                 <a href="{{ path('tournament_dashboard') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Organiser</a>
@@ -85,10 +85,10 @@
 
                                             <ul>
                                                 <li>
-                                                    <a href="{{ path('user_profile_index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">mes tournois</a>
+                                                    <a href="{{ path('tournament_dashboard') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Mes tournois</a>
                                                 </li>
                                                 <li>
-                                                    <a href="{{ path('user_profile_index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"> mes matchs</a>
+                                                    <a href="{{ path('user_profile_index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"> Mes matchs</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -97,7 +97,7 @@
                                 </div>
                             </div>
 
-                            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Tarifs</a>
+                            {# <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Tarifs</a> #}
                             <a href="{{ path('contact_index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Contact</a>
                         </div>
                     </div>

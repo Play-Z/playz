@@ -5,33 +5,30 @@
 {% block title %}{{announcement.title}}{% endblock %}
 
 {% block content %}
-<div class="p-6 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
+<div class="p-6  w-full max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 mt-14 mb-14">
     <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
             <tbody>
                 <tr>
                     {% if announcement.path %}
-                        <th>Image</th>
-                        <td><img src="{{ vich_uploader_asset(announcement, 'image') }}" width="64" height="auto"></td>
+                        <td><img src="{{ vich_uploader_asset(announcement, 'image') }}" class="rounded-t-lg" width="400" height="auto"></td>
                     {% else %}
-                        <th>Image</th>
-                        <td>Pas de logo</td>
+                        <td>Pas d'image</td>
                     {% endif %}
                 </tr>
                 <tr>
-                    <th>Titre</th>
-                    <td>{{ announcement.title }}</td>
+                    <td>{{ announcement.title }}</td><br><br>
                 </tr>
                 <tr>
-                    <th>Description</th>
                     <td>{{ announcement.description }}</td>
                 </tr>
+                <br>
             </tbody>
     </table>
+    {{ include('play/announcement/_delete_form.html.twig') }}
+
+    <a href="{{ path('announcement_edit', {'id': announcement.id}) }}" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">Modifier</a> 
 </div>
-<a href="{{ path('announcement_index') }}" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Retour</a>
 
-<a href="{{ path('announcement_edit', {'id': announcement.id}) }}" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">Modifier</a>
-
-{{ include('play/announcement/_delete_form.html.twig') }}
+<a href="{{ path('announcement_index') }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Retour</a>
     
 {% endblock %}
