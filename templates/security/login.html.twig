@@ -4,7 +4,7 @@
 
  {% block content %} 
     <section class="h-full gradient-form bg-gray-200 md:h-screen">
-    <div class="container py-12 px-6 h-full">
+    <div class="container py-12 px-6 h-full" style="margin: 0 auto;">
         <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
         <div class="xl:w-10/12">
             <div class="block bg-white shadow-lg rounded-lg">
@@ -14,7 +14,7 @@
                     <div class="text-center">
                     <img
                         class="mx-auto w-48"
-                        src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
+                        src="{{ asset('images/logo/PlayZ.png') }}"
                         alt="logo"
                     />
                 
@@ -23,7 +23,7 @@
                     {% if error %}
                         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                     {% endif %}
-                            <h4 class="text-xl font-semibold mt-1 mb-12 pb-1">Connexion</h4>
+                            <h4 class="text-xl font-semibold mt-1 mb-12 pb-1 text-center">Connexion</h4>
                     {% if app.user %}
                         <div class="mb-3">
                             You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
@@ -100,13 +100,13 @@
                 style=" background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);"
                 >
                 <div class="text-white px-4 py-6 md:p-12 md:mx-6">
-                    <h4 class="text-xl font-semibold mt-1 mb-12 pb-1">Entrez dans l'histoire avec PlayZ !</h4>
-                    {# <p class="text-sm">
+                    <h4 class="text-xl font-semibold mt-1 mb-12 pb-1">Du texte à rajouter ici</h4>
+                    <p class="text-sm">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                     tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
                     quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
                     consequat.
-                    </p> #}
+                    </p>
                 </div>
                 </div>
             </div>
