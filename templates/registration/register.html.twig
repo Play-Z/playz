@@ -47,7 +47,7 @@
 										<img class="mx-auto w-48" src="{{ asset('images/logo/PlayZ.png') }}" alt="logo"/>
 										<h4 class="text-xl font-semibold mt-1 mb-12 pb-1">Inscription</h4>
 									</div>
-									<form>
+									<form method="post">
                   {% for flashError in app.flashes('verify_email_error') %}
                     <div class="alert alert-danger" role="alert">{{ flashError }}</div>
                   {% endfor %}
@@ -63,7 +63,6 @@
                         {{ form_widget(registrationForm.username) }}
                       </div>
                       <div class="mb-4">
-                        <label for="username">Email</label>
                         {{ form_widget(registrationForm.email) }}
                       </div>
                       <div class="mb-4">
@@ -84,7 +83,6 @@
 													Se connecter</a>
 											</button>
 										</div>
-
 									</form>
 								</div>
 							</div>

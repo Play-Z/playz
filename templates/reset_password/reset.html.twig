@@ -3,10 +3,54 @@
 {% set page_title = 'Mot de passe oublié' %}
 
 {% block content %}
-    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Reset your password</h1>
-
-    {{ form_start(resetForm) }}
-        {{ form_row(resetForm.plainPassword) }}
-        <button class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Reset password</button>
-    {{ form_end(resetForm) }}
+	{# <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Reset your password</h1>
+	
+	    {{ form_start(resetForm) }}
+	        {{ form_row(resetForm.plainPassword) }}
+	        <button class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Reset password</button>
+	    {{ form_end(resetForm) }} #}
+	<section class="h-full gradient-form bg-gray-200 md:h-screen">
+		<div class="container py-12 px-6 h-full" style="margin: 0 auto;">
+			<div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
+				<div class="xl:w-10/12">
+					<div class="block bg-white shadow-lg rounded-lg">
+						<div class="lg:flex lg:flex-wrap g-0">
+							<div class="lg:w-6/12 px-4 md:px-0">
+								<div class="md:p-12 md:mx-6">
+									<div class="text-center">
+										<img class="mx-auto w-48" src="{{ asset('images/logo/PlayZ.png') }}" alt="logo"/>
+										<h4 class="text-xl font-semibold mt-1 mb-12 pb-1">Réinitialiser votre mot de passe</h4>
+									</div>
+									<form method="post">
+										<p class="mb-4">Indiquez votre nouveau mot de passe</p>
+										{{ form_start(resetForm) }}
+                                            <div class="mb-4">
+                                                {{ form_widget(resetForm.plainPassword) }}
+                                            </div>
+                                            <div class="text-center pt-1 mb-12 pb-1">
+                                                <button type="submit" class="inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3" style="background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);">
+                                                    Réinitialiser le mot de passe
+                                                </button>
+                                            </div>
+                                        {{ form_end(resetForm) }}
+									</form>
+								</div>
+							</div>
+							<div class="lg:w-6/12 flex items-center lg:rounded-r-lg rounded-b-lg lg:rounded-bl-none" style=" background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);">
+								<div class="text-white px-4 py-6 md:p-12 md:mx-6">
+									<h4 class="text-xl font-semibold mb-6">Entrez dans l'histoire avec PlayZ !</h4>
+									<p class="text-sm">
+										Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                        consequat.
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 {% endblock %}
