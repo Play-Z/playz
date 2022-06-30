@@ -36,9 +36,14 @@ class PouleMatch
     private $EquipeDeux;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $status;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $FirstTeamWin;
 
     public function getId(): ?int
     {
@@ -89,6 +94,18 @@ class PouleMatch
     public function setStatus(bool $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getFirstTeamWin(): ?bool
+    {
+        return $this->FirstTeamWin;
+    }
+
+    public function setFirstTeamWin(?bool $FirstTeamWin): self
+    {
+        $this->FirstTeamWin = $FirstTeamWin;
 
         return $this;
     }

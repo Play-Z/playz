@@ -31,12 +31,12 @@ class Poule
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=PouleEquipe::class, mappedBy="poule", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=PouleEquipe::class, mappedBy="poule", orphanRemoval=true,cascade={"persist"})
      */
     private $pouleEquipes;
 
     /**
-     * @ORM\OneToMany(targetEntity=PouleMatch::class, mappedBy="Poule", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=PouleMatch::class, mappedBy="Poule", orphanRemoval=true,cascade={"persist"})
      */
     private $pouleMatches;
 

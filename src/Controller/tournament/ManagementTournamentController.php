@@ -2,9 +2,11 @@
 
 namespace App\Controller\tournament;
 
+use App\Entity\PouleMatch;
 use App\Entity\Tournament;
 use App\Entity\TournamentMatch;
 use App\Form\EditTournamentType;
+use App\Form\PouleMatchSetVictoryType;
 use App\Form\TournamentMatchSetVictoryType;
 use App\Form\TournamentType;
 use App\Repository\TournamentMatchRepository;
@@ -58,7 +60,7 @@ class ManagementTournamentController extends AbstractController
     }
 
     #[Route('/edit/{slug}', name: 'tournament_edit')]
-    public function edit(Request $request, Tournament $tournament,TournamentService $tournamentService): Response
+    public function edit(Request $request, Tournament $tournament,TournamentService $tournamentService, TournamentRepository $tournamentRepository): Response
     {
         if(!$tournament->getStatus()) {
             $form = $this->createForm(EditTournamentType::class, $tournament);
@@ -80,14 +82,31 @@ class ManagementTournamentController extends AbstractController
             if($tournament->getStatus() == false) {
                 return $this->redirectToRoute('tournament_dashboard') ;
             }
+            if ($tournament->getPouleType() === true) {
+                $finaleDisable = true;
+                $matches = $tournamentRepository->getAllMatchOfTournament($tournament->getId());
+                $allMatches = [];
+                foreach ($matches as $match){
+                    $allMatches[] = $match['FirstTeamWin'];
+                }
+
+                if (!in_array(null,$allMatches, true)){
+                    $finaleDisable = false;
+                }
+                return $this->renderForm('tournament/edit.html.twig', [
+                    'poules' => $tournamentService->getPoulesMatchs($tournament),
+                    'matches' => null,
+                    'tournament' => $tournament,
+                    'finaleDisable' => $finaleDisable
+                ]);
+            }
 
             return $this->renderForm('tournament/edit.html.twig', [
                 'matches' => $tournamentService->getMatchesOfEtape($tournament),
-                'tournament' => $tournament
+                'poules' => null,
+                'tournament' => $tournament,
             ]);
         }
-
-
     }
 
     #[Route('/start/{slug}', name: 'tournament_start')]
@@ -171,6 +190,52 @@ class ManagementTournamentController extends AbstractController
         }
         return $this->renderForm('tournament/editMatch.html.twig',[
             'match' => $tournamentMatch,
+            'form' => $form,
+            'TeamOne' => $tournamentMatch->getTeamOne()->getTeam()->getName(),
+            'TeamTwo' => $tournamentMatch->getTeamTwo()->getTeam()->getName(),
+        ]) ;
+    }
+
+
+    #[Route('/edit/{t_slug}/set-victory-poules/{id}' , name:'poules_set_victory')]
+    public function setVictoryPoules(PouleMatch $pouleMatch, Request $request) {
+        $form = $this->createForm(PouleMatchSetVictoryType::class,$pouleMatch) ;
+        $form->handleRequest($request) ;
+        if($form->isSubmitted() && $form->isValid()  ) {
+            $em = $this->getDoctrine()->getManager() ;
+            $pouleMatch->setStatus(true);
+            if($pouleMatch->getFirstTeamWin() == true) {
+                $pouleEquipeUne = $pouleMatch->getEquipeUne();
+                $pouleEquipeUne->setNombreVictoire($pouleEquipeUne->getNombreVictoire() +1);
+                $teamOne = $pouleEquipeUne->getTournamentTeam()->getTeam();
+                $teamOne->setNbWin($teamOne->getNbWin() + 1);
+                foreach ($teamOne->getUsers() as $user) {
+                    $user->setNbWin($user->getNbWin()+1);
+                    $em->persist($user);
+                }
+                $em->persist($teamOne);
+            } else {
+                $pouleEquipeDeux = $pouleMatch->getEquipeDeux();
+                $pouleEquipeDeux->setNombreVictoire($pouleEquipeDeux->getNombreVictoire() +1);
+                $teamTwo = $pouleEquipeDeux->getTournamentTeam()->getTeam() ;
+                $teamTwo->setNbWin($teamTwo->getNbWin() + 1);
+                foreach ($teamTwo->getUsers() as $user) {
+                    $user->setNbWin($user->getNbWin()+1);
+                    $em->persist($user);
+                }
+                $em->persist($teamTwo);
+            }
+            $em->persist($pouleMatch);
+            $em->flush();
+            $this->addFlash('success','Le vainqueur du match a été établi avec succès !');
+            return $this->redirectToRoute('tournament_edit',[
+                'slug' => $pouleMatch->getPoule()->getTournament()->getSlug()
+            ]) ;
+        }
+        return $this->renderForm('tournament/editMatch.html.twig',[
+            'match' => $pouleMatch,
+            'TeamOne' => $pouleMatch->getEquipeUne()->getTournamentTeam()->getTeam()->getName(),
+            'TeamTwo' => $pouleMatch->getEquipeDeux()->getTournamentTeam()->getTeam()->getName(),
             'form' => $form
         ]) ;
     }
