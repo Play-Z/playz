@@ -41,6 +41,11 @@ class PouleEquipe
      */
     private $pouleMatches;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $qualified;
+
     public function __construct()
     {
         $this->pouleMatches = new ArrayCollection();
@@ -113,6 +118,18 @@ class PouleEquipe
                 $pouleMatch->setEquipeUne(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQualified(): ?bool
+    {
+        return $this->qualified;
+    }
+
+    public function setQualified(?bool $qualified): self
+    {
+        $this->qualified = $qualified;
 
         return $this;
     }

@@ -135,6 +135,11 @@ class Tournament
     private $PouleType;
 
     /**
+     * @ORM\OneToOne(targetEntity=Tournament::class, cascade={"persist", "remove"})
+     */
+    private $tournamentChild;
+
+    /**
      * @param UploadedFile $logo
      */
     public function setLogo(?File $logo = null)
@@ -404,6 +409,18 @@ class Tournament
     public function setPouleType(bool $PouleType): self
     {
         $this->PouleType = $PouleType;
+
+        return $this;
+    }
+
+    public function getTournamentChild(): ?self
+    {
+        return $this->tournamentChild;
+    }
+
+    public function setTournamentChild(?self $tournamentChild): self
+    {
+        $this->tournamentChild = $tournamentChild;
 
         return $this;
     }

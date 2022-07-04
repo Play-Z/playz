@@ -19,6 +19,16 @@ class PouleRepository extends ServiceEntityRepository
         parent::__construct($registry, Poule::class);
     }
 
+    public function getScoreEquipes($value)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.id = :val')
+            ->setParameter('val',$value)
+            ->innerJoin('p.pouleEquipes', 'pe')
+            ->select('pe.nombreVictoire');
+        return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Poule[] Returns an array of Poule objects
     //  */

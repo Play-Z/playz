@@ -10,6 +10,7 @@ use App\Form\PouleMatchSetVictoryType;
 use App\Form\TournamentMatchSetVictoryType;
 use App\Form\TournamentType;
 use App\Repository\TournamentMatchRepository;
+use App\Repository\PouleRepository;
 use App\Repository\TournamentRepository;
 use App\Security\Voter\TournamentVoter;
 use App\Service\TournamentService;
@@ -60,7 +61,7 @@ class ManagementTournamentController extends AbstractController
     }
 
     #[Route('/edit/{slug}', name: 'tournament_edit')]
-    public function edit(Request $request, Tournament $tournament,TournamentService $tournamentService, TournamentRepository $tournamentRepository): Response
+    public function edit(Request $request, Tournament $tournament,TournamentService $tournamentService, TournamentRepository $tournamentRepository, PouleRepository $pouleRepository): Response
     {
         if(!$tournament->getStatus()) {
             $form = $this->createForm(EditTournamentType::class, $tournament);
@@ -93,6 +94,22 @@ class ManagementTournamentController extends AbstractController
                 if (!in_array(null,$allMatches, true)){
                     $finaleDisable = false;
                 }
+
+                /* in number list, select 2 top integers */
+                dump($tournament->getMaxTeamParticipant());
+                foreach ($tournament->getPoules() as $poule){
+                    $scoreEquipes = $pouleRepository->getScoreEquipes($poule);
+                    foreach ($scoreEquipes as $scoreEquipe) {
+                        dump($scoreEquipe);
+                    }
+//                    if (max($scoreEquipes))
+
+                }
+
+                exit();
+                /* set which team are qualified */
+
+
                 return $this->renderForm('tournament/edit.html.twig', [
                     'poules' => $tournamentService->getPoulesMatchs($tournament),
                     'matches' => null,
@@ -107,6 +124,20 @@ class ManagementTournamentController extends AbstractController
                 'tournament' => $tournament,
             ]);
         }
+    }
+
+    #[Route('/edit/{slug}/start_phase_finales', name: 'tournament_start_phase_finale')]
+    public function pouleStartPhaseFinale(Tournament $tournament, Request $request, TournamentService $tournamentService): Response
+    {
+        $equipes = $tournamentService->getPoulesMatchs($tournament);
+
+        dump($equipes);
+        exit();
+        $tournamentService->createTournamentChild($tournament);
+
+
+        exit();
+        return $this->redirectToRoute('tournament_edit') ;
     }
 
     #[Route('/start/{slug}', name: 'tournament_start')]
@@ -214,10 +245,11 @@ class ManagementTournamentController extends AbstractController
                     $em->persist($user);
                 }
                 $em->persist($teamOne);
+                $em->persist($teamTwo);
             } else {
                 $pouleEquipeDeux = $pouleMatch->getEquipeDeux();
                 $pouleEquipeDeux->setNombreVictoire($pouleEquipeDeux->getNombreVictoire() +1);
-                $teamTwo = $pouleEquipeDeux->getTournamentTeam()->getTeam() ;
+                $teamTwo = $pouleEquipeDeux->getTournamentTeam()->getTeam();
                 $teamTwo->setNbWin($teamTwo->getNbWin() + 1);
                 foreach ($teamTwo->getUsers() as $user) {
                     $user->setNbWin($user->getNbWin()+1);

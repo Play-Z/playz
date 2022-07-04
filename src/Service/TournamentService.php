@@ -88,6 +88,27 @@ class TournamentService
             $this->entityManager->flush();
     }
 
+    /** @var Tournament\ $tournament*/
+    public function createTournamentChild(Tournament $tournament, $equipes)
+    {
+        /* Create base data for Tournament */
+        $tournamentChild = new Tournament();
+        $tournamentChild->setName($tournament->getName().' - SubTournament');
+//        $tournamentChild->setParent($tournament);
+
+        /* get team of parent Tournament */
+        dump($tournament->getPoules());
+
+        exit();
+        $tournamentChild->setMaxTeam($tournament->getMaxTeam() / 2);
+
+        /* Create tournament child matches */
+        $this->createMatchesForATournament($tournamentChild->getMaxTeam(),$tournamentChild,false);
+        $this->startATournament($tournamentChild);
+
+        $tournament->addChild();
+    }
+
     public function startATournament(Tournament $tournament) {
         $matches = $this->tournamentMatchRepository->findBy([
             'name'=>1,
