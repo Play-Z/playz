@@ -93,22 +93,8 @@ class ManagementTournamentController extends AbstractController
 
                 if (!in_array(null,$allMatches, true)){
                     $finaleDisable = false;
-                }
-
-                /* in number list, select 2 top integers */
-                dump($tournament->getMaxTeamParticipant());
-                foreach ($tournament->getPoules() as $poule){
-                    $scoreEquipes = $pouleRepository->getScoreEquipes($poule);
-                    foreach ($scoreEquipes as $scoreEquipe) {
-                        dump($scoreEquipe);
-                    }
-//                    if (max($scoreEquipes))
 
                 }
-
-                exit();
-                /* set which team are qualified */
-
 
                 return $this->renderForm('tournament/edit.html.twig', [
                     'poules' => $tournamentService->getPoulesMatchs($tournament),
@@ -131,12 +117,9 @@ class ManagementTournamentController extends AbstractController
     {
         $equipes = $tournamentService->getPoulesMatchs($tournament);
 
-        dump($equipes);
-        exit();
         $tournamentService->createTournamentChild($tournament);
 
 
-        exit();
         return $this->redirectToRoute('tournament_edit') ;
     }
 
@@ -245,7 +228,6 @@ class ManagementTournamentController extends AbstractController
                     $em->persist($user);
                 }
                 $em->persist($teamOne);
-                $em->persist($teamTwo);
             } else {
                 $pouleEquipeDeux = $pouleMatch->getEquipeDeux();
                 $pouleEquipeDeux->setNombreVictoire($pouleEquipeDeux->getNombreVictoire() +1);

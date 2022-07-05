@@ -8,34 +8,58 @@
             opacity: 25%
         }
     </style>
-    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Edition de {{ tournament.name }}</h1>
-    {% if tournament.status == false %}
-        {{ include('tournament/_form.html.twig') }}
-    {% else %}
-        {% if not finaleDisable%}
-            <h2 class="text-3xl font-normal leading-normal mt-0 mb-2 text-red-500">Tous les matchs de poules sont terminés</h2>
+    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500 text-center">
+        {% if tournament.status == false %}
+            Edition de {{ tournament.name }}
+        {% else %}
+            Déroulement du tournoi {{ tournament.name }}
         {% endif %}
+    </h1>
+    <div class="grid grid-cols-12 px-6">
+        <div class="col-span-12">
+            {% if tournament.status == false %}
+            {{ include('tournament/_form.html.twig') }}
+            {% else %}
+            {% if not finaleDisable %}
+                <h2 class="text-3xl font-normal leading-normal mt-0 mb-2 text-red-500">Tous les matchs de poules sont
+                    terminés</h2>
+                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TOURNAMENT_ARBITER') or is_granted('ROLE_TOURNAMENT_MANAGER') %}
+                    <p> Sélectionner les 2 équipes pour chaque poules qui iront en phases finales</p>
+                {% endif %}
+            {% endif %}
+        </div>
+
         {% if poules is not null %}
             {% for poule in poules %}
-                <div>
-                    <h2 class="text-2xl font-normal leading-normal mt-0 mb-2 text-indigo-500">{{ poule.name }}</h2>
-                    <table>
+                <div class="shadow-md sm:rounded-lg col-span-5 gap-4 py-5 mx-auto">
+                    <h2 class="text-2xl font-normal leading-normal mt-0 mb-2 text-indigo-500 text-center">{{ poule.name }}</h2>
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:text-gray-400">
                         <tr>
-                            <td>Equipe</td>
-                            <td>Score</td>
+                            <th scope="col" class="px-6 py-3">Equipe</th>
+                            <th scope="col" class="px-6 py-3">Score</th>
+                            {% if not finaleDisable %}
+                                <th scope="col" class="px-6 py-3">Sélectionnez les finalistes</th>
+                            {% endif %}
                         </tr>
+                        </thead>
+                        <tbody>
                         {% for equipe in poule.getPouleEquipes() %}
-                            <tr>
-                                <td>{{ equipe.getTournamentTeam().getTeam().name }}</td>
+                            <tr class="text-center">
+                                <td class="text-left px-4">{{ equipe.getTournamentTeam().getTeam().name }}</td>
                                 {% if equipe.getNombreVictoire() %}
                                     <td>{{ equipe.getNombreVictoire() }}</td>
                                 {% else %}
                                     <td>0</td>
                                 {% endif %}
-{#                                {% if finaleDisable and %}#}
-{#                                {% endif %}#}
+                                {% if not finaleDisable %}
+                                    <td>
+                                        <input type="checkbox" class="" />
+                                    </td>
+                                {% endif %}
                             </tr>
                         {% endfor %}
+                        </tbody>
                     </table>
                     {% if finaleDisable %}
                         <table class="table">
@@ -75,26 +99,31 @@
                                             </a>
                                         </td>
                                     {% endif %}
-                                    <td>{{ match.getEquipeUne().getTournamentTeam().getTeam().name }}</td>
+                                    {% if not finaleDisable %}
+                                        <label>
+                                            <input type="checkbox"/>
+                                        </label>
+                                    {% endif %}
                                 </tr>
                             {% endfor %}
                         </table>
                     {% endif %}
                 </div>
             {% endfor %}
-            {% if finaleDisable %}
-                <a
-                        class="px-4 py-2 text-white bg-blue-300 rounded">
-                    Veuillez finir les matchs
-                </a>
-            {% else %}
-                <a
-                        href="{{ path('tournament_start_phase_finale',{'slug': tournament.slug}) }}"
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
-                    Lancer les phases finales
-                </a>
-            {% endif %}
-
+            <div class="col-span-12 my-4">
+                {% if finaleDisable %}
+                    <a
+                            class="px-4 py-2 text-white bg-blue-300 rounded">
+                        Veuillez finir les matchs
+                    </a>
+                {% else %}
+                    <a
+                            href="{{ path('tournament_start_phase_finale',{'slug': tournament.slug}) }}"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                        Lancer les phases finales
+                    </a>
+                {% endif %}
+            </div>
         {% elseif matches is not null %}
             <table>
                 <tr>
@@ -129,7 +158,8 @@
                 {% endfor %}
             </table>
         {% endif %}
-    {% endif %}
-    <a href="{{ path('tournament_dashboard') }}"
-       class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Retour</a>
+        {% endif %}
+        <a href="{{ path('tournament_dashboard') }}"
+           class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Retour</a>
+    </div>
 {% endblock %}
