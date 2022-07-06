@@ -19,6 +19,20 @@ class TournamentRepository extends ServiceEntityRepository
         parent::__construct($registry, Tournament::class);
     }
 
+    public function getAllMatchOfTournament($value)
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->where('t.id = :val')
+            ->setParameter('val',$value)
+            ->innerJoin('t.poules', 'p')
+            ->innerJoin('p.pouleMatches','pm')
+            ->select('pm.FirstTeamWin')
+            ->getQuery()
+            ->getResult();
+        return $qb;
+    }
+
+
     // /**
     //  * @return Tournament[] Returns an array of Tournament objects
     //  */

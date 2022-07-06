@@ -40,11 +40,17 @@ class TournamentTeam
      */
     private $tournamentMatches;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PouleEquipe::class, mappedBy="TournamentTeam", orphanRemoval=true)
+     */
+    private $pouleEquipes;
+
     public function __construct()
     {
         $this->tournaments = new ArrayCollection();
         $this->players = new ArrayCollection() ;
         $this->tournamentMatches = new ArrayCollection();
+        $this->pouleEquipes = new ArrayCollection();
     }
 
     public function getPlayers()
@@ -132,6 +138,36 @@ class TournamentTeam
             // set the owning side to null (unless already changed)
             if ($tournamentMatch->getTeamOne() === $this) {
                 $tournamentMatch->setTeamOne(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PouleEquipe[]
+     */
+    public function getPouleEquipes(): Collection
+    {
+        return $this->pouleEquipes;
+    }
+
+    public function addPouleEquipe(PouleEquipe $pouleEquipe): self
+    {
+        if (!$this->pouleEquipes->contains($pouleEquipe)) {
+            $this->pouleEquipes[] = $pouleEquipe;
+            $pouleEquipe->setTournamentTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removePouleEquipe(PouleEquipe $pouleEquipe): self
+    {
+        if ($this->pouleEquipes->removeElement($pouleEquipe)) {
+            // set the owning side to null (unless already changed)
+            if ($pouleEquipe->getTournamentTeam() === $this) {
+                $pouleEquipe->setTournamentTeam(null);
             }
         }
 

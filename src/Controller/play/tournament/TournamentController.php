@@ -37,12 +37,13 @@ class TournamentController extends AbstractController
            'name'=>1,
            'tournaments'=>$tournament
        ]); ;
-
+//       dump( new \DateTime('26-06-2022 17:50:00'));
+//        dd($tournament->getStartAt()->sub(new \DateInterval('P2D')));
         return $this->render('play/tournament/show.html.twig',[
             'tournament' => $tournament,
-            'inscription' => $tournament->getStartInscriptionAt() <= new \DateTime()  &&
+            'inscription' => $tournament->getStartInscriptionAt() <= new \DateTime('26-06-2022 17:50:00')  &&
                 !$tournament->getStatus()  && count($tournament->getEquipes()) < $tournament->getMaxTeamParticipant() &&
-                $tournament->getStartAt()->sub(new \DateInterval('P2D')) > new \DateTime()
+                $tournament->getStartAt()->sub(new \DateInterval('P2D')) > new \DateTime('26-06-2022 17:50:00')
             ,
             'equipes' => $tournament->getEquipes(),
             'matches' => $matches
@@ -68,8 +69,6 @@ class TournamentController extends AbstractController
             ]);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-
-
                 if (count($tournament_team->getPlayers()) != $tournament->getMaxTeamPlayers()) {
                     $this->addFlash('warning', 'Tu ne dois pas dépasser la limite de joueurs inscrit autorisé.');
                     return $this->redirectToRoute('play_inscription_tournament', [
@@ -82,7 +81,7 @@ class TournamentController extends AbstractController
                     $tournament_team->addTournaments($tournament);
                     $tournament_team->setTeam($user->getTeam());
                     foreach ($tournament_team->getPlayers() as $player) {
-                        $player->addTournamentTeams($tournament_team) ;
+                        $player->addTournamentTeams($tournament_team);
                         $em->persist($player);
                     }
 

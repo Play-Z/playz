@@ -3,44 +3,169 @@
 {% block title %}Edit Tournoi{% endblock %}
 
 {% block content %}
-<div class="relative z-0 w-full mb-6 group">
-    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Modification du tournoi {{ tournament.name }}</h1>
+    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500 text-center">
         {% if tournament.status == false %}
-            {{ include('tournament/_form.html.twig') }}
+            Edition de {{ tournament.name }}
         {% else %}
-            <table>
-                <tr>
-                    <td>Equipe1</td>
-                    <td>contre</td>
-                    <td>Equipe2</td>
-                    <td>status</td>
-                    <td>action</td>
-                </tr>
-            {% for match in matches %}
-                <tr>
-                    <td>{{  match.getTeamOne().getTeam().name  }}</td>
-                    <td><h2>CONTRE    .   </h2></td>
-                    <td>{{ match.getTeamTwo().getTeam().name }}</td>
-                    <td>
-                        {{ match.status ?
-                            match.getTeamOneWin() ?
+            Déroulement du tournoi {{ tournament.name }}
+        {% endif %}
+    </h1>
+    <div class="grid grid-cols-12 px-6">
+        <div class="col-span-12">
+            {% if tournament.status == false %}
+            {{ include('tournament/_form.html.twig') }}
+            {% else %}
+            {% if not finaleDisable %}
+                <h2 class="text-3xl font-normal leading-normal mt-0 mb-2 text-red-500">Tous les matchs de poules sont
+                    terminés</h2>
+                <p> Sélectionner les 2 équipes pour chaque poules qui iront en phases finales</p>
+            {% endif %}
+        </div>
+        <div class="col-span-12">
+            <form method="get" action="{{ path('tournament_start_phase_finale',{'slug': tournament.slug}) }}">
+            {% if poules is not null %}
+                {% for poule in poules %}
+                    <div class="col-span-5">
+                        <div class="shadow-md sm:rounded-lg col-span-12 py-5">
+                            <h2 class="text-2xl font-normal leading-normal mt-0 mb-2 text-indigo-500 text-center">{{ poule.name }}</h2>
+                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">Equipe</th>
+                                    <th scope="col" class="px-6 py-3">Score</th>
+                                    {% if not finaleDisable %}
+                                        <th scope="col" class="px-6 py-3">Sélectionnez les finalistes</th>
+                                    {% endif %}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for equipe in poule.getPouleEquipes() %}
+                                    <tr class="text-center">
+                                        <td class="text-left px-4">{{ equipe.getTournamentTeam().getTeam().name }}</td>
+                                        {% if equipe.getNombreVictoire() %}
+                                            <td>{{ equipe.getNombreVictoire() }}</td>
+                                        {% else %}
+                                            <td>0</td>
+                                        {% endif %}
+                                        {% if not finaleDisable %}
+                                            <td>
+                                                <input
+                                                        type="checkbox"
+                                                        name="{{ equipe.getTournamentTeam().getTeam().name }}_checkbox"
+                                                        value="{{ equipe.getTournamentTeam().getTeam().id }}"/>
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class=" col-span-12 py-5">
+                            {% if finaleDisable %}
+                                <table class="table">
+                                    <tr>
+                                        <td>Matches de la {{ poule.name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Première équipe</td>
+                                        <td>VS</td>
+                                        <td>Seconde équipe</td>
+                                        <td>Etat</td>
+                                        <td>Action</td>
+                                    </tr>
+                                    {% for match in poule.getPouleMatches() %}
+                                        <tr>
+                                            <td>{{ match.getEquipeUne().getTournamentTeam().getTeam().name }}</td>
+                                            <td><h2>CONTRE . </h2></td>
+                                            <td>{{ match.getEquipeDeux().getTournamentTeam().getTeam().name }}</td>
+                                            <td>
+                                                {% if match.status %}
+                                                    Vainqueur :
+                                                    {% if match.getFirstTeamWin() %}
+                                                        {{ match.getEquipeUne().getTournamentTeam().getTeam().name }}
+                                                    {% elseif not match.getFirstTeamWin() %}
+                                                        {{ match.getEquipeDeux().getTournamentTeam().getTeam().name }}
+                                                    {% endif %}
+                                                {% else %}
+                                                    Pas encore joué !
+                                                {% endif %}
+                                            </td>
+                                            {% if match.status  == true %}
+                                                <td></td>
+                                            {% else %}
+                                                <td>
+                                                    <a href="{{ path('poules_set_victory',{id : match.id , t_slug : tournament.slug}) }}">
+                                                        Déclarer un vainqueur
+                                                    </a>
+                                                </td>
+                                            {% endif %}
+                                            {% if not finaleDisable %}
+                                                <label>
+                                                    <input type="checkbox"/>
+                                                </label>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="col-span-12 my-4">
+                    {% if finaleDisable %}
+                        <a
+                                class="px-4 py-2 text-white bg-blue-300 rounded">
+                            Veuillez finir les matchs
+                        </a>
+                    {% else %}
+                        <button
+                                type="submit"
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                            Lancer les phases finales
+                        </button>
+                    {% endif %}
+                </div>
+            </form>
+            {% elseif matches is not null %}
+                <table class="text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Equipe1</th>
+                        <th scope="col" class="px-6 py-3">contre</th>
+                        <th scope="col" class="px-6 py-3">Equipe2</th>
+                        <th scope="col" class="px-6 py-3">Status</th>
+                        <th scope="col" class="px-6 py-3">Actin</th>
+                        <th scope="col" class="px-6 py-3">Equipe1</th>
+                    </tr>
+                    </thead>
+                    {% for match in matches %}
+                        <tr>
+                            <td>{{ match.getTeamOne().getTeam().name }}</td>
+                            <td><h2>CONTRE . </h2></td>
+                            <td>{{ match.getTeamTwo().getTeam().name }}</td>
+                            <td>
+                                {{ match.status ?
+                                match.getTeamOneWin() ?
                                 'Vainqueur équipe1'   :
                                 'Vainqueur équipe2'
-                        : 'en cours!' }}
-                    </td>
-                    {% if match.status  == true %}
-                        <td></td>
-                    {% else %}
-                        <td>
-                            <a href="{{ path('tournament_set_victory',{id : match.id , t_slug : tournament.slug}) }}">Déclarer un vainqueur</a>
-                        </td>
-                    {% endif %}
+                                : 'en cours!' }}
+                            </td>
+                            {% if match.status == true %}
+                                <td></td>
+                            {% else %}
+                                <td>
+                                    <a href="{{ path('tournament_set_victory',{id : match.id , t_slug : tournament.slug}) }}">Déclarer
+                                        un vainqueur</a>
+                                </td>
+                            {% endif %}
 
-                </tr>
-            {% endfor %}
-            </table>
-        {% endif %}
-    <a href="{{ path('tournament_dashboard') }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Retour</a>
-</div>
-   
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+            {% endif %}
+        </div>
+        <a href="{{ path('tournament_dashboard') }}"
+           class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Retour</a>
+    </div>
 {% endblock %}

@@ -11,36 +11,44 @@
     <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
+            <th>Logo</th>
+            <th>Name</th>
+            <th>Game</th>
             <th>Image</th>
             <th>Nom</th>
             <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-            {% for tournament in tournaments %}
-                <tr>
-                    {% if tournament.path %}
-                        <td><img src="{{ vich_uploader_asset(tournament, 'logo') }}" width="200" height="auto" alt="Logo de {{ tournament.name }}" class="mt-2 mb-2 mr-auto ml-auto"></td>
+        {% for tournament in tournaments %}
+            <tr>
+                {% if tournament.path %}
+                    <td><img src="{{ vich_uploader_asset(tournament, 'logo') }}" width="64" height="auto" alt="Logo de {{ tournament.name }}"></td>
+                {% else %}
+                    <td>Pas de logo</td>
+                {% endif %}
+                <td>{{ tournament.name }}</td>
+                <td>
+                    {% if tournament.game.path %}
+                        <img src="{{ vich_uploader_asset(tournament.game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ tournament.game.name }}">
                     {% else %}
-                        <td>Pas de logo</td>
+                        {{ tournament.game.name }}
                     {% endif %}
-                    <td>{{ tournament.name }}</td>
-                    <td>
-                        <a class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900" href="{{ path('play_tournament', {'slug': tournament.slug}) }}">Afficher</a>
-                        {% if tournament.status == false %}
-                            {% if tournament.status is not null %}
-                                Le tournoi est terminé.
-                            {% endif %}
+                </td>
+                <td>
+
+                    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('play_tournament', {'slug': tournament.slug}) }}">Afficher</a>
+                    {% if tournament.status == false %}
+                        {% if tournament.status is not null %}
+                            Le tournoi est terminé.
                         {% endif %}
-                        {%  if tournament.status is null %}
-                            <a href="{{ path('tournament_cancel',{'slug': tournament.slug}) }}" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Annuler</a>
-                            <a href="{{ path('tournament_start',{'slug': tournament.slug}) }}" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" >Lancer</a>
-                        {% endif %}
-                        {% if tournament.status is null or tournament.status == true %}
-                            <a href="{{ path('tournament_edit', {'slug': tournament.slug}) }}" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">Modifier</a>
-                        {% endif %}
-                    </td>
-                </tr>
+                    {% endif %}
+                    {%  if tournament.status is null %}
+                        <a href="{{ path('tournament_cancel',{'slug': tournament.slug}) }}" style="display: block; padding: 2px 5px ; border-radius: 20px ; background-color: red; color: whitesmoke ; text-align: center;">ANNULER</a>
+                        <a href="{{ path('tournament_start',{'slug': tournament.slug}) }}" style="display: block; padding: 2px 5px ; border-radius: 20px ; background-color: green; color: whitesmoke ; text-align: center;" >LANCER</a>
+                    {% endif %}
+                    {% if tournament.status is null or tournament.status == true %}
+                        <a href="{{ path('tournament_edit', {'slug': tournament.slug}) }}">Modifier</a>
             {% else %}
                 <tr>
                     <th colspan="8">Vous n'avez créer aucun tournoi</th>
