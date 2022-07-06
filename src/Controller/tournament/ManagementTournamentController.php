@@ -79,11 +79,10 @@ class ManagementTournamentController extends AbstractController
                 'tournament' => $tournament
             ]);
         } else {
-
             if($tournament->getStatus() == false) {
                 return $this->redirectToRoute('tournament_dashboard') ;
             }
-            if ($tournament->getPouleType() === true) {
+            if ($tournament->getPouleType()) {
                 $finaleDisable = true;
                 $matches = $tournamentRepository->getAllMatchOfTournament($tournament->getId());
                 $allMatches = [];
@@ -93,14 +92,13 @@ class ManagementTournamentController extends AbstractController
 
                 if (!in_array(null,$allMatches, true)){
                     $finaleDisable = false;
-
                 }
 
                 return $this->renderForm('tournament/edit.html.twig', [
                     'poules' => $tournamentService->getPoulesMatchs($tournament),
                     'matches' => null,
                     'tournament' => $tournament,
-                    'finaleDisable' => $finaleDisable
+                    'finaleDisable' => $finaleDisable,
                 ]);
             }
 
@@ -108,6 +106,7 @@ class ManagementTournamentController extends AbstractController
                 'matches' => $tournamentService->getMatchesOfEtape($tournament),
                 'poules' => null,
                 'tournament' => $tournament,
+                'finaleDisable' => true
             ]);
         }
     }
@@ -115,12 +114,17 @@ class ManagementTournamentController extends AbstractController
     #[Route('/edit/{slug}/start_phase_finales', name: 'tournament_start_phase_finale')]
     public function pouleStartPhaseFinale(Tournament $tournament, Request $request, TournamentService $tournamentService): Response
     {
-        $equipes = $tournamentService->getPoulesMatchs($tournament);
+        $poules = $tournamentService->getPoulesMatchs($tournament);
+        $finalistes = [];
+        foreach ($poules as $poule){
+            $finalistes[] = $poule->getPouleEquipes()[0]->getTournamentTeam();
+            $finalistes[] = $poule->getPouleEquipes()[1]->getTournamentTeam();
+        }
+        $tournamentService->createTournamentChild($tournament,$finalistes);
 
-        $tournamentService->createTournamentChild($tournament);
-
-
-        return $this->redirectToRoute('tournament_edit') ;
+        return $this->redirectToRoute('tournament_edit',[
+            'slug' => $tournament->getTournament()->getSlug()
+        ]) ;
     }
 
     #[Route('/start/{slug}', name: 'tournament_start')]

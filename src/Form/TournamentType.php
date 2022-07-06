@@ -31,6 +31,10 @@ class TournamentType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => "Nom d'utilisateur"
             ])
+            ->add('PouleType',CheckboxType::class,[
+                'label'=>'Créer un tournoi avec poules',
+                'required'=>false
+            ])
             ->add('description')
             ->add('max_team_participant',ChoiceType::class, [
                 'label' => "Nombre d'équipes dans le tournoi",
@@ -66,9 +70,6 @@ class TournamentType extends AbstractType
             ->add('startInscriptionAt', DateTimeType::class,[
                 'widget' => 'single_text',
                 'label'=>'Tournament inscription start at'
-            ])
-            ->add('PouleType',CheckboxType::class,[
-                'label'=>'Créer un tournoi avec poules'
             ])
         ;
     }

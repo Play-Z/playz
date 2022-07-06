@@ -12,6 +12,7 @@ use App\Repository\PouleRepository;
 use App\Repository\TournamentMatchRepository;
 use App\Repository\TournamentRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpParser\Node\Expr\Array_;
 
 class TournamentService
 {
@@ -89,24 +90,33 @@ class TournamentService
     }
 
     /** @var Tournament\ $tournament*/
-    public function createTournamentChild(Tournament $tournament, $equipes)
+    public function createTournamentChild(Tournament $tournament,Array $finalistes)
     {
         /* Create base data for Tournament */
         $tournamentChild = new Tournament();
-        $tournamentChild->setName($tournament->getName().' - SubTournament');
-//        $tournamentChild->setParent($tournament);
+        $tournamentChild->setName($tournament->getName().' - Finales');
+        $tournamentChild->setMaxTeamPlayers($tournament->getMaxTeamPlayers());
+        $tournamentChild->setMaxTeamParticipant(count($finalistes));
+        $tournamentChild->setStartInscriptionAt($tournament->getStartInscriptionAt());
+        $tournamentChild->setStartAt($tournament->getStartAt());
+        $tournamentChild->setGame($tournament->getGame());
+
+        /* Add team to tournament */
+        foreach ($finalistes as $finaliste) {
+            /* Create slots of finalist */
+            $finaliste->addTournaments($tournamentChild);
+        }
 
         /* get team of parent Tournament */
-        dump($tournament->getPoules());
+        $tournament->setTournamentChild($tournamentChild);
 
-        exit();
-        $tournamentChild->setMaxTeam($tournament->getMaxTeam() / 2);
+        $this->entityManager->persist($tournamentChild);
+        $this->entityManager->persist($tournament);
+
 
         /* Create tournament child matches */
-        $this->createMatchesForATournament($tournamentChild->getMaxTeam(),$tournamentChild,false);
+        $this->createMatchesForATournament($tournamentChild->getMaxTeamParticipant(),$tournamentChild,false);
         $this->startATournament($tournamentChild);
-
-        $tournament->addChild();
     }
 
     public function startATournament(Tournament $tournament) {

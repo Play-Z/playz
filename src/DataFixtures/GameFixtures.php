@@ -33,13 +33,14 @@ class GameFixtures extends Fixture implements DependentFixtureInterface
 
         $data = json_decode($response->getBody());
 
-        for ($i = 0; $i < 12; $i++){
+        for ($i = 0; $i < 14; $i++){
             GameFactory::createMany(1,
                 [
                     'created_by' => UserFactory::random(),
                     'name' => $data[$i]->name,
                     'slug' => $data[$i]->slug,
-                    'path' => "{$data[$i]->slug}.png"]);
+                    'path' => "{$data[$i]->slug}.png"
+                ]);
         $manager->flush();
         }
 
