@@ -3,10 +3,7 @@
 {% set page_title = 'Modification du profil de ' ~ user.username %}
 
 {% block content %}
-    <h1>Modification profil de {{ user.username }}</h1>
+    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500 text-center">Modification - {{ user.username }}</h1>
 
     {{ include('play/user/_form.html.twig', {'button_label': 'Sauvegarder'}) }}
-
-    <a href="{{ path('user_profile_show', {'slug': user.slug}) }}">Annuler</a>
-
 {% endblock %}
