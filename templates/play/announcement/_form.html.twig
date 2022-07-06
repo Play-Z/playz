@@ -1,0 +1,26 @@
+<div class="w-full px-3">
+{{ form_start(form) }}
+    <div class="relative z-0 w-full mb-6 group">
+    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Titre</label>
+        {{ form_widget(form.title) }}
+    </div>
+    <div class="relative z-0 w-full mb-6 group">
+        <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Description</label>
+        {{ form_widget(form.description) }}
+    </div>
+    <div class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="user_avatar_help">
+            <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Image</label>
+        {{ form_widget(form.image) }}
+    </div>
+    <div class="relative z-0 w-full mb-6 group">
+        <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Equipe</label>
+        {{ form_widget(form.teamAnnouncement) }}
+    </div>
+    <div class="relative z-0 w-full mb-6 group">
+        <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Tournoi</label>
+        {{ form_widget(form.tournamentAnnouncement) }}
+    </div>
+    
+    <button class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">{{ button_label|default('Valider') }}</button>
+{{ form_end(form) }}
+</div>

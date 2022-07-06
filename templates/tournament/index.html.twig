@@ -1,18 +1,21 @@
-{% extends 'baseTemplate/tournament-base.html.twig' %}
+{% extends 'baseTemplate/admin-base.html.twig' %}
 
 {% set page_title = 'Tournois' %}
 
 {% block title %}Mes tournois{% endblock %}
 
 {% block content %}
-    <h1>Tournois par jeu</h1>
-
-    <table class="table">
-        <thead>
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg pb-60">
+    <h1 class= "text-5xl font-normal text-center leading-normal mt-0 mb-2 text-indigo-500">Mes tournois</h1>
+    
+    <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
             <th>Logo</th>
             <th>Name</th>
             <th>Game</th>
+            <th>Image</th>
+            <th>Nom</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -46,17 +49,15 @@
                     {% endif %}
                     {% if tournament.status is null or tournament.status == true %}
                         <a href="{{ path('tournament_edit', {'slug': tournament.slug}) }}">Modifier</a>
-                    {% endif %}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">Vous n'avez créer aucun tournoi</td>
-            </tr>
-        {% endfor %}
+            {% else %}
+                <tr>
+                    <th colspan="8">Vous n'avez créer aucun tournoi</th>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 
-    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('tournament_new') }}">Créer un tournoi</a>
-
+    
+</div>
+<a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('tournament_new') }}">Créer un tournoi</a>
 {% endblock %}

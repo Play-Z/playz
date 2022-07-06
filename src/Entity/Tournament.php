@@ -145,10 +145,9 @@ class Tournament
      */
     private $tournament;
 
-//    /**
-//     * @ORM\OneToOne(targetEntity=Tournament::class, cascade={"persist", "remove"})
-//     */
-//    private $tournamentChild;
+     * @ORM\OneToMany(targetEntity=Announcement::class, mappedBy="tournamentAnnouncement")
+     */
+    private $announcements;
 
     /**
      * @param UploadedFile $logo
@@ -172,6 +171,7 @@ class Tournament
         $this->tournamentMatches = new ArrayCollection();
         $this->poules = new ArrayCollection();
         $this->equipes = new ArrayCollection();
+        $this->announcements = new ArrayCollection();
     }
 
     /**
@@ -383,6 +383,7 @@ class Tournament
     }
 
     /**
+
      * @return Collection|Poule[]
      */
     public function getPoules(): Collection
@@ -395,10 +396,24 @@ class Tournament
         if (!$this->poules->contains($poule)) {
             $this->poules[] = $poule;
             $poule->setTournament($this);
+
+     * @return Collection|Announcement[]
+     */
+    public function getAnnouncements(): Collection
+    {
+        return $this->announcements;
+    }
+
+    public function addAnnouncement(Announcement $announcement): self
+    {
+        if (!$this->announcements->contains($announcement)) {
+            $this->announcements[] = $announcement;
+            $announcement->setTournamentAnnouncement($this);
         }
 
         return $this;
     }
+
 
     public function removePoule(Poule $poule): self
     {
@@ -406,11 +421,19 @@ class Tournament
             // set the owning side to null (unless already changed)
             if ($poule->getTournament() === $this) {
                 $poule->setTournament(null);
+
+    public function removeAnnouncement(Announcement $announcement): self
+    {
+        if ($this->announcements->removeElement($announcement)) {
+            // set the owning side to null (unless already changed)
+            if ($announcement->getTournamentAnnouncement() === $this) {
+                $announcement->setTournamentAnnouncement(null);
             }
         }
 
         return $this;
     }
+
 
     public function getPouleType(): ?bool
     {
@@ -423,18 +446,6 @@ class Tournament
 
         return $this;
     }
-
-//    public function getTournamentChild(): ?self
-//    {
-//        return $this->tournamentChild;
-//    }
-//
-//    public function setTournamentChild(?self $tournamentChild): self
-//    {
-//        $this->tournamentChild = $tournamentChild;
-//
-//        return $this;
-//    }
 
 public function getTournamentChild(): ?self
 {
@@ -469,5 +480,4 @@ public function setTournament(?self $tournament): self
 
     return $this;
 }
-
 }
