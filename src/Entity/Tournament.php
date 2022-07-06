@@ -145,6 +145,7 @@ class Tournament
      */
     private $tournament;
 
+    /**
      * @ORM\OneToMany(targetEntity=Announcement::class, mappedBy="tournamentAnnouncement")
      */
     private $announcements;
@@ -383,7 +384,6 @@ class Tournament
     }
 
     /**
-
      * @return Collection|Poule[]
      */
     public function getPoules(): Collection
@@ -396,7 +396,12 @@ class Tournament
         if (!$this->poules->contains($poule)) {
             $this->poules[] = $poule;
             $poule->setTournament($this);
+        }
+        return $this;
+    }
 
+    /**
+     *
      * @return Collection|Announcement[]
      */
     public function getAnnouncements(): Collection
@@ -421,6 +426,11 @@ class Tournament
             // set the owning side to null (unless already changed)
             if ($poule->getTournament() === $this) {
                 $poule->setTournament(null);
+            }
+        }
+
+        return $this;
+    }
 
     public function removeAnnouncement(Announcement $announcement): self
     {
