@@ -125,6 +125,11 @@ class Tournament
     private $slug;
 
     /**
+     * @ORM\OneToMany(targetEntity=Announcement::class, mappedBy="tournamentAnnouncement")
+     */
+    private $announcements;
+
+    /**
      * @param UploadedFile $logo
      */
     public function setLogo(?File $logo = null)
@@ -144,6 +149,7 @@ class Tournament
     public function __construct()
     {
         $this->tournamentMatches = new ArrayCollection();
+        $this->announcements = new ArrayCollection();
 
     }
 
@@ -353,6 +359,36 @@ class Tournament
     public function getSlug(): ?string
     {
         return $this->slug;
+    }
+
+    /**
+     * @return Collection|Announcement[]
+     */
+    public function getAnnouncements(): Collection
+    {
+        return $this->announcements;
+    }
+
+    public function addAnnouncement(Announcement $announcement): self
+    {
+        if (!$this->announcements->contains($announcement)) {
+            $this->announcements[] = $announcement;
+            $announcement->setTournamentAnnouncement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnnouncement(Announcement $announcement): self
+    {
+        if ($this->announcements->removeElement($announcement)) {
+            // set the owning side to null (unless already changed)
+            if ($announcement->getTournamentAnnouncement() === $this) {
+                $announcement->setTournamentAnnouncement(null);
+            }
+        }
+
+        return $this;
     }
 
 }

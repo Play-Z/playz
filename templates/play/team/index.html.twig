@@ -3,10 +3,11 @@
 {% set page_title = 'Equipes' %}
 
 {% block content %}
-    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Equipes</h1>
-
-    <table class="table">
-        <thead>
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <h1 class= "text-5xl font-normal text-center leading-normal mt-0 mb-2 text-indigo-500">Tournois par jeu</h1>
+    
+    <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th>Equipe</th>
                 <th>Créateur</th>
@@ -26,7 +27,7 @@
                 <td>
                     <a href="{{ path('team_show', {'slug': team.slug}) }}">
                         {% if team.path %}
-                            <img src="{{ vich_uploader_asset(team, 'logo') }}" width="64" height="auto" alt="Logo de l'équipe {{ team.name }}">
+                            <img src="{{ vich_uploader_asset(team, 'logo') }}" width="100" height="auto" alt="Logo de l'équipe {{ team.name }}" class="margin: 0 auto;">
                         {% endif %}
                         <span>{{ team.name }}</span>
                     </a>
@@ -41,7 +42,7 @@
                 <td>
                 {% if team.game is defined and not null %}
                     {% if team.game.path %}
-                        <img src="{{ vich_uploader_asset(team.game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ team.game.name }}">
+                        <img src="{{ vich_uploader_asset(team.game, 'logo') }}" width="100" height="auto" alt="Logo du jeux {{ team.game.name }}" class="margin: 0 auto;">
                     {% else %}
                         {{ team.game.name }}
                     {% endif %}
@@ -77,5 +78,6 @@
     {% if app.user and app.user.team is null or not app.user %}
         <a href="{{ path('team_new') }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Creer une équipe</a>
     {% endif %}
+</div>
 
 {% endblock %}

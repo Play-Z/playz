@@ -3,9 +3,10 @@
 {% set page_title = 'Jouer' %}
 
 {% block content %}
-    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Tournois</h1>
-
-    <table class="table">
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg pb-60">
+    <h1 class= "text-5xl font-normal text-center leading-normal mt-0 mb-2 text-indigo-500">Tournois</h1>
+    
+    <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
         <thead>
         <tr>
             <th>Logo</th>
@@ -23,13 +24,13 @@
 
             <tr>
                 {% if tournament.path %}
-                    <td><img src="{{ vich_uploader_asset(tournament, 'logo') }}" width="64" height="auto" alt="Logo de {{ tournament.name }}"></td>
+                    <td><img src="{{ vich_uploader_asset(tournament, 'logo') }}" width="120" height="auto" alt="Logo de {{ tournament.name }}" style="margin: 0 auto;"></td>
                 {% else %}
                     <td>Pas de logo</td>
                 {% endif %}
                 <td>
                     {% if tournament.game.path %}
-                        <img src="{{ vich_uploader_asset(tournament.game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ tournament.game.name }}">
+                        <img src="{{ vich_uploader_asset(tournament.game, 'logo') }}" width="100" height="auto" alt="Logo du jeux {{ tournament.game.name }}"  style="margin: 0 auto;">
                     {% else %}
                         {{ tournament.game.name }}
                     {% endif %}
@@ -40,7 +41,7 @@
                 <td>{{ tournament.startInscriptionAt | date('d F Y  \\à g:ia') }}</td>
                 <td>{{ tournament.startAt | date('d F Y  \\à g:ia') }}</td>
                 <td>
-                    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('play_tournament', {slug : tournament.slug  }) }}">Plus de détail</a>
+                    <a class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900" href="{{ path('play_tournament', {slug : tournament.slug  }) }}">+ de détail</a>
                 </td>
             </tr>
         {% else %}

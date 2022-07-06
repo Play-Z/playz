@@ -3,9 +3,9 @@
 {% block title %}Equipe {{ team.name }}{% endblock %}
 
 {% block content %}
-    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">{{ team.name }}</h1>
+    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500 text-center">Equipe {{ team.name }}</h1>
 
-    <table class="table">
+    <table class="table" style="margin: 0 auto;">
         <tbody>
             <tr>
                 {% if team.path %}
@@ -129,8 +129,18 @@
             </tr>
         </tbody>
     </table>
+    <div id="twitch-embed" style="margin: 5% 37%;"></div>
+    <script src="https://embed.twitch.tv/embed/v1.js"></script>
+    <script type="text/javascript">
+        new Twitch.Embed("twitch-embed", {
+            width: 750,
+            height: 500,
+            channel: "{{ team.twitchUsername }}",
+            theme: "dark",
+        });
+    </script>
 
-    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_index') }}">Retour</a>
+     <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('team_index') }}" style="margin: 0 auto;">Retour</a>
 
     {% if is_granted('ROLE_USER') %}
         {% if app.user.team is null and team.public %}
@@ -155,15 +165,4 @@
     {% if is_granted('delete', team) %}
         {{ include('play/team/_delete_form.html.twig') }}
     {% endif %}
-
-    <div id="twitch-embed"></div>
-    <script src="https://embed.twitch.tv/embed/v1.js"></script>
-    <script type="text/javascript">
-        new Twitch.Embed("twitch-embed", {
-            width: 750,
-            height: 500,
-            channel: "{{ team.twitchUsername }}",
-            theme: "dark",
-        });
-    </script>
 {% endblock %}
