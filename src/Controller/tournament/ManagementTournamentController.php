@@ -12,6 +12,7 @@ use App\Form\TournamentType;
 use App\Repository\TournamentMatchRepository;
 use App\Repository\PouleRepository;
 use App\Repository\TournamentRepository;
+use App\Repository\TournamentTeamRepository;
 use App\Security\Voter\TournamentVoter;
 use App\Service\TournamentService;
 use DateTimeZone;
@@ -63,7 +64,8 @@ class ManagementTournamentController extends AbstractController
     #[Route('/edit/{slug}', name: 'tournament_edit')]
     public function edit(Request $request, Tournament $tournament,TournamentService $tournamentService, TournamentRepository $tournamentRepository, PouleRepository $pouleRepository): Response
     {
-        if(!$tournament->getStatus()) {
+
+        if($tournament->getStatus() !== false && $tournament->getStatus() !== true){
             $form = $this->createForm(EditTournamentType::class, $tournament);
 
             $form->handleRequest($request);
@@ -79,7 +81,7 @@ class ManagementTournamentController extends AbstractController
                 'tournament' => $tournament
             ]);
         } else {
-            if($tournament->getStatus() == false) {
+            if($tournament->getStatus() === false) {
                 return $this->redirectToRoute('tournament_dashboard') ;
             }
             if ($tournament->getPouleType()) {
@@ -94,6 +96,8 @@ class ManagementTournamentController extends AbstractController
                     $finaleDisable = false;
                 }
 
+
+
                 return $this->renderForm('tournament/edit.html.twig', [
                     'poules' => $tournamentService->getPoulesMatchs($tournament),
                     'matches' => null,
@@ -101,7 +105,6 @@ class ManagementTournamentController extends AbstractController
                     'finaleDisable' => $finaleDisable,
                 ]);
             }
-
             return $this->renderForm('tournament/edit.html.twig', [
                 'matches' => $tournamentService->getMatchesOfEtape($tournament),
                 'poules' => null,
@@ -112,18 +115,17 @@ class ManagementTournamentController extends AbstractController
     }
 
     #[Route('/edit/{slug}/start_phase_finales', name: 'tournament_start_phase_finale')]
-    public function pouleStartPhaseFinale(Tournament $tournament, Request $request, TournamentService $tournamentService): Response
+    public function pouleStartPhaseFinale(Tournament $tournament, Request $request, TournamentService $tournamentService, TournamentTeamRepository $tournamentTeamRepository): Response
     {
-        $poules = $tournamentService->getPoulesMatchs($tournament);
         $finalistes = [];
-        foreach ($poules as $poule){
-            $finalistes[] = $poule->getPouleEquipes()[0]->getTournamentTeam();
-            $finalistes[] = $poule->getPouleEquipes()[1]->getTournamentTeam();
+
+        foreach ($request->query->all() as $finalistId){
+            $finalistes[] = $tournamentTeamRepository->find($finalistId);
         }
         $tournamentService->createTournamentChild($tournament,$finalistes);
 
         return $this->redirectToRoute('tournament_edit',[
-            'slug' => $tournament->getTournament()->getSlug()
+            'slug' => $tournament->getTournamentChild()->getSlug()
         ]) ;
     }
 
@@ -153,7 +155,6 @@ class ManagementTournamentController extends AbstractController
         $form = $this->createForm(TournamentMatchSetVictoryType::class,$tournamentMatch) ;
         $form->handleRequest($request) ;
         if($form->isSubmitted() && $form->isValid()  ) {
-
             $em = $this->getDoctrine()->getManager() ;
             $tournamentMatch->setStatus(true);
             $parentMatch =  $tournamentMatch->getMatchParent();
