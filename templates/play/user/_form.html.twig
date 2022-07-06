@@ -1,4 +1,202 @@
-{{ form_start(form) }}
+{# {{ form_start(form) }}
     {{ form_widget(form) }}
 <button class="btn bg-indigo-500 text-white active:bg-indigo-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">{{ button_label|default('Sauvegarder') }}</button>
-{{ form_end(form) }}
+{{ form_end(form) }} #}
+
+{# app flash #}
+{% if app.session.flashbag.has('success') %}
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+        <strong class="font-bold">Succes !</strong>
+        <span class="block sm:inline">{{ app.session.flashbag.get('success')|first }}</span>
+        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+        </span>
+    </div>
+{% endif %}
+{% if app.session.flashbag.has('error') %}
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+        <strong class="font-bold">Erreur !</strong>
+        <span class="block sm:inline">{{ app.session.flashbag.get('error')|first }}</span>
+        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+    </span>
+    </div>
+{% endif %}
+
+<div>
+  <div class="md:grid md:grid-cols-3 md:gap-6 mr-20 mb-10">
+    <div class="md:col-span-1">
+      <div class="px-4 sm:px-0 text-center">
+        <p class="mt-1 text-sm text-red-600 text-center">Ces informations seront affichées publiquement, alors faites attention à ce que vous partagez.</p>
+      </div>
+    </div>
+    <div class="mt-10 md:mt-10 md:col-span-2">
+      <form method="POST">
+        {{ form_start(form) }}
+        <div class="shadow sm:rounded-md sm:overflow-hidden">
+          <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+            <div class="grid grid-cols-3 gap-6">
+              <div class="col-span-3 sm:col-span-2">
+                <label for="company-website" class="block text-sm font-bold text-gray-700"> Lien </label>
+                <div class="mt-1 flex rounded-md shadow-sm">
+                  
+                  {{form_widget(form.youtubeUsername)}}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label for="about" class="block text-sm font-bold text-gray-700"> Description </label>
+              <div class="mt-1">
+                {{form_widget (form.description)}}
+              </div>
+              <p class="mt-2 text-sm text-gray-500">Brève description de votre profil.</p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-bold text-gray-700"> Photo </label>
+               {% if form.image == null %}
+                    <span class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+                    <svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    </span>
+                {% else %}
+                    <div>
+                      {{form_row(form.image)}}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-span-6 sm:col-span-3">
+              <label for="first-name" class="block text-sm font-bold text-gray-700">Nom d'utilisateur</label>
+              {{form_widget(form.username)}}
+            </div>
+            <div class="col-span-6 sm:col-span-3">
+              <label for="first-name" class="block text-sm font-bold text-gray-700">Genre</label>
+              {{form_widget(form.gender)}}
+            </div>
+            <div class="col-span-6 sm:col-span-3">
+              <label for="first-name" class="block text-sm font-bold text-gray-700">Nom</label>
+              {{form_widget(form.lastname)}}
+            </div>
+
+            <div class="col-span-6 sm:col-span-3">
+              <label for="last-name" class="block text-sm font-bold text-gray-700">Prénom</label>
+              {{form_widget(form.firstname)}}
+            </div>
+
+            <div class="col-span-6 sm:col-span-3">
+              <label for="last-name" class="block text-sm font-bold text-gray-700">Age</label>
+              {{form_widget(form.age)}}
+            </div>
+
+
+            <div class="col-span-6 sm:col-span-4">
+              <label for="email-address" class="block text-sm font-bold text-gray-700">Pays</label>
+              {{form_widget(form.country)}}
+            </div>
+
+            <div class="col-span-6 sm:col-span-3">
+              <label for="country" class="block text-sm font-bold text-gray-700">Nom d'utilisateur Twitter</label>
+              {{form_widget(form.twitterUsername)}}
+            </div>
+
+            <div class="col-span-6 sm:col-span-3">
+              <label for="country" class="block text-sm font-bold text-gray-700">Nom d'utilisateur Twitch</label>
+              {{form_widget(form.twitchUsername)}}
+            </div>
+
+            <div class="col-span-6 sm:col-span-3">
+              <label for="country" class="block text-sm font-bold text-gray-700">Nom d'utilisateur Reddit</label>
+              {{form_widget(form.redditUsername)}}
+            </div>
+
+            <div class="col-span-6 sm:col-span-3">
+              <label for="country" class="block text-sm font-bold text-gray-700">Code d'invitation serveur Discord</label>
+              {{form_widget(form.discordServerToken)}}
+            </div>
+            
+          </div>
+            <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+              <button class="btn bg-green-500 text-white active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">{{ button_label|default('Sauvegarder') }}</button>
+              <a href="{{ path('user_profile_show', {'slug': user.slug}) }}" class="btn bg-indigo-500 text-white active:bg-indigo-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Annuler</a>
+            </div>
+          </div>
+        </div>
+        {{form_end(form)}}
+      </form>
+    </div>
+  </div>
+</div>
+
+{# <div class="mt-5 md:mt-5 md:col-span-2">
+      <form method="POST">
+        {{ form_start(form) }}
+        <div class="shadow overflow-hidden sm:rounded-md">
+          <div class="px-4 py-5 bg-white sm:p-6">
+            <div class="grid grid-cols-6 gap-6">
+            <div class="col-span-6 sm:col-span-3">
+              <div class="mt-1 flex items-center">
+                {% if form.image == null %}
+                    <span class="inline-block h-26 w-20 rounded-full overflow-hidden bg-gray-100">
+                    <svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    </span>
+                {% else %}
+                    <span class="inline-block h-26 overflow-hidden bg-gray-100">
+                      {{form_row(form.image)}}
+                    </span>
+                {% endif %}
+
+              <div>
+                  <label for="about" class="block text-sm font-bold text-gray-700"> Description </label>
+                  <div class="mt-1">
+                    <textarea id="about" name="about" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" placeholder="you@example.com"></textarea>
+                  </div>
+                  <p class="mt-2 text-sm text-gray-500">{{form_widget(form.description)}}</p>
+              </div>
+                
+                
+              </div>
+            </div>
+              <div class="col-span-6 sm:col-span-3">
+                <label for="first-name" class="block text-sm font-medium text-gray-700">Nom d'utilisateur</label>
+                {{form_widget(form.username)}}
+              </div>
+
+              <div class="col-span-6 sm:col-span-3">
+                <label for="first-name" class="block text-sm font-medium text-gray-700">Genre</label>
+                {{form_widget(form.gender)}}
+              </div>
+
+              <div class="col-span-6 sm:col-span-3">
+                <label for="last-name" class="block text-sm font-medium text-gray-700">Nom</label>
+                {{form_widget(form.lastname)}}
+              </div>
+
+              <div class="col-span-6 sm:col-span-3">
+                <label for="last-name" class="block text-sm font-medium text-gray-700">Prénom</label>
+                {{form_widget(form.firstname)}}
+              </div>
+
+              <div class="col-span-6 sm:col-span-3">
+                <label for="country" class="block text-sm font-medium text-gray-700">Pays</label>
+                {{form_widget(form.country)}}
+              </div>
+
+              <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                <label for="city" class="block text-sm font-medium text-gray-700">Age</label>
+                {{form_widget(form.age)}}
+              </div>
+
+              <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                <label for="postal-code" class="block text-sm font-medium text-gray-700">ZIP / Postal code</label>
+                <input type="text" name="postal-code" id="postal-code" autocomplete="postal-code" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+              </div>
+            </div>
+          </div>
+          <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Save</button>
+          </div>
+        </div>
+      </form>
+    </div> #}
