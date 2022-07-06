@@ -57,7 +57,7 @@ class UserProfileController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            $this->addFlash('success', 'Votre profil a bien été modifier !');
+            $this->addFlash('success', 'Votre profil a bien été modifié !');
             return $this->redirectToRoute('user_profile_show', ['slug' => $user->getSlug()], Response::HTTP_SEE_OTHER);
         }
 
