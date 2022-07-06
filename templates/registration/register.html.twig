@@ -35,6 +35,18 @@
 {% set page_title = 'Inscription' %}
 
 {% block content %}
+{# flash success #}
+    {% for flashSuccess in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">{{ flashSuccess }}</div>
+    {% endfor %}
+{# flash error #}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+{# flash info #}
+    {% for flashInfo in app.flashes('info') %}
+        <div class="alert alert-info" role="alert">{{ flashInfo }}</div>
+    {% endfor %}
 	<section class="h-full gradient-form bg-gray-200 md:h-screen">
 		<div class="container py-12 px-6 h-full" style="margin: 0 auto;">
 			<div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
@@ -63,6 +75,7 @@
                         {{ form_widget(registrationForm.username) }}
                       </div>
                       <div class="mb-4">
+                      <label for="username">Email</label>
                         {{ form_widget(registrationForm.email) }}
                       </div>
                       <div class="mb-4">
@@ -91,9 +104,9 @@
 									<h4 class="text-xl font-semibold mb-6">Entrez dans l'histoire avec PlayZ !</h4>
 									<p class="text-sm">
 										Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-										                  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-										                  quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-										                  consequat.
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat.
 									</p>
 								</div>
 							</div>

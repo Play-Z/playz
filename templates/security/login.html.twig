@@ -3,6 +3,32 @@
 {% set page_title = 'Connexion' %}
 
 {% block content %}
+{# flash succes #}
+{% if app.session.flashbag.has('success') %}
+	<div class="alert alert-success">
+		{% for message in app.session.flashbag.get('success') %}
+			{{ message }}
+		{% endfor %}
+	</div>
+{% endif %}
+{# flash error #}
+{% if app.session.flashbag.has('error') %}
+	<div class="alert alert-danger">
+		{% for message in app.session.flashbag.get('error') %}
+			{{ message }}
+		{% endfor %}
+	</div>
+{% endif %}
+
+{# flash info #}
+{% if app.session.flashbag.has('info') %}
+	<div class="alert alert-info">
+		{% for message in app.session.flashbag.get('info') %}
+			{{ message }}
+		{% endfor %}
+	</div>
+{% endif %}
+
 	<section class="h-full gradient-form bg-gray-200 md:h-screen">
 		<div class="container py-12 px-6 h-full" style="margin: 0 auto;">
 			<div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
@@ -33,9 +59,11 @@
 										{% endfor %}
 										<p class="mb-4">Renseignez vos identifiants</p>
 										<div class="mb-4">
+											<label for="username">Nom d'utilisateur</label>
 											<input name="email" type="text" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="inputEmail" value="{{ last_username }}" required autofocus/>
 										</div>
 										<div class="mb-4">
+											<label for="password">Mot de passe</label>
 											<input name="password" type="password" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="inputPassword"  required/>
 										</div>
 										<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
@@ -67,12 +95,12 @@
 							</div>
 							<div class="lg:w-6/12 flex items-center lg:rounded-r-lg rounded-b-lg lg:rounded-bl-none" style=" background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);">
 								<div class="text-white px-4 py-6 md:p-12 md:mx-6">
-									<h4 class="text-xl font-semibold mt-1 mb-12 pb-1">Du texte à rajouter ici</h4>
+									<h4 class="text-xl font-semibold mt-1 mb-12 pb-1">Re-bonjour ! 🤟 </h4>
 									<p class="text-sm">
 										Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-										                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-										                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-										                        consequat.
+										tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+										quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+										consequat.
 									</p>
 								</div>
 							</div>

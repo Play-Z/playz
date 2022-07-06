@@ -9,6 +9,19 @@
 	        {{ form_row(resetForm.plainPassword) }}
 	        <button class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Reset password</button>
 	    {{ form_end(resetForm) }} #}
+
+{# flash success #}
+	{% for flashSuccess in app.flashes('success') %}
+		<div class="alert alert-success" role="alert">{{ flashSuccess }}</div>
+	{% endfor %}
+{# flash error #}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+{# flash info #}
+    {% for flashInfo in app.flashes('info') %}
+        <div class="alert alert-info" role="alert">{{ flashInfo }}</div>
+    {% endfor %}
 	<section class="h-full gradient-form bg-gray-200 md:h-screen">
 		<div class="container py-12 px-6 h-full" style="margin: 0 auto;">
 			<div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
