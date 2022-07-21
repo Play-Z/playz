@@ -363,6 +363,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
         return $this;
     }
 
+    public function removeRole(string $role): self
+    {
+        if (in_array($role, $this->getRoles())){
+            $this->roles = array_diff($this->roles, [$role]);
+        }
+
+        return $this;
+    }
+
 
     /**
      * @see PasswordAuthenticatedUserInterface
@@ -660,6 +669,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     public function setDateSubscribe(?\DateTimeInterface $dateSubscribe): self
     {
         $this->dateSubscribe = $dateSubscribe;
+        return $this;
+    }
+
+    public function deleteDateSubscribe(): self
+    {
+        $this->dateSubscribe = null;
+        return $this;
     }
   
     public function getAge(): ?int
