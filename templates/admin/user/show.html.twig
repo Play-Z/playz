@@ -39,7 +39,7 @@
                 <th>Description</th>
                 <td>{{ user.description }}</td>
             </tr>
-
+            <p>rfhazbgdfazgfah</p>
 
         </tbody>
     </table>
@@ -47,6 +47,8 @@
     <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('users_index') }}">Retour</a>
 
     <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('users_edit', {'id': user.id}) }}">Modifier</a>
+
+    <a class="text-red-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('delete_subscribe', {'id': user.id}) }}">Supprimer l'abonnement</a>
 
     {{ include('admin/user/_delete_form.html.twig') }}
 {% endblock %}

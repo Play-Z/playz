@@ -35,10 +35,9 @@ class PaymentController extends AbstractController
         }
 
         /* set time out of 1 month */
-//        if ($user->getRoles('ROLE_SUBSCRIBE') && set_time_limit(10)){
-//            $user->getRoles();
-//            $user->setRoles('');
-//        }
+        if (new Date() > $user->getDateSubscribe()->modify('+1 month')){
+            $user->removeRole('ROLE_SUBSCRIBE');
+        }
 
         $em = $this->getDoctrine()->getManager();
         $em->flush();

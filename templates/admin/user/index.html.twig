@@ -19,24 +19,32 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.username }}</td>
                 <td>
-                {% for role in user.roles %}
-                    {{ role }}
-                {% endfor %}
+                    {% for role in user.roles %}
+                        {{ role }}
+                    {% endfor %}
                 </td>
                 <td>
-                    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('user_profile_show', {'slug': user.slug}) }}">Afficher</a>
-                    <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('user_edit', {'slug': user.slug}) }}">Modifier</a>
-                    
+                    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                       href="{{ path('user_profile_show', {'slug': user.slug}) }}">Afficher</a>
+                    <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                       href="{{ path('user_edit', {'slug': user.slug}) }}">Modifier</a>
+                    {% if user.getDateSubscribe() %}
+                        <a class="text-red-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                           href="{{ path('delete_subscribe', {'id': user.id}) }}">
+                            Supprimer l'abonnement
+                        </a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="7">Aucun utilisateurs trouvés ! </td>
+                <td colspan="7">Aucun utilisateurs trouvés !</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('user_new') }}">Créer un utilisateur</a>
+    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+       href="{{ path('user_new') }}">Créer un utilisateur</a>
 
 {% endblock %}
