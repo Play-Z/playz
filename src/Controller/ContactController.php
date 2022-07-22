@@ -39,9 +39,21 @@ class ContactController extends AbstractController
 
             return $this->redirectToRoute('contact_index');
         }
+        if($form->isSubmitted() && !$form->isValid()) {
+            $errors = array();
+
+            foreach ($form->getErrorSchema() as $key => $err) {  
+                if ($key) {  
+                    $errors[$key] = $err->getMessage();  
+                }  
+            }
+            $this->addFlash('error', 'Votre message n\'a pas été envoyé ! Nous vous contacterons dans les plus brefs délais.');
+            
+        }
 
         return $this->renderForm('home/contact/index.html.twig', [
             'form' => $form,
+            'errors' => $errors ?? null,
         ]);
     }
 }

@@ -32,7 +32,7 @@
 	
 	<section class="h-full gradient-form bg-gray-200 md:h-screen">
 		<div class="container py-12 px-6 h-full" style="margin: 0 auto;">
-			<div class="flex justify-center px-6 my-12">
+			<div class="flex justify-center px-6">
 				<!-- Row -->
 				<div class="w-full xl:w-3/4 lg:w-11/12 flex" style="margin: 12%">
 					<!-- Col -->
@@ -41,8 +41,8 @@
 						<div class="text-white px-4 py-6 md:p-12 md:mx-6 items-center" style="margin: 30% auto">
 									<h4 class="text-xl font-semibold mb-6 text-center">Vous avez oublié votre mot de passe ?</h4>
 									<p class="text-sm">
-										Pas de panique ! Ca arrive à tout le monde d'oublié son mot de passe, Restons Zen 🧘
-										Entrez simplement votre adresse e-mail ci-dessous et nous vous enverrons un lien pour réinitialiser votre mot de passe !
+										Pas de panique ! Entrez simplement votre adresse e-mail ci-dessous et nous vous enverrons un lien pour réinitialiser votre mot de passe !
+										Ca arrive à tout le monde d'oublié son mot de passe, Restez Zen 🧘
 										
 									</p>
 								</div>
@@ -57,9 +57,13 @@
 							</div>
 						</div>
 						<form class="px-8 pt-6 pb-8 mb-4 bg-white rounded" method="post">
-							{% for flashError in app.flashes('reset_password_error') %}
-						        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-						    {% endfor %}
+							{% for label, messages in app.flashes %}
+								{% for message in messages %}
+									<div class="alert alert-{{ label }}">
+										{{ message }}
+									</div>
+								{% endfor %}
+							{% endfor %}
 							 {{ form_start(requestForm) }}
 								<div class="mb-4">
 									<label class="block mb-2 text-sm font-bold text-gray-700" for="email">
