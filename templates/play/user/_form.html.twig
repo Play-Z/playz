@@ -114,12 +114,12 @@
               {{form_widget(form.discordServerToken)}}
             </div>
             
-          </div>
-            <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-              <button class="btn bg-green-500 text-white active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">{{ button_label|default('Sauvegarder') }}</button>
-              <a href="{{ path('user_profile_show', {'slug': user.slug}) }}" class="btn bg-indigo-500 text-white active:bg-indigo-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Annuler</a>
             </div>
-          </div>
+              <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                <button class="btn bg-green-500 text-white active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">{{ button_label|default('Sauvegarder') }}</button>
+                <a href="{{ path('user_profile_show', {'slug': user.slug}) }}" class="btn bg-indigo-500 text-white active:bg-indigo-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Annuler</a>
+              </div>
+            </div>
         </div>
         {{form_end(form)}}
       </form>

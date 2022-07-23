@@ -4,9 +4,8 @@
 
 {% block content %}
     <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Modification de {{ user.username }}</h1>
-   {{ include('admin/user/_form.html.twig', {'button_label': 'Update'}) }}
+   
+    {{ include('admin/user/_form.html.twig', {'button_label': 'Sauvegarder'}) }}
 
     {{ include('admin/user/_delete_form.html.twig') }}
-
-    <a href="{{ path('user_index') }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Retour</a>
 {% endblock %}

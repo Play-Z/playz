@@ -62,6 +62,15 @@ class UserController extends AbstractController
         ]);
     }
 
+    // show user profil in POST request
+    #[Route('/{slug}', name: 'user_show', methods: ['GET'])]
+    public function show(User $user): Response
+    {
+        return $this->render('admin/user/show.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
     #[Route('/{slug}/edit', name: 'user_edit', methods: ['GET','POST'])]
     public function edit(Request $request, User $user, UserPasswordHasherInterface $userPasswordHasherInterface, MailerInterface $mailer, ResetPasswordHelperInterface $resetPasswordHelper): Response
     {
@@ -84,7 +93,7 @@ class UserController extends AbstractController
             $email = (new TemplatedEmail())
                 ->from(new Address('playZ@gmail.com', 'PlayZ'))
                 ->to($user->getEmail())
-                ->subject('PlayZ - Your account has been modified by a PlayZ administrator. Please reset your password.')
+                ->subject('PlayZ - Votre compte à été modifié par l\'administrateur PlayZ. Veuillez changer votre mot de passe')
                 ->htmlTemplate('reset_password/user_update_email.html.twig')
                 ->context([
                     'resetToken' => $resetToken,
@@ -97,7 +106,7 @@ class UserController extends AbstractController
             $this->addFlash('success', "L'utilisateur a bien été modifier !");
 
             return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
-        }
+        } 
 
         return $this->renderForm('admin/user/edit.html.twig', [
             'user' => $user,

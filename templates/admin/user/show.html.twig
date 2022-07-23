@@ -3,8 +3,7 @@
 {% block title %}Utilisateurs{% endblock %}
 
 {% block body %}
-    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">{{ user.username }}</h1>
-
+{# 
     <table class="table">
         <tbody>
             <tr>
@@ -48,5 +47,280 @@
 
     <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('users_edit', {'id': user.id}) }}">Modifier</a>
 
-    {{ include('admin/user/_delete_form.html.twig') }}
+    {{ include('admin/user/_delete_form.html.twig') }} #}
+    <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css">
+	<link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+
+	{# app flash #}
+	{% if app.session.flashbag.has('success') %}
+	    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+	        <strong class="font-bold">Succes !</strong>
+	        <span class="block sm:inline">{{ app.session.flashbag.get('success')|first }}</span>
+	        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+	        </span>
+	    </div>
+	{% endif %}
+	{% if app.session.flashbag.has('error') %}
+	    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+	        <strong class="font-bold">Erreur ! </strong>
+	        <span class="block sm:inline">{{ app.session.flashbag.get('error')|first }}</span>
+	        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+			</span>
+	    </div>
+	{% endif %}
+
+	<main class="profile-page">
+		<section class="relative block h-500-px">
+                <div class="absolute top-0 w-full h-full bg-center bg-cover" style="
+                    background-image: url('/images/profil/cover.png');
+                    ">
+                    <span id="blackOverlay" class="w-full h-full absolute opacity-50 bg-black"></span>
+                </div>
+			<div class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden h-70-px" style="transform: translateZ(0px)">
+				<svg class="absolute bottom-0 overflow-hidden" xmlns="http://www.w3.org/2000/svg" preserveaspectratio="none" version="1.1" viewbox="0 0 2560 100" x="0" y="0">
+					<polygon class="text-blueGray-200 fill-current" points="2560 0 2560 100 0 100"></polygon>
+				</svg>
+			</div>
+		</section>
+		<section class="relative py-16 bg-blueGray-200">
+			<div class="container mx-auto px-4">
+				<div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
+					<div class="px-6">
+						<div class="flex flex-wrap justify-center">
+								<div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center mb-20">
+									<div class="relative">
+                                        {% if user.image != null %}
+										    <img alt="..." src="{{ vich_uploader_asset(user, 'image') }}" class="shadow-xl rounded-3xl h-auto align-middle border-none absolute ml-24 lg:ml-24 max-w-150-px" style="margin: -85px -230px">
+                                        {% endif %}
+									</div>
+								</div>
+								<div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
+									<div class="relative">
+							            {% if is_granted('ROLE_ADMIN') %}
+										    <img alt="..." src="/images/profil/admin.png" class="shadow-xl rounded-3xl h-auto align-middle border-none absolute ml-24 lg:ml-24 max-w-150-px" style="margin: -85px -230px">
+							            {% endif %}
+                                        {% if is_granted('ROLE_USER') %}
+                                            <img alt="..." src="/images/profil/playerz.png" class="shadow-xl rounded-3xl h-auto align-middle border-none absolute ml-24 lg:ml-24 max-w-150-px" style="margin: -85px -230px">
+                                        {% endif %}
+									</div>
+								</div>
+                                <div class="w-full lg:w-3/4 px-4 lg:order-3 flex justify-center">                           
+                                    <button class="inline-flex justify-center h-3/4 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mx-3 my-2" type="submit">
+                                        <a href="{{ path('user_index') }}">
+                                            <i class="fas fa-arrow-left "></i>
+                                        Retour</a>
+                                    </button>
+                                    {% if is_granted('ROLE_USER') and app.user != user %}
+                                        {{ include('settings/user_relation/_friend.form.html.twig') }}
+                                    {% endif %}
+
+                                    {% if is_granted('ROLE_USER') and app.user != user %}
+                                        {{ include('settings/user_relation/_block_form.html.twig') }}
+                                    {% endif %}
+
+                                    {% if is_granted('ROLE_TEAM_CREATOR') or is_granted('ROLE_TEAM_MANAGER') %}
+                                        {% if app.user.team.public == false and user.team is null %}
+                                            {{ include('settings/user_relation/_team.form.html.twig') }}
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            
+						</div>
+						<div class="text-center mt-12">
+                            <h3 class="text-4xl font-semibold leading-normal mb-2 text-blueGray-700">
+								{{ user.lastname }} {{ user.firstname }}
+                                        ({{ user.username }})
+							</h3>
+							<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+                                <i class="fas fa-user text-lg text-blueGray-400"></i>
+                                    {{ user.age }}
+								<i class="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
+								    {{ user.country|country_name }}
+							</div>
+                        </div>
+						{# <div class="text-center mt-12">
+							<tr>
+								{% for tournament in tournaments %}
+									<tr>
+										{% if tournament.path %}
+											<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+												<i class="fas fa-trophy mr-2 text-lg text-blueGray-400"></i>
+												<a href="{{ path('play_tournament', {'slug': tournament.slug}) }}"><img src="{{ vich_uploader_asset(tournament, 'logo') }}" width="64" height="auto" alt="Logo de {{ tournament.name }}"></a>
+											</div>
+										{% else %}
+											<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+												<i class="fas fa-trophy mr-2 text-lg text-blueGray-400"> Pas de logo</i>
+											</div>
+										{% endif %}
+										<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+											<i class="fas fa-trophy mr-2 text-lg text-blueGray-400"></i>
+											<a href="{{ path('play_tournament', {'slug': tournament.slug}) }}">{{ tournament.name }}</a>
+										</div>
+									</tr>
+								{% else %}
+									<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+										<i class="fas fa-trophy mr-2 text-lg text-blueGray-400"> Ce joueur n'a participer à aucun tournoi</i>
+									</div>
+								{% endfor %}
+							</tr>
+						</div> #}
+						<div class="text-center mt-12">
+							{% if user.team %}
+								<tr>
+									<th>Equipe</th>
+									<td>
+                                        <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+											<i class="fas fa-group mr-2 text-lg text-blueGray-400"></i>
+											<a href="{{ path('team_show', {'slug': user.team.slug}) }}">
+                                                {% if user.team.path %}
+                                                    <img src="{{ vich_uploader_asset(user.team, 'logo') }}" width="64" height="auto" alt="Logo de l'équipe {{ user.team.name }}">
+                                                {% endif %}
+                                                {{ user.team.name }}
+										    </a>
+										</div>
+									</td>
+								</tr>
+
+								<tr>
+									<th>Rôle dans l'équipe</th>
+									<td>
+										<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+											<i class="fas fa-user-tag mr-2 text-lg text-blueGray-400"></i>
+											{% for role in user.roles %}
+												{% if role == 'ROLE_TEAM_CREATOR' or role == 'ROLE_TEAM_MEMBER' %}
+													{{ role|formatRole(role) }}
+												{% endif %}
+											{% endfor %}
+										</div>
+									</td>
+								</tr>
+
+								<tr>
+									<th>Membres de l'équipe</th>
+									<td>
+										<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+											<i class="fas fa-users mr-2 text-lg text-blueGray-400"></i>
+											{% for member in user.team.users %}
+												<a href="{{ path('user_profile_show', {'slug': member.slug}) }}">{{ member.username }}
+												</a>
+											{% endfor %}
+										</div>
+									</td>
+								</tr>
+
+								{% if user.team.game is defined and not null %}
+									<tr>
+										<th>Jeu</th>
+										<td>
+											<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+												<i class="fas fa-gamepad mr-2 text-lg text-blueGray-400"></i>
+												{% if user.team.game.path %}
+													<img src="{{ vich_uploader_asset(user.team.game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ user.team.game.name }}">
+												{% else %}
+													{{ user.team.game.name }}
+												{% endif %}
+											</div>
+										</td>
+									</tr>
+								{% endif %}
+							{% endif %}
+						</div>
+						<div class="text-center mt-12">
+							{% if user.games is defined and not null %}
+								<tr>
+									<th>Jeux</th>
+								<td>
+										<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+										<i class="fas fa-gamepad-modern mr-2 text-lg text-blueGray-400"></i>
+										{% for game in user.games %}
+											{% if game.path %}
+												<img src="{{ vich_uploader_asset(game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ game.name }}">
+											{% else %}
+												{{ game.name }}
+											{% endif %}
+										{% endfor %}
+									</td>
+								</tr>
+							{% endif %}
+						</div>
+						<div class="text-center mt-12">
+							<tr>
+								<td>
+									<ul style="display: inline-block;">
+										{% if user.twitterUsername %}
+											<li style="display: inline-block; height: 32px; width: 32px;">
+												<a href="https://twitter.com/{{ user.twitterUsername }}">
+													<img src="/images/social-media/twitter/logo-blue.svg" alt="Logo twitter"/>
+												</a>
+											</li>
+										{% endif %}
+										{% if user.twitchUsername %}
+											<li style="display: inline-block; height: 32px; width: 32px;">
+												<a href="https://www.twitch.tv/{{ user.twitchUsername }}">
+													<img src="/images/social-media/twitch/TwitchGlitchPurple.svg" alt="Logo twitch"/>
+												</a>
+											</li>
+										{% endif %}
+										{% if user.redditUsername %}
+											<li style="display: inline-block; height: 32px; width: 32px;">
+												<a href="https://www.reddit.com/user/{{ user.redditUsername }}">
+													<img src="/images/social-media/reddit/Reddit_Mark_OnWhite.png" alt="Logo reddit"/>
+												</a>
+											</li>
+										{% endif %}
+										{% if user.discordServerToken %}
+											<li style="display: inline-block; height: 32px; width: 32px;">
+												<a href="https://discord.gg/{{ user.discordServerToken }}">
+													<img src="/images/social-media/discord/Discord-Logo-Color.svg" alt="Logo discord"/>
+												</a>
+											</li>
+										{% endif %}
+										{% if user.youtubeUsername %}
+											<li style="display: inline-block; height: 32px; width: 32px;">
+												<a href="https://www.youtube.com/c/{{ user.youtubeUsername }}">
+													<img src="/images/social-media/youtube/youtube_social_icon_red.png" alt="Logo youtube"/>
+												</a>
+											</li>
+										{% endif %}
+									</ul>
+								</td>
+							</tr>
+						</div>
+						<div class="mt-10 py-10 border-t border-blueGray-200 text-center">
+							<div class="flex flex-wrap justify-center">
+								<div class="w-full lg:w-9/12 px-4">
+									<p class="mb-4 text-lg leading-relaxed text-blueGray-700 italic">
+										{{user.description}}
+									</p>
+								</div>
+							</div>
+						</div>
+                        <div>
+                            <div id="twitch-embed" style="margin: 3% 17%;"></div>
+                                <script src="https://embed.twitch.tv/embed/v1.js"></script>
+                                <script type="text/javascript">
+                                    new Twitch.Embed("twitch-embed", {
+                                    width: 750,
+                                    height: 500,
+                                    channel: "{{ user.twitchUsername }}",
+                                    theme: "dark"
+                                    });
+                                </script>
+                            </div>
+					</div>
+				</div>
+			</div>
+			<footer class="relative bg-blueGray-200 pt-8 pb-6 mt-8">
+				<div class="container mx-auto px-4">
+					<div class="flex flex-wrap items-center md:justify-between justify-center">
+						<div class="w-full md:w-6/12 px-4 mx-auto text-center">
+							<div
+								class="text-sm text-blueGray-500 font-semibold py-1">{# Made with <a href="https://www.creative-tim.com/product/notus-js" class="text-blueGray-500 hover:text-gray-800" target="_blank">Notus JS</a> by <a href="https://www.creative-tim.com" class="text-blueGray-500 hover:text-blueGray-800" target="_blank"> Creative Tim</a>. #}
+							</div>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</section>
+	</main>
 {% endblock %}
