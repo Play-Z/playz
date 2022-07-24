@@ -86,7 +86,6 @@ class UserController extends AbstractController
                 $resetToken = $resetPasswordHelper->generateResetToken($user);
             } catch (ResetPasswordExceptionInterface $e) {
                 $this->addFlash('error', "Erreur lors de l'envoi du mail");
-
                 return $this->redirectToRoute('user_edit', ['slug' => $user->getSlug()], Response::HTTP_SEE_OTHER);
             }
 
@@ -112,6 +111,20 @@ class UserController extends AbstractController
             'user' => $user,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/{id}/delete_subscribe', name: 'delete_subscribe', methods: ['GET','POST'])]
+    public function deleteSubscribe(Request $request, User $user): Response
+    {
+        /* Suppression du role subscribe */
+        $user->removeRole('ROLE_SUBSCRIBE');
+        $user->deleteDateSubscribe();
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('admin_dashboard', []);
     }
 
     #[Route('/{slug}', name: 'user_delete', methods: ['POST'])]

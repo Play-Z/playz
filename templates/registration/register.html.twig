@@ -59,7 +59,6 @@
 										<img class="mx-auto w-48" src="{{ asset('images/logo/PlayZ-All.png') }}" alt="logo"/>
 										<h4 class="text-xl font-semibold mt-1 mb-12 pb-1">Inscription</h4>
 									</div>
-									<form method="post">
 										{% for flashError in app.flashes('verify_email_error') %}
 											<div class="bg-red-100 rounded-lg py-5 px-6 mb-3 text-base text-red-700 inline-flex items-center w-full" role="alert">
 												<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times-circle" class="w-4 h-4 mr-2 fill-current" role="img" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512">
@@ -79,14 +78,17 @@
 										<p class="mb-4 text-center italic">Inscrivez-vous pour profiter des fonctionnalités PlayZ !</p>
 										{{ form_start(registrationForm) }}
 										<div class="mb-4">
+                      {{ form_errors(registrationForm.username) }}
 											<label for="username">Nom d'utilisateur</label>
 											{{ form_widget(registrationForm.username) }}
 										</div>
 										<div class="mb-4">
+                      {{ form_errors(registrationForm.email) }}
 											<label for="username">Email</label>
 											{{ form_widget(registrationForm.email) }}
 										</div>
 										<div class="mb-4">
+                      {{ form_errors(registrationForm.plainPassword }}
 											<label for="username">Mot de passe</label>
 											{{ form_widget(registrationForm.plainPassword, {
                                                 label: 'Password'
@@ -104,7 +106,6 @@
 													Se connecter</a>
 											</button>
 										</div>
-									</form>
 								</div>
 							</div>
 							<div class="lg:w-6/12 flex items-center lg:rounded-r-lg rounded-b-lg lg:rounded-bl-none" style=" background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);">
