@@ -53,8 +53,7 @@
                     </td>
                 </tr>
             </tbody>
-        </table>    
-    {% endif %}
+        </table>   
     {% if  tournament.status is null %}
         {% if inscription %}
             {%  if is_granted('ROLE_TEAM_CREATOR') or is_granted('ROLE_TOURNAMENT_ARBITER') %}

@@ -33,14 +33,16 @@ class CreateUserType extends AbstractType
             ->add('username', TextType::class, [
                 'label' => "Nom d'utilisateur"
             ])
-            ->add('email')
+            ->add('email', EmailType::class, [
+                'label' => "Email"
+            ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
+                'invalid_message' => 'Les mots de passe doivent correspondre',
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
-                'first_options'  => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
+                'first_options'  => ['label' => 'Mot de passe'],
+                'second_options' => ['label' => 'Confirmer le mot de passe'],
                 'label' => 'Mot de passe'
             ])
             ->add('roles', ChoiceType::class, [

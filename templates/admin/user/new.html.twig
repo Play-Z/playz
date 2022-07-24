@@ -3,9 +3,80 @@
 {% block title %}Nouveau utilisateur{% endblock %}
 
 {% block content %}
-    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Ajouter un utilisateur</h1>
+    <h1 class="text-5xl font-normal my-20 leading-normal mb-2 text-indigo-500">Ajouter un utilisateur</h1>
 
-    {{ include('admin/user/_form.html.twig') }}
+   <div>
+	{% if app.session.flashbag.has('error') %}
+	    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+	        <strong class="font-bold">Erreur ! </strong>
+	        <span class="block sm:inline">{{ app.session.flashbag.get('error')|first }}</span>
+	        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+			</span>
+	    </div>
+	{% endif %}
+  <div class="md:grid md:grid-cols-3 md:gap-6 ml-10 mt-5 w-1/2">
+    <div class="mt-5 md:mt-0 md:col-span-2 mr-20 shadow-2xl">
+      <form method="POST">
+        {{ form_start(form) }} 
+          <div class="shadow sm:rounded-md sm:overflow-hidden">
+            <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700"> Photo de profile </label>
+                <div class="mt-1 flex items-center">
+                  <span class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+                  {% if user.image %}
+                      <img src="{{ vich_uploader_asset(user, 'image') }}" alt="Photo de profile" class="h-full w-full">
+                  {% else %}
+                      <img src="{{ asset('/images/profil/playerz.png') }}" alt="Default" class="h-full w-full">
+                  {% endif %}
+                
+                  </span>
+                  <div class="ml-5 mr-5">
+                    {{ form_widget(form.image) }}
+                  </div>
+                </div>
+              </div>
 
-    <a href="{{ path('user_index') }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Retour</a>
+               <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                    <label for="first-name" class="block text-sm font-medium text-gray-700">Nom d'utilisateur</label>
+                    <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        {{form_widget(form.username)}} 
+                    </div>
+                </div>
+                <div class="col-span-6 sm:col-span-3 lg:col-span-3">
+                  <label for="first-name" class="block text-sm font-medium text-gray-700">Email</label>
+                  <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    {{form_widget(form.email)}} 
+                  </div>
+                </div>
+                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                    <label for="first-name" class="block text-sm font-medium text-gray-700">Rôle</label>
+                    <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        {{form_widget(form.roles)}} 
+                    </div>
+                </div>
+                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                    <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        {{ form_label(form.password.first) }}
+                        {{ form_widget(form.password.first) }}
+                        {{ form_errors(form.password.first) }}
+
+                        {{ form_label(form.password.second) }}
+                        {{ form_widget(form.password.second) }}
+                        {{ form_errors(form.password.second) }}
+                    </div>
+               
+            </div>
+                <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                    <button class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">{{ button_label|default('Sauvegarder') }}</button>
+                    <a href="{{ path('user_index') }}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Retour</a>
+                </div>
+            </div>
+          </div>
+        {{ form_end(form) }} 
+      </form>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

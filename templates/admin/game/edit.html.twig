@@ -1,13 +1,14 @@
 {% extends 'baseTemplate/admin-base.html.twig' %}
 
-{% block title %}Modifier {{ game.name }}{% endblock %}
+{% block title %}Modification {{ game.name }}{% endblock %}
 
 {% block content %}
-    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Modification de {{ game.name }}</h1>
+
+    <h1 class="text-5xl font-normal leading-normal text-center my-28 mb-5 text-indigo-500">Modification de {{ game.name }}</h1>
 
     {{ include('admin/game/_form.html.twig', {'button_label': 'Sauvegarder'}) }}
 
-    <a href="{{ path('admin_game_index') }}">Retour</a>
+    {# <a href="{{ path('admin_game_index') }}">Retour</a> #}
 
     {{ include('admin/game/_delete_form.html.twig') }}
 {% endblock %}
