@@ -53,20 +53,21 @@
                     </td>
                 </tr>
             </tbody>
-        </table>
+        </table>    
+    {% endif %}
     {% if  tournament.status is null %}
         {% if inscription %}
             {%  if is_granted('ROLE_TEAM_CREATOR') or is_granted('ROLE_TOURNAMENT_ARBITER') %}
                 <a class="text-blue-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('play_inscription_tournament', {slug : tournament.slug , user_slug : app.user.slug}) }}">Inscription</a>
-    {#                {% if is_granted('edit', tournamentTeam) %}#}
+                   {% if is_granted('edit', tournamentTeam) %}
                     <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('play_edit_inscription_tournament', {slug : tournament.slug , user_slug : app.user.slug}) }}">Modifier inscription</a>
                 <a onclick="return confirm('Êtes vous sur d\'annuler votre inscription ?');" href="{{ path('play_delete_inscription_tournament', {slug : tournament.slug , user_slug : app.user.slug}) }}" class="btn text-red-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Annuler mon inscription</a>
-    {#                {% endif %}#}
+                   {% endif %}
             {% else %}
             <div class="p-4 mb-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
                 <span class="font-medium">Vous ne pouvez pas vous inscrire, demandez à votre chef d'équipe!</span>
             </div>
-                {# <p>Il est encore temps !</p> #}
+                <p>Il est encore temps !</p>
             {% endif %}
         {% else %}
             <div class="p-4 mb-4 text-sm text-center mt-5 text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">

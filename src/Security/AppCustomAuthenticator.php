@@ -63,7 +63,7 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($this->urlGenerator->generate('tournament_dashboard'));
         }
         elseif (in_array("ROLE_USER", $token->getRoleNames())) {
-            return new RedirectResponse($this->urlGenerator->generate('dashboard'));
+            return new RedirectResponse($this->urlGenerator->generate('home'));
         }
 
         return new RedirectResponse($this->urlGenerator->generate('home'));
