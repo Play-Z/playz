@@ -90,7 +90,7 @@ class UserController extends AbstractController
             }
 
             $email = (new TemplatedEmail())
-                ->from(new Address('playZ@gmail.com', 'PlayZ'))
+                ->from(new Address('playz.site.management@gmail.com', 'PlayZ'))
                 ->to($user->getEmail())
                 ->subject('PlayZ - Votre compte à été modifié par l\'administrateur PlayZ. Veuillez changer votre mot de passe')
                 ->htmlTemplate('reset_password/user_update_email.html.twig')
