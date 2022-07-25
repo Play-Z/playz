@@ -1,0 +1,44 @@
+{# {{ form_start(form) }}
+    {{ form_widget(form) }}
+<button class="btn bg-indigo-500 text-white active:bg-indigo-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">{{ button_label|default('Sauvegarder') }}</button>
+{{ form_end(form) }} #}
+
+<div class="block justify-center full-width">
+    {% if app.session.flashbag.has('error') %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Erreur ! </strong>
+            <span class="block sm:inline">{{ app.session.flashbag.get('error')|first }}</span>
+            <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+			</span>
+        </div>
+    {% endif %}
+    <div class="text-center full-width">
+        <div class="mt-5 md:col-span-2  shadow-2xl">
+            {{ form_start(form) }}
+            <div class="shadow sm:rounded-md sm:overflow-hidden">
+                <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+                    <div>
+                        <div class="mt-1 flex items-center">
+                            {% if form.first_team_win is defined %}
+                                {{ form_errors(form.first_team_win) }}
+                                {{ form_widget(form.first_team_win) }}
+                            {% elseif form.team_one_win is defined %}
+                                {{ form_errors(form.team_one_win) }}
+                                {{ form_widget(form.team_one_win) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 md:mt-0 md:col-span-2">
+                    <div class="shadow overflow-hidden sm:rounded-md">
+                        <div class="px-4 py-3 bg-gray-50 text-center sm:px-6">
+                            <button class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">{{ button_label|default('Sauvegarder') }}</button>
+                            <a href="{{ path('tournament_edit', {'slug': tournament.slug}) }}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Retour</a>
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

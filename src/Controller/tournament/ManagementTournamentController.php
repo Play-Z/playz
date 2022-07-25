@@ -96,8 +96,6 @@ class ManagementTournamentController extends AbstractController
                     $finaleDisable = false;
                 }
 
-
-
                 return $this->renderForm('tournament/edit.html.twig', [
                     'poules' => $tournamentService->getPoulesMatchs($tournament),
                     'matches' => null,
@@ -119,6 +117,8 @@ class ManagementTournamentController extends AbstractController
     {
         $finalistes = [];
 
+        /* Check if tournament has a parent and close tournament parent */
+        $tournament->setStatus(false);
         foreach ($request->query->all() as $finalistId){
             $finalistes[] = $tournamentTeamRepository->find($finalistId);
         }
@@ -160,7 +160,8 @@ class ManagementTournamentController extends AbstractController
             $parentMatch =  $tournamentMatch->getMatchParent();
 
             if($parentMatch == null) {
-                $tournamentMatch->getTournaments()->setStatus(false) ;
+                $tournamentMatch->getTournaments()->setStatus(false);
+
                 if($tournamentMatch->getTeamOneWin() == true) {
 
                     $team =  $tournamentMatch->getTeamOne()->getTeam();
@@ -209,9 +210,10 @@ class ManagementTournamentController extends AbstractController
         }
         return $this->renderForm('tournament/editMatch.html.twig',[
             'match' => $tournamentMatch,
+            'tournament' => $tournamentMatch->getTournaments(),
             'form' => $form,
-            'TeamOne' => $tournamentMatch->getTeamOne()->getTeam()->getName(),
-            'TeamTwo' => $tournamentMatch->getTeamTwo()->getTeam()->getName(),
+            'TeamOne' => $tournamentMatch->getTeamOne()->getTeam(),
+            'TeamTwo' => $tournamentMatch->getTeamTwo()->getTeam(),
         ]) ;
     }
 
@@ -253,8 +255,9 @@ class ManagementTournamentController extends AbstractController
         }
         return $this->renderForm('tournament/editMatch.html.twig',[
             'match' => $pouleMatch,
-            'TeamOne' => $pouleMatch->getEquipeUne()->getTournamentTeam()->getTeam()->getName(),
-            'TeamTwo' => $pouleMatch->getEquipeDeux()->getTournamentTeam()->getTeam()->getName(),
+            'tournament' => $pouleMatch->getPoule()->getTournament(),
+            'TeamOne' => $pouleMatch->getEquipeUne()->getTournamentTeam()->getTeam(),
+            'TeamTwo' => $pouleMatch->getEquipeDeux()->getTournamentTeam()->getTeam(),
             'form' => $form
         ]) ;
     }
@@ -290,9 +293,14 @@ class ManagementTournamentController extends AbstractController
             $em->flush();
             $this->addFlash('success','Le tournoi a bien été supprimé!');
         } else {
-            $this->addFlash('waring','Le tournoi a déjà commencé. Tu ne peux pas l\'annuler');
+            $this->addFlash('warning','Le tournoi a déjà commencé. Tu ne peux pas l\'annuler');
         }
         return $this->redirectToRoute('tournament_dashboard') ;
     }
 
+//    #[Route('/tournament/{slug}' , name:'tournament_cancel')]
+//    public function createProTournament(Tournament $tournament, TournamentMatchRepository $matchRepository ,TournamentService $service)
+//    {
+//
+//    }
 }

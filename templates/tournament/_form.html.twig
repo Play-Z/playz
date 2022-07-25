@@ -3,6 +3,7 @@
 <button class="btn bg-indigo-500 text-white active:bg-indigo-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">{{ button_label|default('Sauvegarder') }}</button>
 {{ form_end(form) }} #}
 
+<h1 class="text-5xl text-center font-normal leading-normal mt-5 mr-5 text-indigo-500 ">Nouveau Tournoi</h1>
 
 <div>
 	{% if app.session.flashbag.has('error') %}
@@ -21,8 +22,7 @@
           <p class="mt-1 text-sm text-red-600">Renseignez les bonnes informations concernant le tournoi avant de valider</p>
         </div>
       </div>
-      <form method="POST">
-        {{ form_start(form) }} 
+        {{ form_start(form) }}
           <div class="shadow sm:rounded-md sm:overflow-hidden">
             <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
               <div>
@@ -37,7 +37,7 @@
               <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                   <label for="first-name" class="block text-sm font-medium text-gray-700">Nom</label>
                   <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    {{form_widget(form.name)}} 
+                    {{form_widget(form.name)}}
                   </div>
                 </div>
 
@@ -61,20 +61,20 @@
                 <div class="col-span-6 sm:col-span-3 lg:col-span-3">
                   <label for="gender" class="block text-sm font-medium text-gray-700">Nombre d'équipes dans le tournoi</label>
                   <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    {{form_widget(form.max_team_participant)}} 
+                    {{form_widget(form.max_team_participant)}}
                   </div>
                 </div>
 
                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                   <label for="first-name" class="block text-sm font-medium text-gray-700">Nombre de joueurs par équipes</label>
                   <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    {{form_widget(form.max_team_players)}} 
+                    {{form_widget(form.max_team_players)}}
                   </div>
                 </div>
 
                 <div class="col-span-6 sm:col-span-3 lg:col-span-3">
                   <label for="last-name" class="block text-sm font-medium text-gray-700">Jeu du tournoi</label>
-                {{form_widget(form.game)}} 
+                {{form_widget(form.game)}}
                 </div>
 
                 <div class="col-span-6 sm:col-span-4 lg:col-span-3">
@@ -90,12 +90,13 @@
             </div>
             <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
               <button class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">{{ button_label|default('Sauvegarder') }}</button>
-              <a href="{{ path('user_index') }}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Retour</a>
+              <a href="{{ path('tournament_dashboard') }}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Retour</a>
             </div>
           </div>
-        {{ form_end(form) }} 
+        {{ form_end(form) }}
     </div>
-      </form>
     </div>
   </div>
+</div>
+</div>
 </div>
