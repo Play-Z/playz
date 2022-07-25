@@ -3,10 +3,29 @@
 {% block title %}Nouveau Tournoi{% endblock %}
 
 {% block content %}
-        <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Editer un match</h1>
-        <h2>Team 1 : {{ TeamOne }}</h2>
-        <hp>VS</hp>
-        <h2>Team 2 : {{ TeamTwo }}</h2>
-        {{ include('tournament/_form.html.twig') }}
-    <a href="{{ path('tournament_dashboard') }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Retour</a>
+    <div class="mt-16 -ml-14 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 mw-100 h-full">
+        <h1 class="text-5xl font-normal leading-normal mt-4 text-white text-center">Editer un match</h1>
+        <div class="w-full flex p-8 items-center justify-center">
+            <div class="items-center px-8 ">
+                <img src="{{ vich_uploader_asset(TeamOne, 'logo') }}" class="h-32"
+                     alt="logo de l'équipe {{ TeamOne.getName() }}"/>
+                <h2 class="py-5 text-2xl">Team 1 : {{ TeamOne.getName() }}</h2>
+            </div>
+            <p class="text-5xl" style="color:#4be9ff">V</p>
+            <p class="text-5xl" style="color:#dc15c0">S</p>
+            <div class="flex-col items-center px-8">
+                <img src="{{ vich_uploader_asset(TeamTwo, 'logo') }}" class="h-32"
+                     alt="logo de l'équipe {{ TeamOne.getName() }}"/>
+                <h2 class="py-5 text-2xl">Team 2 : {{ TeamTwo.getName() }}</h2>
+            </div>
+        </div>
+        <div class="w-full flex-col p-8 text-center">
+            <div class="md:col-span-1 mr-5 pb-4">
+                <div class="px-4  mr-5 ml-5">
+                    <h3 class="text-lg font-medium leading-6 text-white">Sélectionner l'équipe gagnante</h3>
+                </div>
+            </div>
+            {{ include('tournament/_formMatch.html.twig') }}
+        </div>
+    </div>
 {% endblock %}
