@@ -1,4 +1,64 @@
-{{ form_start(form) }}
+{# {{ form_start(form) }}
     {{ form_widget(form) }}
 <button class="btn bg-indigo-500 text-white active:bg-indigo-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">{{ button_label|default('Sauvegarder') }}</button>
-{{ form_end(form) }}
+{{ form_end(form) }} #}
+
+<div>
+	{% if app.session.flashbag.has('error') %}
+	    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+	        <strong class="font-bold">Erreur ! </strong>
+	        <span class="block sm:inline">{{ app.session.flashbag.get('error')|first }}</span>
+	        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+			</span>
+	    </div>
+	{% endif %}
+  <div class="md:grid md:grid-cols-3 md:gap-6 mt-5">
+    <div class="md:col-span-1 mr-5">
+      <div class="px-4  mr-5 ml-5">
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Jeux</h3>
+        <p class="mt-1 text-sm text-red-600">Mettez les informations utilles sur le jeu que vous êtes en train de créer. Elles seront partagés publiquement.</p>
+      </div>
+    </div>
+    <div class="mt-5 md:mt-0 md:col-span-2 mr-20 shadow-2xl w-1/2">
+      <form method="POST">
+        {{ form_start(form) }} 
+          <div class="shadow sm:rounded-md sm:overflow-hidden">
+            <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700"> Logo</label>
+                <div class="mt-1 flex items-center">
+                  <span class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+                      <img src="{{ vich_uploader_asset(game, 'logo') }}" alt="Default" class="h-full w-full">
+                  </span>
+                  <div class="ml-5 mr-5">
+                    {{ form_widget(form.logo) }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                  <label for="first-name" class="block text-sm font-medium text-gray-700">Nom</label>
+                  <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    {{form_widget(form.name)}} 
+                  </div>
+                </div>
+
+              <div>
+                <label for="about" class="block text-sm font-medium text-gray-700"> Description </label>
+                <div class="mt-1">
+                  {{form_widget(form.description)}}
+                </div>
+                <p class="mt-2 text-sm text-gray-500 italic">Description de votre jeu</p>
+              </div>
+          </div>
+            <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+              <button class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">{{ button_label|default('Sauvegarder') }}</button>
+              <a href="{{ path('admin_game_index') }}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Retour</a>
+            </div>
+          </div>
+        {{ form_end(form) }} 
+    </div>
+      </form>
+    </div>
+  </div>
+</div>

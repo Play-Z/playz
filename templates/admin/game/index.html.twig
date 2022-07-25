@@ -55,7 +55,7 @@
 	{% endif %}
 	
 	<button type="button" data-modal-toggle="add-user" class="mx-10 my-10 text-white bg-indigo-600 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
-		<a href="{{ path('user_new') }}">
+		<a href="{{ path('game_new') }}">
 			<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-full" fill="none" viewbox="0 0 24 24" stroke="currentColor" stroke-width="2">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
 			</svg>
@@ -108,7 +108,7 @@
 								</a>
 							</button>
 							<button type="button" data-modal-toggle="game-modal" class="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
-								<a href="{{ path('game_show', {'slug': game.slug}) }}">
+								<a href="{{ path('admin_game_show', {'slug': game.slug}) }}">
 									<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-full" fill="none" viewbox="0 0 24 24" stroke="currentColor" stroke-width="2">
 										<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
 										<path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -117,6 +117,7 @@
 									Afficher
 								</a>
 							</button>
+							{{ include('admin/game/_delete_form.html.twig') }}
 						</td>
 					{% else %}
 						<tr>

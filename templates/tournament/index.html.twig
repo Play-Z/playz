@@ -1,4 +1,4 @@
-{% extends 'baseTemplate/admin-base.html.twig' %}
+{% extends 'baseTemplate/tournament-base.html.twig' %}
 
 {% set page_title = 'Tournois' %}
 
@@ -66,6 +66,10 @@
 		</div>
 	
 	<a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('tournament_new') }}">Créer un tournoi</a> #}
+	
+
+	<h1 class="text-5xl font-normal leading-normal text-center mt-20 mb-2 text-indigo-500">Mes tournois</h1>
+
 	{% if app.session.flashbag.has('success') %}
 		<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
 			<strong class="font-bold">Succes !</strong>
@@ -82,8 +86,6 @@
 			</span>
 	    </div>
 	{% endif %}
-
-	<h1 class="text-5xl font-normal leading-normal text-center mt-20 mb-2 text-indigo-500">Mes tournois</h1>
 	
 	<button type="button" data-modal-toggle="add-user" class="mx-10 my-10 text-white bg-indigo-600 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
 		<a href="{{ path('tournament_new') }}">
@@ -183,6 +185,7 @@
 										</a>
 									</button>
 							{% endif %}
+							{# TODO: Verifier la modif page #}
 							{% if tournament.status is null or tournament.status == true %}
 								{# <a href="{{ path('tournament_edit', {'slug': tournament.slug}) }}">Modifier</a> #}
 						

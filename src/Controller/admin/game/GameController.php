@@ -35,7 +35,7 @@ class GameController extends AbstractController
 
             $this->addFlash('success', 'Votre jeu a bien été créer !');
 
-            return $this->redirectToRoute('game_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_game_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('admin/game/new.html.twig', [
@@ -63,7 +63,7 @@ class GameController extends AbstractController
 
             $this->addFlash('success', 'Le jeu a bien été modifier !');
 
-            return $this->redirectToRoute('game_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_game_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('admin/game/edit.html.twig', [
@@ -82,6 +82,6 @@ class GameController extends AbstractController
             $this->addFlash('success', 'Le jeu a bien été supprimer !');
         }
 
-        return $this->redirectToRoute('game_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('admin_game_index', [], Response::HTTP_SEE_OTHER);
     }
 }

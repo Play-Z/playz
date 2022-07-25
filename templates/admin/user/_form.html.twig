@@ -6,7 +6,6 @@
 
 <!-- component -->
 
-<h1 class="text-5xl text-center font-normal leading-normal mt-5 mr-5 text-indigo-500 ">Modification profil {{user.firstName}} {{user.lastName}}</h1>
 
 <div>
 	{% if app.session.flashbag.has('error') %}
@@ -17,14 +16,13 @@
 			</span>
 	    </div>
 	{% endif %}
-  <div class="md:grid md:grid-cols-3 md:gap-6 mt-5">
+  <div class="md:grid md:grid-cols-3 md:gap-6 ml-10 mt-5">
+    <div class="mt-5 md:mt-0 md:col-span-2 mr-20 shadow-2xl">
     <div class="md:col-span-1 mr-5">
       <div class="px-4  mr-5 ml-5">
-        <h3 class="text-lg font-medium leading-6 text-gray-900">Profil</h3>
-        <p class="mt-1 text-sm text-red-600">Ces informations seront affiché publiquement. Faites attentions aux contenu que vous souhaitez afficher.</p>
+        <p class="mt-1 text-sm text-red-600">Ces informations seront affiché publiquement. Faites attentions aux contenu que vous souhaitez publier.</p>
       </div>
     </div>
-    <div class="mt-5 md:mt-0 md:col-span-2 mr-20 shadow-2xl">
       <form method="POST">
         {{ form_start(form) }} 
           <div class="shadow sm:rounded-md sm:overflow-hidden">
@@ -142,7 +140,6 @@
             </div>
           </div>
         {{ form_end(form) }} 
-    </div>
       </form>
     </div>
   </div>

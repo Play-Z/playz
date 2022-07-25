@@ -83,7 +83,7 @@ class UserRelationController extends AbstractController
             );
         }
 
-        return $this->redirectToRoute('friend_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('user_relation_request_index', [], Response::HTTP_SEE_OTHER);
 
     }
 

@@ -112,13 +112,13 @@
 						</td>
 						<td>
 							{% if user.country != null %}
-								{{ user.country }}
+								{{ user.country_name }}
 							{% else %}
 								<span class="text-red-500">Aucun pays</span>
 							{% endif %}
 
 						</td>
-						<td class="p-4 whitespace-nowrap space-x-2">
+						<td class="p-4 whitespace-nowrap space-x-2 my-5">
 							<button type="button" data-modal-toggle="user-modal" class="text-dark bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
 								<a href="{{ path('user_edit', {'slug': user.slug}) }}">
 									<svg class="mr-2 h-5 w-full" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -139,6 +139,7 @@
 									Afficher
 								</a>
 							</button>
+							{{ include('admin/user/_delete_form.html.twig') }}
 						</td>
 					{% else %}
 						<tr>
