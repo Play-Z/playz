@@ -22,13 +22,15 @@
 {% endif %}
 
 <div>
-  <div class="md:grid md:grid-cols-3 md:gap-6 mr-20 mb-10">
-    <div class="md:col-span-1">
-      <div class="px-4 sm:px-0 text-center">
-        <p class="mt-1 text-sm text-red-600 text-center">Ces informations seront affichées publiquement, alors faites attention à ce que vous partagez.</p>
+  <div class="md:grid md:grid-cols-2 mx-auto md:gap-6">
+    <div class=" md:mt-0 md:col-span-2 mx-auto my-20 shadow-2xl w-1/2">
+      <div class="px-4  mr-5 ml-5">
+        {% if form.vars.value.id %}
+            <p class="text-red-600 text-base">Mettez les informations utiles du profil que vous êtes en train de modifier. Elles seront partagés publiquement.</p>
+        {% else %}
+            <p class="text-red-600 text-base">Mettez les informations utiles du profil que vous êtes en train de créer. Elles seront partagés publiquement.</p>
+        {% endif %}
       </div>
-    </div>
-    <div class="mt-10 md:mt-10 md:col-span-2">
       <form method="POST">
         {{ form_start(form) }}
         <div class="shadow sm:rounded-md sm:overflow-hidden">
@@ -37,7 +39,6 @@
               <div class="col-span-3 sm:col-span-2">
                 <label for="company-website" class="block text-sm font-bold text-gray-700"> Lien </label>
                 <div class="mt-1 flex rounded-md shadow-sm">
-                  
                   {{form_widget(form.youtubeUsername)}}
                 </div>
               </div>
@@ -61,7 +62,7 @@
                     </span>
                 {% else %}
                     <div>
-                      {{form_row(form.image)}}
+                      {{form_widget(form.image)}}
                     </div>
                 {% endif %}
             </div>
