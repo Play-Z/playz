@@ -6,13 +6,13 @@
 
     {% if  poules is null %}
         <div
-            style="background-image: url('{{ asset('images/home/coupe.png') }}'); height: 93vh"
+            style="background-image: url('{{ asset('images/home/coupe2.png') }}'); height: 93vh"
             class="bg-cover bg-center bg-no-repeat -ml-14 p-8 mt-16 -ml-14 mw-100 mh-95"
         >
     {% else %}
         <div>
     {% endif %}
-    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500 text-center">
+    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-white text-center text-bold">
         {% if tournament.status == false %}
             Edition de {{ tournament.name }}
         {% else %}
@@ -187,8 +187,8 @@
                             <td class="p-4 text-center font-medium text-indigo-500 uppercase text-lg">
                                 {{ match.status ?
                                 match.getTeamOneWin() ?
-                                'Vainqueur équipe1'   :
-                                'Vainqueur équipe2'
+                                'Vainqueur équipe 1'   :
+                                'Vainqueur équipe 2'
                                 : 'en cours!' }}
                             </td>
                             {% if match.status == true %}
@@ -206,7 +206,11 @@
             </table>
         </div>
     {% endif %}
-    <a href="{{ path('tournament_dashboard') }}"
-       class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Retour</a>
+    <div class="text-center m-4">
+        <a href="{{ path('tournament_dashboard') }}"
+           class=" bg-white text-indigo-500 background-transparent font-bold uppercase p-3 border-2 border-gray-200 dark:text-gray-400 rounded-lg text-sm">
+            Retour
+        </a>
     </div>
+ </div>
 {% endblock %}
