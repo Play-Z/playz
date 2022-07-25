@@ -59,53 +59,53 @@
 										<img class="mx-auto w-48" src="{{ asset('images/logo/PlayZ-All.png') }}" alt="logo"/>
 										<h4 class="text-xl font-semibold mt-1 mb-12 pb-1">Inscription</h4>
 									</div>
-										{% for flashError in app.flashes('verify_email_error') %}
-											<div class="bg-red-100 rounded-lg py-5 px-6 mb-3 text-base text-red-700 inline-flex items-center w-full" role="alert">
-												<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times-circle" class="w-4 h-4 mr-2 fill-current" role="img" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512">
-													<path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"></path>
-												</svg>
-												{{ flashError }}
-											</div>
-										{% endfor %}
-										{% for message in app.flashes('app_register') %}
-											<div class="bg-green-100 rounded-lg py-5 px-6 mb-3 text-base text-red-700 inline-flex items-center w-full" role="alert">
-												<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times-circle" class="w-4 h-4 mr-2 fill-current" role="img" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512">
-													<path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"></path>
-												</svg>
-												{{ message}}
-											</div>
-										{% endfor %}
-										<p class="mb-4 text-center italic">Inscrivez-vous pour profiter des fonctionnalités PlayZ !</p>
-										{{ form_start(registrationForm) }}
-											<div class="mb-4">
-												{{ form_errors(registrationForm.username) }}
-												<label for="username">Nom d'utilisateur</label>
-												{{ form_widget(registrationForm.username) }}
-											</div>
-											<div class="mb-4">
-												{{ form_errors(registrationForm.email) }}
-												<label for="username">Email</label>
-												{{ form_widget(registrationForm.email) }}
-											</div>
-											<div class="mb-4">
-												{{ form_errors(registrationForm.plainPassword) }}
-												<label for="username">Mot de passe</label>
-												{{ form_widget(registrationForm.plainPassword, {
-													label: 'Password'
-												}) }}
-											</div>
-											{{ form_row(registrationForm.agreeTerms) }}
-											<div class="text-center pt-1 mb-12 pb-1">
-												<button type="submit" class="inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3" style="background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);">S'inscrire</button>
-											</div>
-										{{ form_end(registrationForm) }}
-										<div class="flex items-center justify-between pb-6">
-											<p class="mb-0 mr-2">Déjà inscrit ? 👉</p>
-											<button type="button" class="inline-block px-6 py-2 border-2 border-red-600 text-red-600 font-medium text-xs leading-tight uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="light">
-												<a href="/login">
-													Se connecter</a>
-											</button>
+									{% for flashError in app.flashes('verify_email_error') %}
+										<div class="bg-red-100 rounded-lg py-5 px-6 mb-3 text-base text-red-700 inline-flex items-center w-full" role="alert">
+											<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times-circle" class="w-4 h-4 mr-2 fill-current" role="img" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512">
+												<path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"></path>
+											</svg>
+											{{ flashError }}
 										</div>
+									{% endfor %}
+									{% for message in app.flashes('app_register') %}
+										<div class="bg-green-100 rounded-lg py-5 px-6 mb-3 text-base text-red-700 inline-flex items-center w-full" role="alert">
+											<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times-circle" class="w-4 h-4 mr-2 fill-current" role="img" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512">
+												<path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"></path>
+											</svg>
+											{{ message}}
+										</div>
+									{% endfor %}
+									<p class="mb-4 text-center italic">Inscrivez-vous pour profiter des fonctionnalités PlayZ !</p>
+									{{ form_start(registrationForm) }}
+									<div class="mb-4">
+										{{ form_errors(registrationForm.username) }}
+										<label for="username">Nom d'utilisateur</label>
+										{{ form_widget(registrationForm.username) }}
+									</div>
+									<div class="mb-4">
+										{{ form_errors(registrationForm.email) }}
+										<label for="username">Email</label>
+										{{ form_widget(registrationForm.email) }}
+									</div>
+									<div class="mb-4">
+										{{ form_errors(registrationForm.plainPassword) }}
+										<label for="username">Mot de passe</label>
+										{{ form_widget(registrationForm.plainPassword, {
+											label: 'Password'
+										}) }}
+									</div>
+									{{ form_row(registrationForm.agreeTerms) }}
+									<div class="text-center pt-1 mb-12 pb-1">
+										<button type="submit" class="inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3" style="background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);">S'inscrire</button>
+									</div>
+									{{ form_end(registrationForm) }}
+									<div class="flex items-center justify-between pb-6">
+										<p class="mb-0 mr-2">Déjà inscrit ? 👉</p>
+										<button type="button" class="inline-block px-6 py-2 border-2 border-red-600 text-red-600 font-medium text-xs leading-tight uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="light">
+											<a href="/login">
+												Se connecter</a>
+										</button>
+									</div>
 								</div>
 							</div>
 							<div class="lg:w-6/12 flex items-center lg:rounded-r-lg rounded-b-lg lg:rounded-bl-none" style=" background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);">
