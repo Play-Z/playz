@@ -16,7 +16,7 @@
     <div class="md:col-span-1 mr-5">
       <div class="px-4  mr-5 ml-5">
         <h3 class="text-lg font-medium leading-6 text-gray-900">Jeux</h3>
-        <p class="mt-1 text-sm text-red-600">Mettez les informations utilles sur le jeu que vous êtes en train de créer. Elles seront partagés publiquement.</p>
+        <p class="mt-1 text-sm text-red-600">Mettez les informations utilles sur l'équipe que vous êtes en train de créer. Elles seront partagés publiquement.</p>
       </div>
     </div>
     <div class="mt-5 md:mt-0 md:col-span-2 mr-20 shadow-2xl w-1/2">
@@ -28,7 +28,7 @@
                 <label class="block text-sm font-medium text-gray-700"> Logo</label>
                 <div class="mt-1 flex items-center">
                   <span class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                      <img src="{{ vich_uploader_asset(game, 'logo') }}" alt="Default" class="h-full w-full">
+                      <img src="{{ vich_uploader_asset(game, 'logo') }}" class="h-full w-full">
                   </span>
                   <div class="ml-5 mr-5">
                     {{ form_widget(form.logo) }}
