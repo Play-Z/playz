@@ -37,8 +37,6 @@ class TournamentController extends AbstractController
            'name'=>1,
            'tournaments'=>$tournament
        ]); ;
-//       dump( new \DateTime('26-06-2022 17:50:00'));
-//        dd($tournament->getStartAt()->sub(new \DateInterval('P2D')));
         return $this->render('play/tournament/show.html.twig',[
             'tournament' => $tournament,
             'inscription' => $tournament->getStartInscriptionAt() <= new \DateTime('26-06-2022 17:50:00')  &&

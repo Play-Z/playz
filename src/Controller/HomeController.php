@@ -16,6 +16,7 @@ class HomeController extends AbstractController
         //get user profil picture
         // $user = $user->getUser();
         // dd($user);
+
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
             // 'user' => $user,

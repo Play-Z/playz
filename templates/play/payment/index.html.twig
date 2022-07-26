@@ -1,0 +1,98 @@
+{% extends 'baseTemplate/play-base.html.twig' %}
+
+{% block title %}Paiement{% endblock %}
+
+
+{% block javascripts %}
+    <script src="https://www.paypal.com/sdk/js?client-id=AfacXPAMghvRJMdVwY_2C_yvYE92wK2ygsIROGyc3m02m8Dup3i1mtL--gOfx8jE8dkVpyng8REoXNz7&currency=EUR"></script>
+
+{% endblock %}
+
+{% block content %}
+    <style>
+        .example-wrapper {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+            display: flex;
+            justify-content: center;
+            font: 18px/1.5 sans-serif;
+        }
+
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+    </style>
+    <div class="bg-gradient-to-r from-violet-500 to-fuchsia-500 h-full absolute top-0 left-0 w-full -z-10 -mt-20 h-screen">
+    </div>
+    <div class="example-wrapper">
+        <!-- Set up a container element for the button -->
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            <div class="max-w-2xl bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 text-center">
+                <a>
+                    <img class="rounded-t-lg" src="{{ asset('images/home/pexels-yan-krukov-9072303.jpg') }}"
+                         alt=""/>
+                </a>
+                <div class="p-5">
+                    <a href="#">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Abonnement
+                            premium mensuel : {{ priceMonth }} €</h5>
+                    </a>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                        Vous êtes créateur d'équipe et vous souhaitez créer vos propre tournois, abonnez vous !
+                    </p>
+                    <a href="#"
+                       class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <div id="paypal-button-container"></div>
+
+                        <svg aria-hidden="true" class="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                  clip-rule="evenodd"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div></div>
+        {% endif %}
+        {% set paymentSuccess = true %}
+
+        <script>
+            paypal.Buttons({
+                // Création de la transaction
+                createOrder: function (data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                /* Valeur du paiement */
+                                value: {{ priceMonth }}
+                            }
+                        }]
+                    });
+                },
+
+                // Finalisation du paiement
+                onApprove: async function (data, actions) {
+                    return actions.order.capture().then(function (orderData) {
+                        var transaction = orderData.purchase_units[0].payments.captures[0];
+                        console.log(transaction.id)
+                        console.log(actions)
+                        console.log(orderData.id)
+                        alert('{{ app.user.username }}, votre transaction a bien été effectué')
+                        window.location.href = `./paymentSuccess/${orderData.id}`
+                        // alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+                        // When ready to go live, remove the alert and show a success message within this page. For example:
+                        // var element = document.getElementById('paypal-button-container');
+                        // element.innerHTML = '';
+                        // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                        // Or go to another URL:  actions.redirect('thank_you.html');
+                    });
+                }
+            }).render('#paypal-button-container');
+
+        </script>
+
+    </div>
+{% endblock %}
