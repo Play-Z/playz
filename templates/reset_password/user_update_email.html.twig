@@ -1,9 +1,9 @@
 <h1>PlayZ</h1>
 
-<p>Your account has been modified by an administrator of PlayZ. Here is the link to reset your account password !</p>
+<p>Votre compte a été modifié par un administrateur de PlayZ. Voici le lien pour réinitialiser le mot de passe de votre compte !</p>
 
 <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
 
-<p>This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+<p>Ce lien expire dans  {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
 
-<p>Cheers!</p>
+<p>A plus tard sur PlayZ !</p>
