@@ -39,9 +39,8 @@ class TournamentController extends AbstractController
        ]); ;
         return $this->render('play/tournament/show.html.twig',[
             'tournament' => $tournament,
-            'inscription' => $tournament->getStartInscriptionAt() <= new \DateTime('26-06-2022 17:50:00')  &&
-                !$tournament->getStatus()  && count($tournament->getEquipes()) < $tournament->getMaxTeamParticipant() &&
-                $tournament->getStartAt()->sub(new \DateInterval('P2D')) > new \DateTime('26-06-2022 17:50:00')
+            'inscription' => $tournament->getStartInscriptionAt() <= new \DateTime()  &&
+                !$tournament->getStatus()  && count($tournament->getEquipes()) < $tournament->getMaxTeamParticipant()
             ,
             'equipes' => $tournament->getEquipes(),
             'matches' => $matches
