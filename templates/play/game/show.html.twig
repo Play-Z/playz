@@ -49,9 +49,7 @@
         {% endfor %}
         </tbody>
     </table> #}
-    {% for tournament in tournaments %}
-    <h1 class="text-5xl font-normal leading-normal text-center mt-20 mb-20 text-indigo-500 ">Liste de tournois pour le jeu {{ tournament.game.name }}</h1>
-   {% endfor %}
+
 
 	{% if app.session.flashbag.has('success') %}
 		<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
@@ -69,7 +67,7 @@
 			</span>
 	    </div>
 	{% endif %}
-
+		<h1 class="text-5xl font-normal leading-normal text-center mt-20 mb-20 text-indigo-500 ">Liste de tournois du jeu</h1>
 	<table class="table-fixed w-10/12 mx-auto divide-y divide-gray-200 shadow-2xl ">
 		<thead class="bg-gray-100 w-full">
 			<tr class="w-full">
