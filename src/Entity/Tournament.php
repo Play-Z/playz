@@ -151,6 +151,21 @@ class Tournament
     private $announcements;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $priceFirst;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $priceSecond;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $priceThird;
+
+    /**
      * @param UploadedFile $logo
      */
     public function setLogo(?File $logo = null)
@@ -487,6 +502,42 @@ public function setTournament(?self $tournament): self
     }
 
     $this->tournament = $tournament;
+
+    return $this;
+}
+
+public function getPriceFirst(): ?string
+{
+    return $this->priceFirst;
+}
+
+public function setPriceFirst(?string $priceFirst): self
+{
+    $this->priceFirst = $priceFirst;
+
+    return $this;
+}
+
+public function getPriceSecond(): ?string
+{
+    return $this->priceSecond;
+}
+
+public function setPriceSecond(?string $priceSecond): self
+{
+    $this->priceSecond = $priceSecond;
+
+    return $this;
+}
+
+public function getPriceThird(): ?string
+{
+    return $this->priceThird;
+}
+
+public function setPriceThird(?string $priceThird): self
+{
+    $this->priceThird = $priceThird;
 
     return $this;
 }
