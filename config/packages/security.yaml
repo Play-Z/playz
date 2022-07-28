@@ -59,6 +59,6 @@ security:
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/tournament, roles: ROLE_TOURNAMENT_MANAGER }
-         - { path: ^/payment, roles: ROLE_USER }
+         - { path: ^/payment, roles: ROLE_TEAM_CREATOR }
          - { path: ^/settings, roles: ROLE_USER }
          - { path: ^/announcement, roles: ROLE_ADMIN}
