@@ -74,7 +74,7 @@
 	    </div>
 	{% endif %}
 
-    {% if is_granted('ROLE_TEAM_MEMBER') or is_granted('ROLE_ADMIN') or is_granted('ROLE_TOURNAMENT_MANAGER') %}
+    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TOURNAMENT_MANAGER') %}
 		<div class="text-center">
 			<button type="button" data-modal-toggle="add-user" class="mx-10 my-10 text-white bg-indigo-600 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
 				<a href="{{ path('announcement_new')}}">
@@ -88,7 +88,7 @@
 	{% endif %}
     
 	<table class="table-fixed w-10/12 mx-auto divide-y divide-gray-200 shadow-2xl my-20">
-		 {% for announcement in announcements %}
+		{% for announcement in announcements %}
             <thead class="bg-gray-100 w-full">
                 <tr class="w-fill">
                     <th scope="col" class="p-4 text-center text-xs font-medium text-gray-500 uppercase">
@@ -97,7 +97,7 @@
                     <th scope="col" class="p-4 text-center text-xs font-medium text-gray-500 uppercase">
                         Titre
                     </th>
-                    <th scope="col" class="p-4 text-right text-xs font-medium text-gray-500 uppercase">
+                    <th scope="col" class="p-4 text-center text-xs font-medium text-gray-500 uppercase">
                         Actions
                     </th>
                 </tr>
@@ -106,8 +106,8 @@
                 <tr class="hover:bg-gray-100">
                     {% if announcement %}
                         {% if announcement.path %}
-                            <td class="m"> 
-                                <img class="w-1/2 h-auto rounded-2xl" src=" {{ vich_uploader_asset(announcement, 'image') }}" width="70" height="100" alt="announcement image">
+                            <td class="mx-auto"> 
+                                <img class="w-1/2 h-auto mx-auto rounded-2xl" src=" {{ vich_uploader_asset(announcement, 'image') }}" width="70" height="100" alt="announcement image">
                             </td>
                         {% else %}
                             <td class="text-center">
@@ -118,7 +118,7 @@
                             {{ announcement.title }}
                         </td>
                         <td class="p-4 whitespace-nowrap space-x-2">
-                            <button type="button" data-modal-toggle="user-modal" class="text-white bg-pink-500 hover:bg-pink-600 focus:ring-4 focus:ring-pink-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
+                            <button type="button" data-modal-toggle="user-modal" class="text-white bg-indigo-500 hover:bg-indigo-600 focus:ring-4 focus:ring-indigo-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
                                 <a href="{{ path('announcement_show', {'id': announcement.id}) }}">
                                     <svg class="mr-2 h-6 w-full" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
@@ -127,9 +127,8 @@
                                     + de détails
                                 </a>
                             </button>
-                        </td>
-                        {% if is_granted('ROLE_TEAM_MEMBER') or is_granted('ROLE_ADMIN') or is_granted('ROLE_TOURNAMENT_MANAGER') %}
-                            <td class="p-4 whitespace-nowrap space-x-2">
+                        
+                            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TOURNAMENT_MANAGER') %}
                                 <button type="button" data-modal-toggle="user-modal" class="text-dark bg-indigo-500 hover:bg-indigo-600 focus:ring-4 focus:ring-indigo-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
                                     <a href="{{ path('announcement_edit', {'id': announcement.id}) }}">
                                         <svg class="mr-2 h-6 w-full" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -139,12 +138,12 @@
                                         Modifier
                                     </a>
                                 </button>
-                            </td>
-                        {% endif %}
+                            {% endif %}
+                        </td>
         {% else %}
             <tr>
                 <td colspan="7">
-                    Aucun tournois trouvés !
+                    Aucune annonces trouvées !
                 </td>
             </tr>
                     {% endif %}

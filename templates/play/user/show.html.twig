@@ -266,6 +266,7 @@
 							{% elseif is_granted('ROLE_ADMIN') %}
 								<div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center mb-20">
 									<img src="/images/profil/admin.png" class="shadow-xl rounded-3xl h-auto border-none absolute ml-24 lg:ml-24 max-w-150-px" style="margin: -85px;">
+								</div>
 							{% else %}
 								<div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center mb-20">
 									<img src="/images/profil/playerz.png" class="shadow-xl rounded-3xl h-auto border-none absolute ml-24 lg:ml-24 max-w-150-px" style="margin: -85px;">
@@ -299,17 +300,7 @@
 							{% endif %}
 						</div>
 						<div class="text-center mt-12">
-                        {% if user.gender == "Homme" %}
-							<h3 class="text-4xl font-semibold leading-normal mb-2 text-blueGray-700">
-								M. {{ user.lastname }} {{ user.firstname }}
-                                        ({{ user.username }})
-							</h3>
-                        {% else %}
-                            <h3 class="text-4xl font-semibold leading-normal mb-2 text-blueGray-700">
-                                Mme {{ user.lastname }} {{ user.firstname }}
-                                        ({{ user.username }})
-                            </h3>
-                        {% endif %}
+                        
 							<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
                                 <i class="fas fa-user text-lg text-blueGray-400"></i>
                                     {{ user.age }}
@@ -502,17 +493,6 @@
 					</div>
 				</div>
 			</div>
-			<footer class="relative bg-blueGray-200 pt-8 pb-6 mt-8">
-				<div class="container mx-auto px-4">
-					<div class="flex flex-wrap items-center md:justify-between justify-center">
-						<div class="w-full md:w-6/12 px-4 mx-auto text-center">
-							<div
-								class="text-sm text-blueGray-500 font-semibold py-1">PlayZ</a>.
-							</div>
-						</div>
-					</div>
-				</div>
-			</footer>
 		</section>
 	</main>
 

@@ -66,8 +66,16 @@ class UserController extends AbstractController
     #[Route('/{slug}', name: 'user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
+        $tournamentsTeams = $user->getTournamentTeams()->getValues();
+        $tournaments = [];
+
+        foreach ($tournamentsTeams as $tournamentsTeam){
+            $tournaments = $tournamentsTeam->getTournaments()->getValues();
+        }
+
         return $this->render('admin/user/show.html.twig', [
             'user' => $user,
+            'tournaments' => $tournaments
         ]);
     }
 
