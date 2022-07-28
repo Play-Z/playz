@@ -38,18 +38,10 @@
           <div class="shadow sm:rounded-md sm:overflow-hidden">
             <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
               <div>
-                <label class="block text-sm font-medium text-gray-700"> Logo</label>
                 <div class="mt-1 flex items-center">
-                  <span class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                    {% if team.logo != null %}
-                        <img src="{{ vich_uploader_asset(team, 'logo') }}" class="h-1/2 w-1/2">
-                    {% else %}
-                        <img src="{{ asset('/images/profil/no-image.png') }}" class="h-1/2 w-1/2">
-                    {% endif %}
-                  </span>
-                  <div class="ml-5 mr-5">
-                    {{ form_widget(form.logo) }}
-                  </div>
+                  <div class="flex-shrink-0 h-30 w-30">
+                         {{ form_row(form.logo) }}
+                    </div>
                 </div>
               </div>   
                 {# !empty($friends) then add field to add friends in the team #}
@@ -57,9 +49,15 @@
                     {% if form.vars.value.users|length > 0 %}
                         {% for user in form.vars.value.users %}
                             <div class="flex items-center">
-                                <div class="flex-shrink-0 h-10 w-10">
-                                    <img class="h-10 w-10 rounded-full" src="{{ asset('images/logo/playerz.png') }}" alt="Avatar of Jonathan Reinink">
-                                </div>
+                              {% if user.image != null %}
+                                  <div class="flex-shrink-0 h-10 w-10">
+                                      <img class="h-10 w-10 rounded-full" src="{{ vich_uploader_asset(user, 'image') }}">
+                                  </div>
+                              {% else %}
+                                  <div class="flex-shrink-0 h-10 w-10">
+                                      <img class="h-10 w-10 rounded-full" src="{{ asset('images/profil/playerz.png') }}">
+                                  </div>
+                              {% endif %}
                                 <div class="ml-4">
                                     <div class="text-sm leading-5 font-medium text-gray-900">
                                         {{ user.username }}
@@ -68,13 +66,13 @@
                                         {{ user.email }}
                                     </div>
                                 </div>
-                                <div class="ml-auto">
+                                {# <div class="ml-auto">
                                     <button type="button" class="text-red-600 hover:text-red-500 focus:outline-none focus:text-red-500 transition ease-in-out duration-150" onclick="removeUser(this)">
                                         <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                                         </svg>
                                     </button>
-                                </div>
+                                </div> #}
                             </div>
                         {% endfor %}
                     {% endif %}
@@ -124,12 +122,40 @@
                 </div>
 
                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
-                  <label for="first-name" class="block text-sm font-medium text-gray-700">Pays</label>
+                  <label for="first-name" class="block text-sm font-medium text-gray-700">Nom d'utilisateur Twitter</label>
+                    <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        {{form_widget(form.twitterUsername)}} 
+                    </div>
+                </div>
+                
+                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                  <label for="first-name" class="block text-sm font-medium text-gray-700">Nom d'utilisateur Reddit</label>
+                    <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        {{form_widget(form.RedditUsername)}} 
+                    </div>
+                </div>
+
+                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                  <label for="first-name" class="block text-sm font-medium text-gray-700">Nom d'utilisateur Twitch</label>
                     <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                         {{form_widget(form.twitchUsername)}} 
                     </div>
                 </div>
 
+                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                  <label for="first-name" class="block text-sm font-medium text-gray-700">Le nom contenu dans l'url personnalisée Youtube</label>
+                    <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        {{form_widget(form.youtubeUsername)}} 
+                    </div>
+                </div>
+                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                  <label for="first-name" class="block text-sm font-medium text-gray-700">Code d'invitation de votre serveur Discord</label>
+                    <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        {{form_widget(form.discordServerToken)}} 
+                    </div>
+                </div>
+
+                
           </div>
             <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
               <button class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">{{ button_label|default('Sauvegarder') }}</button>
