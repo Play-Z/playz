@@ -77,6 +77,12 @@
 								<td>Pas de logo</td>
 							{% endif %}
 						</tr>
+						{% if isVerify %}
+							<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-center">
+								<th>Certified Team</th>
+								<td class="py-4 px-10 flex justify-center"><img alt="badge certifié" width="50" src="{{ asset('images/accessories/verified.png') }}"/></td>
+							</tr>
+						{% endif %}
 						<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-center">
 							<th>Name</th>
 							<td class="py-4 px-6">{{ team.name }}</td>

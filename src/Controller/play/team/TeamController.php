@@ -87,10 +87,16 @@ class TeamController extends AbstractController
             $tournaments = $tournamentTeam->getTournaments()->getValues();
         }
 
+        $verifiedTeam = false;
+        if (in_array('ROLE_SUBSCRIBE',$team->getCreatedBy()->getRoles())){
+            $verifiedTeam = true;
+        }
+
         return $this->render('play/team/show.html.twig', [
             'team' => $team,
             'tournaments' => $tournaments,
-            'ratio' => $scoreService->getPlayerOrTeamRatio($team)
+            'ratio' => $scoreService->getPlayerOrTeamRatio($team),
+            'isVerify' => $verifiedTeam
         ]);
     }
 
