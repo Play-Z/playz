@@ -52,7 +52,7 @@ class ManagementTournamentController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($tournament);
             $entityManager->flush();
-            $this->addFlash('success', 'Votre tournoi a bien été créer !');
+            $this->addFlash('success', 'Votre tournoi a bien été créé !');
 
             return $this->redirectToRoute('tournament_dashboard', [], Response::HTTP_CREATED);
         }
@@ -78,6 +78,8 @@ class ManagementTournamentController extends AbstractController
             }
             return $this->renderForm('tournament/edit.html.twig', [
                 'form' => $form,
+                'poules' => null,
+                'matches' => null,
                 'tournament' => $tournament
             ]);
         } else {

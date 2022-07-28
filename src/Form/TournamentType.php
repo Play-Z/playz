@@ -71,6 +71,15 @@ class TournamentType extends AbstractType
                 'widget' => 'single_text',
                 'label'=>'Tournament inscription start at'
             ])
+            ->add('priceFirst', TextType::class,[
+                'label'=>'Récompense 1er'
+            ])
+            ->add('priceSecond', TextType::class,[
+                'label'=>'Récompense 2ème'
+            ])
+            ->add('priceThird', TextType::class,[
+                'label'=>'Récompense 3ème'
+            ])
         ;
     }
 
