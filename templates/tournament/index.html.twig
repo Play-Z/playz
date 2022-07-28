@@ -67,7 +67,7 @@
 	
 	<a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('tournament_new') }}">Créer un tournoi</a> #}
     {% if app.session.flashbag.has('success') %}
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative text-center mx-auto w-3/4 my-20" role="alert">
             <strong class="font-bold">Succes !</strong>
             <span class="block sm:inline">{{ app.session.flashbag.get('success')|first }}</span>
             <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
@@ -75,7 +75,7 @@
         </div>
     {% endif %}
     {% if app.session.flashbag.has('error') %}
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-center mx-auto w-3/4 my-20" role="alert">
             <strong class="font-bold">Erreur ! </strong>
             <span class="block sm:inline">{{ app.session.flashbag.get('error')|first }}</span>
             <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
@@ -98,60 +98,60 @@
     </button>
 </div>
 
-	<table class="table-fixed min-w-full divide-y divide-gray-200">
+	<table class="table-fixed w-3/4 mx-auto divide-y divide-gray-200 shadow-2xl">
 		<thead class="bg-gray-100 w-full">
 			<tr>
-				<th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+				<th scope="col" class="p-4 text-center text-xs font-medium text-gray-500 uppercase">
 					Nom
 				</th>
-				<th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercas">
+				<th scope="col" class="p-4 text-center text-xs font-medium text-gray-500 uppercas">
 					Logo
 				</th>
-				<th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+				<th scope="col" class="p-4 text-center text-xs font-medium text-gray-500 uppercase">
 					Jeu
 				</th>
-				<th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+				<th scope="col" class="p-4 text-center text-xs font-medium text-gray-500 uppercase">
 					Image
 				</th>
-				<th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+				<th scope="col" class="p-4 text-center text-xs font-medium text-gray-500 uppercase">
 					Description
 				</th>
-				<th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+				<th scope="col" class="p-4 text-center text-xs font-medium text-gray-500 uppercase">
 					Actions
 				</th>
 			</tr>
 		</thead>
-		<tbody class="bg-white divide-y divide-gray-200">
+		<tbody class="bg-white divide-y divide-gray-200 w-full">
 			{% for tournament in tournaments %}
 				<tr class="hover:bg-gray-100">
 					{% if tournament %}
-						<td class="p-4 flex items-center whitespace-nowrap space-x-6 mr-12 lg:mr-0">
+						<td class="text-center">
 							{{tournament.name}}
 						</td>
-						<td class="p-4 flex items-center whitespace-nowrap space-x-6 mr-12 lg:mr-0">
+						<td class="text-center">
 							{% if tournament.path %}
-								<img class="h-10 w-10 rounded-full" src=" {{ vich_uploader_asset(tournament, 'logo') }}" width="70" height="100" alt="tournament image">
+								
+								<img class="h-10 w-10 rounded-full mx-auto" src=" {{ vich_uploader_asset(tournament, 'logo') }}" width="70" height="100" alt="tournament image">
+								
 							{% else %}
-								<th scope="col" class="p-4 text-left text-xs font-medium text-red-500 uppercase">
-									Pas de logo
-								</th>
+								Pas de logo
 							{% endif %}
-						</td>
-						<td class="p-4 flex items-center whitespace-nowrap space-x-6 mr-12 lg:mr-0">
+						</>
+						<td class="text-center">
 							{{tournament.game.name}}
 						</td>
 						
 						<td class="p-4 whitespace-nowrap space-x-6 mr-12 lg:mr-0 items-center">
 							{% if tournament.game.path %}
-								<img src="{{ vich_uploader_asset(tournament.game, 'logo') }}" width="70" height="100" alt="Logo du jeux {{ tournament.game.name }}">
+								<img class="mx-auto" src="{{ vich_uploader_asset(tournament.game, 'logo') }}" width="70" height="100" alt="Logo du jeux {{ tournament.game.name }}">
 							{% else %}
 								{{ tournament.game.name }}
 							{% endif %}
 						</td>
-						<td class="p-4 flex items-center whitespace-nowrap space-x-6 mr-12 lg:mr-0">
+						<td class="text-center">
 							{{tournament.description}}
 						</td>
-						<td class="p-4 whitespace-nowrap space-x-2">
+						<th>
 							<button type="button" data-modal-toggle="user-modal" class="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
 								<a href="{{ path('play_tournament', {'slug': tournament.slug}) }}">
 									<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-full" fill="none" viewbox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -161,15 +161,17 @@
 									Afficher
 								</a>
 							</button>
+						</th>
 							{% if tournament.status == false %}
 								{% if tournament.status is not null %}
 									Le tournoi est terminé.
 								{% endif %}
 							{% endif %}
+
 							{%  if tournament.status is null %}
 								{# <a href="{{ path('tournament_cancel',{'slug': tournament.slug}) }}" style="display: block; padding: 2px 5px ; border-radius: 20px ; background-color: red; color: whitesmoke ; text-align: center;">ANNULER</a>
 								<a href="{{ path('tournament_start',{'slug': tournament.slug}) }}" style="display: block; padding: 2px 5px ; border-radius: 20px ; background-color: green; color: whitesmoke ; text-align: center;">LANCER</a> #}
-							
+								<td>
 									<button type="button" data-modal-toggle="user-modal" class="text-white bg-pink-500 hover:bg-pink-600 focus:ring-4 focus:ring-pink-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
 										<a href="{{ path('tournament_start',{'slug': tournament.slug}) }}">
 											<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-5 w-full" viewBox="0 0 20 20" fill="currentColor">
@@ -178,6 +180,8 @@
 											Lancer
 										</a>
 									</button>
+								</td>
+								<td>
 									<button type="button" data-modal-toggle="user-modal" class="text-dark bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
 										<a href="{{ path('tournament_cancel',{'slug': tournament.slug}) }}">
 											<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 w-full" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -186,11 +190,12 @@
 											Annuler
 										</a>
 									</button>
+								</td>
 							{% endif %}
 							
 							{% if tournament.status is null or tournament.status == true %}
 								{# <a href="{{ path('tournament_edit', {'slug': tournament.slug}) }}">Modifier</a> #}
-						
+								<td>
 									<button type="button" data-modal-toggle="user-modal" class="text-dark bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
 										<a href="{{ path('tournament_edit', {'slug': tournament.slug}) }}">
 											<svg class="mr-2 h-6 w-full" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -200,20 +205,21 @@
 											Modifier
 										</a>
 									</button>
+								</td>
 							{% else %}
 								<tr>
 									<th colspan="8">Vous n'avez créer aucun tournoi</th>
 								</tr>
 							{% endif %}
+						</td>
 							
-							{% else %}
-								<tr>
-									<td colspan="7">
-										Aucun tournois trouvés !
-									</td>
-								</tr>
-							{% endif %}
+					{% else %}
+						<tr>
+							<td colspan="7">
+								Aucun tournois trouvés !
+							</td>
 						</tr>
+					{% endif %}
 				</tr>
 			{% endfor %}
 		</tbody>
