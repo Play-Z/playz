@@ -308,7 +308,7 @@
 											</div>
 										</div>
 									</div>
-									<a href="#" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800 transform hover:translate-x-10 transition duration-300">
+									<a href="{{ path('game_index') }}" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800 transform hover:translate-x-10 transition duration-300">
 										Liste des jeux
 										<svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 											<path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
@@ -341,96 +341,46 @@
 			</div>
 		</div>
 
-		<div class="bg-gray-800 sm:max-w-xl md:max-w-full md:px-24 lg:px-8 lg:py-20 w-full mr-auto ml-auto pt-16 pr-4 pb-16 pl-4">
-			<div class="max-w-xl md:mx-auto sm:text-center lg:max-w-2xl md:mb-12 mr-auto mb-10 ml-auto">
-				<div class="">
-					<p class="inline-block tracking-wider uppercase rounded-full font-semibold text-xs mb-4 -ptpx pr-3 -pbpx pl-3
-																																							          bg-pink-500 text-white">Dream Team</p>
-				</div>
-				<div class="max-w-lg font-sans tracking-tight sm:text-4xl md:mx-auto text-gray-900 mr-auto mb-6 ml-auto">
-					<div class="relative inline-block">
-						<svg viewbox="0 0 52 24" fill="currentColor" class="absolute top-0 left-0 z-0 hidden w-32 -mt-8 -ml-20
-																																																			            text-blue-gray-100 lg:w-32 lg:-ml-28 lg:-mt-10 sm:block">
-							<defs>
-								<pattern id="247432cb-6e6c-4bec-9766-564ed7c230dc" x="0" y="0" width=".135" height=".30"><circle cx="1" cy="1" r=".7"/></pattern>
-							</defs><rect fill="url(#247432cb-6e6c-4bec-9766-564ed7c230dc)" width="52" height="24"/></svg>
-						<p class="relative inline max-w-lg font-sans tracking-tight sm:text-4xl md:mx-auto font-bold text-3xl
-																																													            leading-none text-gray-900">Welcome</p>
+		<section>
+			<div class="px-4 py-16 mx-auto max-w-screen-2xl bg-gray-800 sm:px-6 lg:px-8">
+				<div class="grid grid-cols-1 lg:grid-cols-2 shadow-2xl lg:h-screen">
+					<div class="relative z-10 lg:py-16">
+						<div class="relative h-64 sm:h-80 lg:h-full">
+						<img
+							class="absolute inset-0 object-cover w-full h-full"
+							src="{{ asset('images/home/tournoi.png') }}"
+							alt="Indoors house"
+						/>
+						</div>
 					</div>
-					<p class="inline"></p>
-					<p class="inline max-w-lg font-sans tracking-tight sm:text-4xl md:mx-auto font-bold text-3xl leading-none
-																																							          text-gray-900">our talented team of professionals</p>
-				</div>
-				<p class="md:text-lg text-base text-gray-700">Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-																																	        accusantium doloremque rem aperiam, eaque ipsa quae.</p>
-			</div>
-			<div class="gap-10 row-gap-8 sm:row-gap-10 lg:max-w-screen-lg sm:grid-cols-2 lg:grid-cols-3 grid mr-auto ml-auto">
-				<div class="flex">
-					<img src="https://images.pexels.com/photos/1680172/pexels-photo-1680172.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=500" class="h-20 w-20 rounded-full object-cover mr-4 shadow"/>
-					<div class="flex flex-col justify-center">
-						<p class="font-bold text-lg">Mac Xenon</p>
-						<p class="text-sm mb-4 text-gray-800">Product Manager</p>
-					</div>
-				</div>
-				<div class="flex">
-					<img src="https://images.pexels.com/photos/1372134/pexels-photo-1372134.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=500" class="h-20 w-20 rounded-full object-cover mr-4 shadow"/>
-					<div class="flex flex-col justify-center">
-						<p class="font-bold text-lg">Martha Jena</p>
-						<p class="text-sm mb-4 text-gray-800">Design Manager</p>
-					</div>
-				</div>
-				<div class="flex">
-					<img src="https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=500" class="h-20 w-20 rounded-full object-cover mr-4 shadow"/>
-					<div class="flex flex-col justify-center">
-						<p class="font-bold text-lg">Macco James</p>
-						<p class="text-sm mb-4 text-gray-800">CTO Lorem ltd</p>
-					</div>
-				</div>
-				<div class="flex">
-					<img src="https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=500" class="h-20 w-20 rounded-full object-cover mr-4 shadow"/>
-					<div class="flex flex-col justify-center">
-						<p class="font-bold text-lg">Jean Wonder</p>
-						<p class="text-sm mb-4 text-gray-800">Human Resources</p>
-					</div>
-				</div>
-				<div class="flex">
-					<img src="https://images.pexels.com/photos/937481/pexels-photo-937481.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=500" class="h-20 w-20 rounded-full object-cover mr-4 shadow"/>
-					<div class="flex flex-col justify-center">
-						<p class="font-bold text-lg">Mr Smith</p>
-						<p class="text-sm mb-4 text-gray-800">Agent</p>
-					</div>
-				</div>
-				<div class="flex">
-					<img src="https://images.pexels.com/photos/834863/pexels-photo-834863.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=500" class="h-20 w-20 rounded-full object-cover mr-4 shadow"/>
-					<div class="flex flex-col justify-center">
-						<p class="font-bold text-lg">Andy Townsend</p>
-						<p class="text-sm mb-4 text-gray-800">Junior Developer</p>
-					</div>
-				</div>
-				<div class="flex">
-					<img src="https://images.pexels.com/photos/1557843/pexels-photo-1557843.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=500" class="h-20 w-20 rounded-full object-cover mr-4 shadow"/>
-					<div class="flex flex-col justify-center">
-						<p class="font-bold text-lg">Sophia Grey</p>
-						<p class="text-sm mb-4 text-gray-800">UI/UX Designer</p>
-					</div>
-				</div>
-				<div class="flex">
-					<img src="https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=500" class="h-20 w-20 rounded-full object-cover mr-4 shadow"/>
-					<div class="flex flex-col justify-center">
-						<p class="font-bold text-lg">Jack Bond</p>
-						<p class="text-sm mb-4 text-gray-800">Senior Developer</p>
-					</div>
-				</div>
-				<div class="flex">
-					<img src="https://images.pexels.com/photos/718261/pexels-photo-718261.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=500" class="h-20 w-20 rounded-full object-cover mr-4 shadow"/>
-					<div class="flex flex-col justify-center">
-						<p class="font-bold text-lg">Adam Savage</p>
-						<p class="text-sm mb-4 text-gray-800">Savage Man</p>
-					</div>
-				</div>
-			</div>
-		</div>
-		<script src="./template/theme.js"></script>
 
-	</div>
+					<div class="relative flex items-center bg-gray-200">
+						<span
+						class="hidden lg:inset-y-0 lg:absolute lg:w-16 lg:bg-gray-200 lg:block lg:-left-16"
+						></span>
+
+						<div class="p-8 sm:p-16 lg:p-24">
+							<div class="inline-block">
+								<p class="max-w-lg font-sans tracking-tight transition-colors duration-200 hover:text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-blue-900 bg-clip-text
+																																					                  sm:text-4xl font-extrabold text-4xl leading-none text-gray-700">Faite équipe avec d'autre PlayerZ !</p>
+							</div>
+
+						<p class="mt-4 text-gray-600">
+							Parcourez les équipes disponible et rejoignez celles qui vous intéressent. 
+							Vous pouvez inviter vos amis à rejoindre votre équipe, ou bien vous créer une nouvelle équipe et affrontez d'autre équipe afin de gagner les tournois PlayZ !
+							
+						</p>
+
+						<a href="{{ path('team_index') }}" class="my-10 inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-600 hover:text-white focus:ring-4 focus:ring-gray-700 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800 transform hover:translate-x-10 transition duration-300">
+							Parcourir les équipes
+							<svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+							</svg>
+						</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
 {% endblock %}

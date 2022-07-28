@@ -93,6 +93,7 @@
 						<a href="{{ path('home') }}" class="text-lg font-semibold tracking-widest  uppercase rounded-lg dark-mode:text-white focus:outline-none focus:shadow-outline"><img src="{{ asset('images/logo/PlayZ-NoLogo.png') }}" width="100" height="auto" alt="accueil"></a>
 					</div>
 					<ul class="space-y-2 pb-2 mt-10">
+					{% if is_granted('ROLE_ADMIN') %}
 						<li>
 							<a href="{{ path('admin_dashboard') }}" class="text-base text-white font-normal rounded-lg hover:bg-gray-400 flex items-center p-2 group ">
 								<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -125,6 +126,8 @@
 								<span class="ml-3 flex-1 whitespace-nowrap">Utilisateurs</span>
 							</a>
 						</li>
+					{% endif %}
+					{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TOURNAMENT_MANAGER') %}
 						<li>
 							<a href="{{ path('tournament_dashboard') }}" class="text-base text-white font-normal rounded-lg hover:bg-gray-400 flex items-center p-2 group ">
 								<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -133,6 +136,7 @@
 								<span class="ml-3 flex-1 whitespace-nowrap">Tournois</span>
 							</a>
 						</li>
+					{% endif %}
 					</ul>
 				</nav>
 				{# <div class="bg-purple-900">

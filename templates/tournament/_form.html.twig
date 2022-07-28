@@ -3,7 +3,7 @@
 <button class="btn bg-indigo-500 text-white active:bg-indigo-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">{{ button_label|default('Sauvegarder') }}</button>
 {{ form_end(form) }} #}
 
-<h1 class="text-5xl text-center font-normal leading-normal mt-5 mr-5 text-indigo-500 ">Nouveau Tournoi</h1>
+{# <h1 class="text-5xl text-center font-normal leading-normal mt-5 mr-5 text-indigo-500 ">Nouveau Tournoi</h1> #}
 
 <div>
 	{% if app.session.flashbag.has('error') %}
@@ -14,9 +14,9 @@
 			</span>
 	    </div>
 	{% endif %}
-  <div class="md:grid md:grid-cols-3 md:gap-6 mt-5">
+  <div class="md:grid md:grid-cols-3 md:gap-6 mx-10">
   <script src="../path/to/flowbite/dist/datepicker.js"></script>
-    <div class="mt-5 md:mt-0 md:col-span-2 mr-20 shadow-2xl w-1/2">
+    <div class="mt-5 md:mt-0 md:col-span-2 mr-20 shadow-2xl mx-auto w-3/4">
       <div class="md:col-span-1 mr-5">
         <div class="px-4  mr-5 ml-5">
           <p class="mt-1 text-sm text-red-600">Renseignez les bonnes informations concernant le tournoi avant de valider</p>

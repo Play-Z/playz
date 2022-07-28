@@ -55,11 +55,12 @@
 								</svg>
 							</button>
 						</button>
-						<div class="dropdown-content bg-gray-800">
+						<div class="dropdown-content bg-gray-800 rounded-xl">
 							<div>
-								<p class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium">Fonctionnalités</p>
+								<p class="text-gray-300 hover:text-white px-3 py-2 text-left text-sm font-medium">Fonctionnalités</p>
 								<ul>
-									<li><a href="{{path('tournament_index')}}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Nos tournois</a href=></li>
+									<li><a href="{{path('tournament_index')}}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Nos tournois</a></li>
+									<li><a href="{{path('game_index')}}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Jeux</a></li>
 									{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM_MANAGER') %}
 										<li><a href="{{path('tournament_dashboard')}}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Organiser</a></li>
 									{% endif %}
@@ -88,10 +89,9 @@
 									</ul>
 								</div>
 							{% endif %}
-
 						</div>
 					</div>
-
+					
 					{# <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Tarifs</a> #}
 					<a href="{{ path('contact_index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Contact</a>
 				</div>
