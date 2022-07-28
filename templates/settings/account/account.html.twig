@@ -3,7 +3,7 @@
 {% set page_title = 'Paramètres du compte' %}
 
 {% block content %}
-    <h1>Paramètres du compte</h1>
+    {# <h1>Paramètres du compte</h1>
 
     <h2>Changement d'email</h2>
 
@@ -22,6 +22,65 @@
     <div>
         <h2>Cloture du compte</h2>
         <a class="btn text-red-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('user_account_close') }}">Fermer mon compte</a>
-    </div>
+    </div> #}
 
+    <h1 class="text-5xl font-normal my-10 text-center leading-normal mb-2 text-indigo-500">Paramètres</h1>
+    <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800 my-20 shadow-2xl">
+        <form method="POST">
+            {% if app.session.flashbag.has('success') %}
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                    <strong class="font-bold">Succes !</strong>
+                    <span class="block sm:inline">{{ app.session.flashbag.get('success')|first }}</span>
+                    <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                    </span>
+                </div>
+            {% endif %}
+            {% if app.session.flashbag.has('error') %}
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <strong class="font-bold">Erreur ! </strong>
+                    <span class="block sm:inline">{{ app.session.flashbag.get('error')|first }}</span>
+                    <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                    </span>
+                </div>
+            {% endif %}
+            {{ form_start(emailForm) }}
+                <h2 class="text-lg font-semibold text-gray-700  dark:text-white">Changement d'email</h2>
+                <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2 ">
+                    <div>
+                        <label class="text-gray-700 dark:text-gray-200" for="username">Email</label>
+                        {{ form_widget(emailForm.email) }}
+                    </div>
+                    <div>
+                        <label class="text-gray-700 dark:text-gray-200" for="password">Mot de passe</label>
+                        {{ form_widget(emailForm.password) }}
+                    </div>
+                </div>
+                <button type="button" data-modal-toggle="game-modal" class="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 my-10 text-center">
+                    <a href="{{ button_label|default('Sauvegarder') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </a>
+                    Sauvegarder
+                </button>
+            {{ form_end(emailForm) }}
+        </form>
+        <form method="POST">
+            <h2 class="text-lg font-semibold text-gray-700  dark:text-white">Changement mot de passe</h2>
+            <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2 ">
+                <div>
+                    {{ form_widget(passwordForm) }}
+                </div>
+            </div>
+                
+            <button type="button" data-modal-toggle="game-modal" class="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 my-6 text-center">
+                <a href="{{ button_label|default('Sauvegarder') }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </a>
+                Sauvegarder
+            </button>
+        </form>
+    </section>
 {% endblock %}

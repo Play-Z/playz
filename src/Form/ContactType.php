@@ -21,11 +21,18 @@ class ContactType extends AbstractType
             ])
             ->add('subject', TextType::class,
             [
-                'label' => 'Sujet'
+                'attr' => [
+                    'placeholder' => "L'objet de votre message",
+                    'label' => 'Sujet'
+                ]
+                
             ])
             ->add('message', TextareaType::class,
                 [
-                    'label' => 'Message'
+                    'attr' => [
+                        'placeholder' => "Votre message",
+                        'label' => 'Message',
+                    ]
                 ]
             );
     }

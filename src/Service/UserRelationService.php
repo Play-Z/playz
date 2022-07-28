@@ -74,6 +74,7 @@ class UserRelationService {
     public function handleNewTeamRelation($sender, $recipient): string
     {
         if (!is_null($recipient->getTeam())){
+            $senderRelation->setStatus('notice');
             return "Cet utilisateur a déjà une équipe.";
         }
 
@@ -87,6 +88,7 @@ class UserRelationService {
             if ($relation->getStatus() == 'pending') {
                 if ($relation->getSender() == $sender) {
                     return "Vous avez déjà une invitation d'équipe en attente pour cet utilisateur.";
+                    
                 }
             }
             elseif ($relation->getStatus() == 'accepted') {
@@ -96,6 +98,7 @@ class UserRelationService {
 
         if (isset($senderRelation) && $senderRelation != null && $senderRelation->getStatus() === 'rejected') {
             $this->userRelationRepository->add($senderRelation);
+            $senderRelation->setStatus('success');
             return "Votre invitation d'équipe a bien été envoyé";
         }
 

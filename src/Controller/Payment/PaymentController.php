@@ -2,6 +2,8 @@
 
 namespace App\Controller\Payment;
 
+use DateTime;
+use DateTimeZone;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +19,7 @@ class PaymentController extends AbstractController
     {
         $priceMonth = 15;
         $priceYear = 80;
-        return $this->render('payment/index.html.twig',[
+        return $this->render('play/payment/index.html.twig',[
             'priceMonth' => $priceMonth,
             'priceYear' => $priceYear
         ]);
@@ -28,20 +30,14 @@ class PaymentController extends AbstractController
     {
         $paypalService->verifyOrder($id);
         $user = $userRepository->findByEmail($security->getUser()->getUserIdentifier());
-        if (!$paypalService->verifyOrder($id)){
+        if ($paypalService->verifyOrder($id)){
             /* set page erreur paiement */
             $user->addRole('ROLE_SUBSCRIBE');
-            $user->setDateSubscribe(new Date());
+            $user->setDateSubscribe(new DateTime('',new DateTimeZone('Europe/Paris')));
         }
-
-        /* set time out of 1 month */
-//        if ($user->getRoles('ROLE_SUBSCRIBE') && set_time_limit(10)){
-//            $user->getRoles();
-//            $user->setRoles('');
-//        }
 
         $em = $this->getDoctrine()->getManager();
         $em->flush();
-        return $this->render('payment/paymentSuccess.html.twig');
+        return $this->render('play/payment/paymentSuccess.html.twig');
     }
 }

@@ -3,45 +3,83 @@
 {% set page_title = 'Connexion' %}
 
 {% block content %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+	<section class="h-full gradient-form bg-gray-200 md:h-screen">
+		<div class="container py-12 px-6 h-full" style="margin: 0 auto;">
+			<div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
+				<div class="xl:w-10/12">
+					<div class="block bg-white shadow-lg rounded-lg">
+						<div class="lg:flex lg:flex-wrap g-0">
+							<div class="lg:w-6/12 px-4 md:px-0">
+								<div class="md:p-12 md:mx-6">
+									<div class="text-center">
+										<img class="mx-auto w-48" src="{{ asset('images/logo/PlayZ-All.png') }}" alt="logo"/>
+									</div>
+									<form method="post">
+										{% if error %}
+											<div class="bg-red-100 rounded-lg py-5 px-6 mb-3 text-base text-red-700 inline-flex items-center w-full" role="alert">
+												<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times-circle" class="w-4 h-4 mr-2 fill-current" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+													<path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"></path>
+												</svg>
+												 {{ error.messageKey|trans(error.messageData, 'security') }}
+											</div>
+										{% endif %}
+										<h4 class="text-xl font-semibold mt-1 mb-12 pb-1 text-center">Connexion</h4>
+										{% if app.user %}
+											<div class="mb-3">
+												Vous êtes connecté en tant que
+												{{ app.user.username }},
+												<a href="{{ path('app_logout') }}">Déconnexion</a>
+											</div>
+										{% endif %}
+										<p class="mb-4 italic">Renseignez vos identifiants</p>
+										<div class="mb-4">
+											<label for="username">Nom d'utilisateur</label>
+											<input name="email" type="text" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="inputEmail" value="{{ last_username }}" required autofocus/>
+										</div>
+										<div class="mb-4">
+											<label for="password">Mot de passe</label>
+											<input name="password" type="password" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="inputPassword"  required/>
+										</div>
+										<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+										<div class="text-center pt-1 mb-12 pb-1">
+											<button class="inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3" type="submit" data-mdb-ripple="true" data-mdb-ripple-color="light" style="
+													                                background: linear-gradient(
+													                                to right,
+													                                #845ec2,
+													                                #d65db1,
+													                                #ff6f91,
+													                                #ff9671,
+													                                #ffc75f,
+													                                #f9f871
+													                                );
+													                            ">
+												Se Connecter
+											</button>
+											<a class="text-gray-500" href="/reset-password">Mot de passe oublié !</a>
+										</div>
+										<div class="flex items-center justify-between pb-6">
+											<p class="mb-0 mr-2">Pas encore inscrit ? Par ici 👉</p>
+											<button type="button" class="inline-block px-6 py-2 border-2 border-red-600 text-red-600 font-medium text-xs leading-tight uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="light">
+												<a href="/register">
+													Let's go !</a>
+											</button>
+										</div>
+									</form>
+								</div>
+							</div>
+							<div class="lg:w-6/12 flex items-center lg:rounded-r-lg rounded-b-lg lg:rounded-bl-none" style=" background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);">
+								<div class="text-white px-4 py-6 md:p-12 md:mx-6">
+									<h4 class="text-xl font-semibold mt-1 mb-12 pb-1">Re-bonjour ! 🤟 </h4>
+									<p class="text-sm">
+										L'esport est un phénomène mondial et a attiré beaucoup d'attention ces dernières années en raison du haut niveau de compétence et de communication requis pour les jeux à jouer. C'est un sport qui implique des personnes de tous âges, capacités physiques et niveaux de compétence jouant à des jeux comme StarCraft, Warcraft, League of Legends, Hearthstone, Dota 2 et Dota 3. En 2015, environ 535 millions de personnes ont participé à une forme de compétitions d'esports, qui étaient en grande partie en ligne. Ils vont des tournois professionnels aux petits événements et équipes.
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-    {% endif %}
-
-    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Connexion</h1>
-
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success" role="alert">
-            {{ message }}
-        </div>
-    {% endfor %}
-
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
-        </div>
-
-    <button class="btn bg-indigo-500 text-white active:bg-indigo-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="submit">
-        Sign in
-    </button>
-</form>
-
-<a href="/reset-password"  class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Mot de passe oublié !</a>
-<a href="/register"  class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Pas encore inscrit ?</a>
 {% endblock %}

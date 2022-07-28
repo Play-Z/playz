@@ -160,6 +160,26 @@ class Team
     private $youtubeUsername;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $elo;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nbParticipation;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nbWin;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Announcement::class, mappedBy="teamAnnouncement")
+     */
+    private $announcements;
+
+    /**
      * @param UploadedFile $logo
      */
     public function setLogo(?File $logo = null)
@@ -180,6 +200,10 @@ class Team
     {
         $this->tournamentTeams = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->elo = 2 ;
+        $this->nbParticipation = 0 ;
+        $this->nbWin = 0 ;
+        $this->announcements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -445,6 +469,72 @@ class Team
     public function setYoutubeUsername(?string $youtubeUsername): self
     {
         $this->youtubeUsername = $youtubeUsername;
+
+        return $this;
+    }
+
+    public function getElo(): ?int
+    {
+        return $this->elo;
+    }
+
+    public function setElo(?int $elo): self
+    {
+        $this->elo = $elo;
+
+        return $this;
+    }
+
+    public function getNbParticipation(): ?int
+    {
+        return $this->nbParticipation;
+    }
+
+    public function setNbParticipation(?int $nbParticipation): self
+    {
+        $this->nbParticipation = $nbParticipation;
+
+        return $this;
+    }
+
+    public function getNbWin(): ?int
+    {
+        return $this->nbWin;
+    }
+
+    public function setNbWin(?int $nbWin): self
+    {
+        $this->nbWin = $nbWin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Announcement[]
+     */
+    public function getAnnouncements(): Collection
+    {
+        return $this->announcements;
+    }
+
+    public function addAnnouncement(Announcement $announcement): self
+    {
+        if (!$this->announcements->contains($announcement)) {
+            $this->announcements[] = $announcement;
+            $announcement->setTeamAnnouncement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnnouncement(Announcement $announcement): self
+    {
+        if ($this->announcements->removeElement($announcement)) {
+            // set the owning side to null (unless already changed)
+            if ($announcement->getTeamAnnouncement() === $this) {
+                $announcement->setTeamAnnouncement(null);
+            }
+        }
 
         return $this;
     }

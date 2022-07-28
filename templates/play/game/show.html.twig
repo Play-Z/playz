@@ -3,7 +3,7 @@
 {% block title %}Jeux{% endblock %}
 
 {% block content %}
-    <h1>Tournois par jeu</h1>
+    {# <h1>Liste des tournois</h1>
 
     <table class="table">
         <thead>
@@ -48,5 +48,131 @@
             </tr>
         {% endfor %}
         </tbody>
-    </table>
+    </table> #}
+    {% for tournament in tournaments %}
+    <h1 class="text-5xl font-normal leading-normal text-center mt-20 mb-20 text-indigo-500 ">Liste de tournois pour le jeu {{ tournament.game.name }}</h1>
+   {% endfor %}
+
+	{% if app.session.flashbag.has('success') %}
+		<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+			<strong class="font-bold">Succes !</strong>
+			<span class="block sm:inline">{{ app.session.flashbag.get('success')|first }}</span>
+			<span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+			</span>
+		</div>
+	{% endif %}
+	{% if app.session.flashbag.has('error') %}
+	    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+	        <strong class="font-bold">Erreur ! </strong>
+	        <span class="block sm:inline">{{ app.session.flashbag.get('error')|first }}</span>
+	        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+			</span>
+	    </div>
+	{% endif %}
+
+	<table class="table-fixed w-10/12 mx-auto divide-y divide-gray-200 shadow-2xl ">
+		<thead class="bg-gray-100 w-full">
+			<tr class="w-full">
+				<th scope="col" class="p-4 text-center text-xs font-medium text-gray-500 uppercase">
+					Logo
+				</th>
+				<th scope="col" class="p-4 text-center text-xs font-medium text-gray-500 uppercase">
+					Nom du tournoi
+				</th>
+                <th scope="col" class="p-4 text-center text-xs font-medium text-gray-500 uppercase">
+					Nom du Jeu
+				</th>
+                <th scope="col" class="p-4 text-center text-xs font-medium text-gray-500 uppercase">
+                    Logo du jeu
+                </th>
+				<th scope="col" class="p-4 text-center text-xs font-medium text-gray-500 uppercase">
+					Nombre d'équipes
+				</th>
+				<th scope="col" class="p-4 text-center text-xs font-medium text-gray-500 uppercase">
+					Nombre de joueurs par équipe
+				</th>
+				<th scope="col" class="p-4 text-center text-xs font-medium text-gray-500 uppercase">
+					Lancement du tournoi
+				</th>
+                <th scope="col" class="p-4 text-center text-xs font-medium text-gray-500 uppercase">
+					Ouverture des inscriptions
+				</th>
+				<th scope="col" class="p-4 text-center text-xs font-medium text-gray-500 uppercase">
+					Actions
+				</th>
+			</tr>
+		</thead>
+		<tbody class="bg-white divide-y divide-gray-200">
+			{% for tournament in tournaments %}
+				<tr class="hover:bg-gray-100 h-52 mb-20 mt-20">
+					{% if tournament %}
+						{% if tournament.path %}
+							<td> 
+								<img class="h-10 w-10 rounded-full mx-auto" src=" {{ vich_uploader_asset(tournament, 'logo') }}" width="70" height="100" alt="tournament image">
+							</td>
+						{% else %}
+							<td class="text-center">
+								Pas de logo
+							</td>
+						{% endif %}
+						<td class="text-center">
+							{{ tournament.name }}
+						</td>
+						<td class="text-center">
+							{{tournament.game.name}}
+						</td>
+						
+						<td class="text-center">
+							{% if tournament.game.path %}
+								<img class="mx-auto" src="{{ vich_uploader_asset(tournament.game, 'logo') }}" width="70" height="100" alt="Logo du jeux {{ tournament.game.name }}">
+							{% else %}
+								{{ tournament.game.name }}
+							{% endif %}
+						</td>
+						<td class="text-center">
+							{{tournament.maxTeamPlayers}}
+						</td>
+                        <td class="text-center">
+							{{tournament.maxTeamParticipant}}
+						</td>
+                        <td class="text-center">
+							{{tournament.startInscriptionAt | date('d/m/Y : H:i')}}
+						</td>
+                        <td class="text-center">
+							{{tournament.startAt | date('d/m/Y : H:i')}}
+						</td>
+						<td class="text-center">
+						
+							{% if tournament.status == false %}
+								{% if tournament.status is not null %}
+									Le tournoi est terminé.
+								{% endif %}
+							{% endif %}
+							{%  if tournament.status is null %}
+								{% if is_granted('ROLE_TEAM_MEMBER') or is_granted('ROLE_ADMIN')  %}
+									<button type="button" data-modal-toggle="user-modal" class="text-dark bg-indigo-500 hover:bg-indigo-600 focus:ring-4 focus:ring-indigo-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
+										<a href="{{ path('play_tournament', {slug : tournament.slug  }) }}">
+											<svg class="mr-2 h-6 w-full" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+												<path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
+												<path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path>
+											</svg>
+											+ de détails
+										</a>
+									</button>
+								{% endif %}
+							{% endif %}
+                        </td>
+            {% else %}
+                <tr>
+                    <td colspan="7">
+                        Aucun tournois trouvés !
+                    </td>
+                </tr>
+            {% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</tr>
+</table>
 {% endblock %}

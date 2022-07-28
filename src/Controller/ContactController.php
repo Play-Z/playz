@@ -30,18 +30,28 @@ class ContactController extends AbstractController
 
             $message = (new Email())
                 ->from($contactFormData->getEmail())
-                ->to('contact@playz.com')
+                ->to('playz.site.management@gmail.com')
                 ->subject($contactFormData->getSubject())
                 ->text($contactFormData->getMessage(), 'text/plain');
             $mailer->send($message);
 
-            $this->addFlash('success', 'Votre message a bien été envoyer !');
+            $this->addFlash('success', 'Votre message a bien été envoyé !');
 
             return $this->redirectToRoute('contact_index');
+        }
+        if($form->isSubmitted() && !$form->isValid()) {
+            $errors = array();
+            foreach ($form->getErrorSchema() as $key => $err) {  
+                if ($key) {  
+                    $errors[$key] = $err->getMessage();  
+                }  
+            }
+            $this->addFlash('error', 'Votre message n\'a pas été envoyé ! Nous vous contacterons dans les plus brefs délais.');
         }
 
         return $this->renderForm('home/contact/index.html.twig', [
             'form' => $form,
+            'errors' => $errors ?? null,
         ]);
     }
 }

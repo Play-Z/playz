@@ -6,7 +6,10 @@ use App\Entity\Game;
 use App\Entity\Tournament;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,6 +30,10 @@ class TournamentType extends AbstractType
             ])
             ->add('name', TextType::class, [
                 'label' => "Nom d'utilisateur"
+            ])
+            ->add('PouleType',CheckboxType::class,[
+                'label'=>'Créer un tournoi avec poules',
+                'required'=>false
             ])
             ->add('description')
             ->add('max_team_participant',ChoiceType::class, [
@@ -56,8 +63,23 @@ class TournamentType extends AbstractType
                 'expanded' => false,
                 'label' => 'Jeu du tournoi'
             ])
-            ->add('startAt')
-            ->add('startInscriptionAt')
+            ->add('startAt', DateTimeType::class,[
+                'widget' => 'single_text',
+                'label'=>'Tournament start at'
+            ])
+            ->add('startInscriptionAt', DateTimeType::class,[
+                'widget' => 'single_text',
+                'label'=>'Tournament inscription start at'
+            ])
+            ->add('priceFirst', TextType::class,[
+                'label'=>'Récompense 1er'
+            ])
+            ->add('priceSecond', TextType::class,[
+                'label'=>'Récompense 2ème'
+            ])
+            ->add('priceThird', TextType::class,[
+                'label'=>'Récompense 3ème'
+            ])
         ;
     }
 

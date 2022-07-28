@@ -62,6 +62,15 @@ class UserController extends AbstractController
         ]);
     }
 
+    // show user profil in POST request
+    #[Route('/{slug}', name: 'user_show', methods: ['GET'])]
+    public function show(User $user): Response
+    {
+        return $this->render('admin/user/show.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
     #[Route('/{slug}/edit', name: 'user_edit', methods: ['GET','POST'])]
     public function edit(Request $request, User $user, UserPasswordHasherInterface $userPasswordHasherInterface, MailerInterface $mailer, ResetPasswordHelperInterface $resetPasswordHelper): Response
     {
@@ -77,14 +86,13 @@ class UserController extends AbstractController
                 $resetToken = $resetPasswordHelper->generateResetToken($user);
             } catch (ResetPasswordExceptionInterface $e) {
                 $this->addFlash('error', "Erreur lors de l'envoi du mail");
-
                 return $this->redirectToRoute('user_edit', ['slug' => $user->getSlug()], Response::HTTP_SEE_OTHER);
             }
 
             $email = (new TemplatedEmail())
-                ->from(new Address('playZ@gmail.com', 'PlayZ'))
+                ->from(new Address('playz.site.management@gmail.com', 'PlayZ'))
                 ->to($user->getEmail())
-                ->subject('PlayZ - Your account has been modified by a PlayZ administrator. Please reset your password.')
+                ->subject('PlayZ - Votre compte à été modifié par l\'administrateur PlayZ. Veuillez changer votre mot de passe')
                 ->htmlTemplate('reset_password/user_update_email.html.twig')
                 ->context([
                     'resetToken' => $resetToken,
@@ -97,12 +105,26 @@ class UserController extends AbstractController
             $this->addFlash('success', "L'utilisateur a bien été modifier !");
 
             return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
-        }
+        } 
 
         return $this->renderForm('admin/user/edit.html.twig', [
             'user' => $user,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/{id}/delete_subscribe', name: 'delete_subscribe', methods: ['GET','POST'])]
+    public function deleteSubscribe(Request $request, User $user): Response
+    {
+        /* Suppression du role subscribe */
+        $user->removeRole('ROLE_SUBSCRIBE');
+        $user->deleteDateSubscribe();
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('admin_dashboard', []);
     }
 
     #[Route('/{slug}', name: 'user_delete', methods: ['POST'])]

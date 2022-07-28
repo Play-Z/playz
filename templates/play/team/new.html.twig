@@ -4,9 +4,9 @@
 {% set page_title = 'Nouvelle d\'équipe' %}
 
 {% block content %}
-    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">Creer une équipe</h1>
+    <h1 class="text-5xl font-normal leading-normal text-center my-10 text-indigo-500">Créer une équipe</h1>
 
     {{ include('play/team/_form.html.twig') }}
 
-    <a href="{{ path('team_index') }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Retour</a>
+    {# <a href="{{ path('team_index') }}" class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Retour</a> #}
 {% endblock %}

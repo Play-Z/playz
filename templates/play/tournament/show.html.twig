@@ -5,119 +5,128 @@
 {% block title %}Inscription tournoi!{% endblock %}
 
 {% block content %}
-    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">{{ tournament.name }}</h1>
-
-    <table class="table">
-        <tbody>
-        <tr>
-            {% if tournament.path %}
-                <th>Logo</th>
-                <td><img src="{{ vich_uploader_asset(tournament, 'logo') }}" width="64" height="auto" alt="Logo de l'équipe {{ tournament.name }}"></td>
-            {% else %}
-                <th>Logo</th>
-                <td>Pas de logo</td>
-            {% endif %}
-        </tr>
-        <tr>
-            <th>Name</th>
-            <td>{{ tournament.name }}</td>
-        </tr>
-        <tr>
-            <th>Description</th>
-            <td>{{ tournament.description }}</td>
-        </tr>
-        <tr>
-            <th>Nombre d'équipes</th>
-            <td>{{ tournament.maxTeamParticipant }}</td>
-        </tr>
-        <tr>
-            <th>Nombre de joueurs par équipe</th>
-            <td>{{ tournament.maxTeamPlayers }}</td>
-        </tr>
-        <tr>
-            <th>Lancement du tournoi</th>
-            <td>{{ tournament.startAt | date('d F Y  \\à g:ia') }}</td>
-        </tr>
-        <tr>
-            <th>Ouverture des inscriptions</th>
-            <td>{{ tournament.startInscriptionAt | date('d F Y  \\à g:ia') }}</td>
-        </tr>
-        <tr>
-            <th>Jeux</th>
-            <td>
-                {% if tournament.game.path %}
-                    <img src="{{ vich_uploader_asset(tournament.game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ tournament.game.name }}">
-                {% else %}
-                    {{ tournament.game.name }}
-                {% endif %}
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    {% if  tournament.status == false %}
+<div class="bg-white border-2 border-gray-300 p-5 rounded-md tracking-wide shadow-lg w-4/6" style="margin: 12% auto;">
+    <h1 class= "text-5xl font-normal text-center leading-normal mt-0 mb-2 text-indigo-500">Tournoi {{tournament.name}}</h1>
+        <table class="w-full h-full text-sm text-center text-gray-500 dark:text-gray-400">
+            <tbody>
+                <tr>
+                    {% if tournament.path %}
+                        <th>Logo</th>
+                        <td><img src="{{ vich_uploader_asset(tournament, 'logo') }}" width="100" height="auto" alt="Logo de l'équipe {{ tournament.name }}" style="margin: 0 auto;"></td>
+                    {% else %}
+                        <th>Logo</th>
+                        <td>Pas de logo</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ tournament.name }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ tournament.description }}</td>
+                </tr>
+                <tr>
+                    <th>Prix</th>
+                    <td><strong>1er : </strong>{{ tournament.priceFirst }}, <strong>2ème :</strong> {{ tournament.priceSecond }}, <strong>3ème :</strong> {{ tournament.priceThird }}</td>
+                </tr>
+                <tr>
+                    <th>Nombre d'équipes</th>
+                    <td>{{ tournament.maxTeamParticipant }}</td>
+                </tr>
+                <tr>
+                    <th>Nombre de joueurs par équipe</th>
+                    <td>{{ tournament.maxTeamPlayers }}</td>
+                </tr>
+                <tr>
+                    <th>Lancement du tournoi</th>
+                    <td>{{ tournament.startAt | date('d F Y  \\à g:ia') }}</td>
+                </tr>
+                <tr>
+                    <th>Ouverture des inscriptions</th>
+                    <td>{{ tournament.startInscriptionAt | date('d F Y  \\à g:ia') }}</td>
+                </tr>
+                <tr>
+                    <th>Jeux</th>
+                    <td>
+                        {% if tournament.game.path %}
+                            <img src="{{ vich_uploader_asset(tournament.game, 'logo') }}" width="100" height="auto" alt="Logo du jeux {{ tournament.game.name }}" style="margin: 0 auto;">
+                        {% else %}
+                            {{ tournament.game.name }}
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    {% if  tournament.status is null %}
         {% if inscription %}
             {%  if is_granted('ROLE_TEAM_CREATOR') or is_granted('ROLE_TOURNAMENT_ARBITER') %}
                 <a class="text-blue-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('play_inscription_tournament', {slug : tournament.slug , user_slug : app.user.slug}) }}">Inscription</a>
-{#                {% if is_granted('edit', tournamentTeam) %}#}
+                   {% if is_granted('edit', tournamentTeam) %}
                     <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('play_edit_inscription_tournament', {slug : tournament.slug , user_slug : app.user.slug}) }}">Modifier inscription</a>
                 <a onclick="return confirm('Êtes vous sur d\'annuler votre inscription ?');" href="{{ path('play_delete_inscription_tournament', {slug : tournament.slug , user_slug : app.user.slug}) }}" class="btn text-red-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Annuler mon inscription</a>
-{#                {% endif %}#}
+                   {% endif %}
             {% else %}
-                <p>Vous ne pouvez pas vous inscrire, demandez à votre chef d'équipe!</p>
+            <div class="p-4 mb-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
+                <span class="font-medium">Vous ne pouvez pas vous inscrire, demandez à votre chef d'équipe!</span>
+            </div>
                 <p>Il est encore temps !</p>
             {% endif %}
         {% else %}
-            <p>Les inscriptions sont maintenant fermés</p>
+            <div class="p-4 mb-4 text-sm text-center mt-5 text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                <span class="font-medium">Attention ! </span>Les inscriptions sont maintenant fermés !
+            </div>
         {% endif %}
-
-
         <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('tournament_index') }}">Retour</a>
         <div>
-            <h2>Les équipes inscrites : </h2>
             <ul>
                 {% for equipe in equipes %}
+                <h2>Les équipes inscrites : </h2>
                     <li>
                         <a href="{{ path('team_show', {'slug': equipe.team.slug}) }}">{{ equipe.team.name }}</a>
                     </li>
                 {% endfor %}
             </ul>
         </div>
-    {% else %}
-        <table>
-            <thead>
-               <tr>
-                   <th>Equipe 1</th>
-                   <th>contre</th>
-                   <th>Equipe 2</th>
-                   <th>Resultat</th>
-               </tr>
-            </thead>
-            <tbody>
-
-            {% for match in matches %}
+    {% elseif tournament.status == true %}
+        <div class="max-w-2xl bg-white border-2 border-gray-300 p-5 rounded-md tracking-wide shadow-lg" style="margin: 15% auto;">
+            <table class="w-full h-full text-sm text-center text-gray-500 dark:text-gray-400">
+                <thead>
                 <tr>
-                    <td><a href="{{ path('team_show', {'slug': match.getTeamOne().team.slug}) }}">{{   match.getTeamOne().team.name  }}</a></td>
-                    <td>VS</td>
-                    <td><a href="{{ path('team_show', {'slug': match.getTeamTwo().team.slug}) }}">{{   match.getTeamTwo().team.name  }} </a></td>
-                    {% if match.status == false %}
-                        <td>En cours ...</td>
-                    {% else %}
-                        {% if match.getTeamOneWin == true %}
-                            <td>Victoire de {{   match.getTeamOne().team.name  }}</td>
-                        {% elseif match.getTeamOneWin == false %}
-                            <td>Victoire de {{   match.getTeamTwo().team.name  }}</td>
-                        {% else %}
-                            <td>En cours ...</td>
-                        {% endif %}
-                    {% endif %}
-
+                    <th>Equipe 1</th>
+                    <th>contre</th>
+                    <th>Equipe 2</th>
+                    <th>Resultat</th>
                 </tr>
-            {% endfor %}
+                </thead>
+                <tbody>
 
-            </tbody>
-        </table>
+                {% for match in matches %}
+                    <tr>
+                        <td><a href="{{ path('team_show', {'slug': match.getTeamOne().team.slug}) }}">{{   match.getTeamOne().team.name  }}</a></td>
+                        <td>VS</td>
+                        <td><a href="{{ path('team_show', {'slug': match.getTeamTwo().team.slug}) }}">{{   match.getTeamTwo().team.name  }} </a></td>
+                        {% if match.status == false %}
+                            <td>En cours ...</td>
+                        {% else %}
+                            {% if match.getTeamOneWin == true %}
+                                <td>Victoire de {{   match.getTeamOne().team.name  }}</td>
+                            {% elseif match.getTeamOneWin == false %}
+                                <td>Victoire de {{   match.getTeamTwo().team.name  }}</td>
+                            {% else %}
+                                <td>En cours ...</td>
+                            {% endif %}
+                        {% endif %}
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+    <div class="p-4 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800" role="alert">
+        <span class="font-medium">Terminé !</span> Ce tournoi est terminé !
+    </div>
     {% endif %}
-
-
-
+</div>
 {% endblock %}

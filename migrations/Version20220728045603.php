@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20211206104403 extends AbstractMigration
+final class Version20220728045603 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,15 +20,17 @@ final class Version20211206104403 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SEQUENCE game_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE TABLE game (id INT NOT NULL, name VARCHAR(50) NOT NULL, description TEXT DEFAULT NULL, logo VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('ALTER TABLE tournament ADD price_first VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE tournament ADD price_second VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE tournament ADD price_third VARCHAR(255) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('DROP SEQUENCE game_id_seq CASCADE');
-        $this->addSql('DROP TABLE game');
+        $this->addSql('ALTER TABLE tournament DROP price_first');
+        $this->addSql('ALTER TABLE tournament DROP price_second');
+        $this->addSql('ALTER TABLE tournament DROP price_third');
     }
 }

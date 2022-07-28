@@ -1,4 +1,170 @@
-{{ form_start(form) }}
+{# {{ form_start(form) }}
     {{ form_widget(form) }}
 <button class="btn bg-indigo-500 text-white active:bg-indigo-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">{{ button_label|default('Sauvegarder') }}</button>
-{{ form_end(form) }}
+{{ form_end(form) }} #}
+
+<div>
+	{% if app.session.flashbag.has('error') %}
+	    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+	        <strong class="font-bold">Erreur ! </strong>
+	        <span class="block sm:inline">{{ app.session.flashbag.get('error')|first }}</span>
+	        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+			</span>
+	    </div>
+	{% endif %}
+    {% if app.session.flashbag.has('error') %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Erreur ! </strong>
+            <span class="block sm:inline">{{ app.session.flashbag.get('error')|first }}</span>
+            <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+            </span>
+        </div>
+    {% endif %}
+    {# {{dump(form.vars.value.users)}} #}
+	
+   <div class="md:grid md:grid-cols-2 mx-auto md:gap-6">
+    <div class=" md:mt-0 md:col-span-2 mx-auto my-20 shadow-2xl w-2/4">
+      <div class="px-4  mr-5 ml-5">
+        {# if form is update then "Mettez les informations utilles sur le jeu que vous êtes en train de modifier. Elles seront partagés publiquement." #}
+        {% if form.vars.value.id %}
+            <p class="text-red-600 text-base">Mettez les informations utiles sur le jeu que vous êtes en train de modifier. Elles seront partagés publiquement.</p>
+        {% else %}
+            <p class="text-red-600 text-base">Mettez les informations utiles sur le jeu que vous êtes en train de créer. Elles seront partagés publiquement.</p>
+        {% endif %}
+        {# <p class="mt-1 text-sm text-red-600">Mettez les informations utilles sur le jeu que vous êtes en train de créer. Elles seront partagés publiquement.</p> #}
+      </div>
+      <form method="POST">
+        {{ form_start(form) }} 
+          <div class="shadow sm:rounded-md sm:overflow-hidden">
+            <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+              <div>
+                <div class="mt-1 flex items-center">
+                  <div class="flex-shrink-0 h-30 w-30">
+                         {{ form_row(form.logo) }}
+                    </div>
+                </div>
+              </div>   
+                {# !empty($friends) then add field to add friends in the team #}
+                {% if form.vars.value.id %}
+                    {% if form.vars.value.users|length > 0 %}
+                        {% for user in form.vars.value.users %}
+                            <div class="flex items-center">
+                              {% if user.image != null %}
+                                  <div class="flex-shrink-0 h-10 w-10">
+                                      <img class="h-10 w-10 rounded-full" src="{{ vich_uploader_asset(user, 'image') }}">
+                                  </div>
+                              {% else %}
+                                  <div class="flex-shrink-0 h-10 w-10">
+                                      <img class="h-10 w-10 rounded-full" src="{{ asset('images/profil/playerz.png') }}">
+                                  </div>
+                              {% endif %}
+                                <div class="ml-4">
+                                    <div class="text-sm leading-5 font-medium text-gray-900">
+                                        {{ user.username }}
+                                    </div>
+                                    <div class="text-sm leading-5 text-gray-500">
+                                        {{ user.email }}
+                                    </div>
+                                </div>
+                                {# <div class="ml-auto">
+                                    <button type="button" class="text-red-600 hover:text-red-500 focus:outline-none focus:text-red-500 transition ease-in-out duration-150" onclick="removeUser(this)">
+                                        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </div> #}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+
+                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                  <label for="first-name" class="block text-sm font-medium text-gray-700">Nom</label>
+                    <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        {{form_widget(form.name)}} 
+                    </div>
+                </div>
+
+              <div>
+                <label for="about" class="block text-sm font-medium text-gray-700"> Description </label>
+                <div class="mt-1">
+                  {{form_widget(form.description)}}
+                </div>
+                <p class="mt-2 text-sm text-gray-500 italic">Description de votre jeu</p>
+              </div>
+
+                <div div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                    <label for="first-name" class="block text-sm font-medium text-gray-700">Jeu principal</label>
+                    <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        {{form_widget(form.game)}} 
+                    </div>
+                </div>
+
+                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                  <label for="first-name" class="block text-sm font-medium text-gray-700">Equipe public ?</label>
+                    <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        {{form_widget(form.public)}} 
+                    </div>
+                </div>
+
+                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                  <label for="first-name" class="block text-sm font-medium text-gray-700">Nombre d'emplacement dans l'équipe</label>
+                    <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        {{form_widget(form.emplacement)}} 
+                    </div>
+                </div>
+
+                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                  <label for="first-name" class="block text-sm font-medium text-gray-700">Pays</label>
+                    <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        {{form_widget(form.location)}} 
+                    </div>
+                </div>
+
+                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                  <label for="first-name" class="block text-sm font-medium text-gray-700">Nom d'utilisateur Twitter</label>
+                    <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        {{form_widget(form.twitterUsername)}} 
+                    </div>
+                </div>
+                
+                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                  <label for="first-name" class="block text-sm font-medium text-gray-700">Nom d'utilisateur Reddit</label>
+                    <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        {{form_widget(form.RedditUsername)}} 
+                    </div>
+                </div>
+
+                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                  <label for="first-name" class="block text-sm font-medium text-gray-700">Nom d'utilisateur Twitch</label>
+                    <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        {{form_widget(form.twitchUsername)}} 
+                    </div>
+                </div>
+
+                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                  <label for="first-name" class="block text-sm font-medium text-gray-700">Le nom contenu dans l'url personnalisée Youtube</label>
+                    <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        {{form_widget(form.youtubeUsername)}} 
+                    </div>
+                </div>
+                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                  <label for="first-name" class="block text-sm font-medium text-gray-700">Code d'invitation de votre serveur Discord</label>
+                    <div class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        {{form_widget(form.discordServerToken)}} 
+                    </div>
+                </div>
+
+                
+          </div>
+            <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+              <button class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">{{ button_label|default('Sauvegarder') }}</button>
+              <a href="{{ path('team_index') }}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Retour</a>
+            </div>
+          </div>
+        {{ form_end(form) }} 
+    </div>
+      </form>
+    </div>
+  </div>
+</div>

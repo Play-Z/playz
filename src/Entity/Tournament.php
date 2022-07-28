@@ -48,7 +48,7 @@ class Tournament
     private $price;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $status;
 
@@ -56,6 +56,7 @@ class Tournament
      * @ORM\ManyToMany(targetEntity=TournamentTeam::class, inversedBy="tournaments")
      */
     private $equipes;
+
     /**
      * @ORM\OneToMany(targetEntity=TournamentMatch::class, mappedBy="tournaments")
      */
@@ -125,6 +126,46 @@ class Tournament
     private $slug;
 
     /**
+     * @ORM\OneToMany(targetEntity=Poule::class, mappedBy="tournament", orphanRemoval=true, cascade={"persist"})
+     */
+    private $poules;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $PouleType;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Tournament::class, inversedBy="tournament", cascade={"persist", "remove"})
+     */
+    private $tournamentChild;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Tournament::class, mappedBy="tournamentChild", cascade={"persist", "remove"})
+     */
+    private $tournament;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Announcement::class, mappedBy="tournamentAnnouncement")
+     */
+    private $announcements;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $priceFirst;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $priceSecond;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $priceThird;
+
+    /**
      * @param UploadedFile $logo
      */
     public function setLogo(?File $logo = null)
@@ -144,8 +185,9 @@ class Tournament
     public function __construct()
     {
         $this->tournamentMatches = new ArrayCollection();
-        $this->setStatus(false) ;
-
+        $this->poules = new ArrayCollection();
+        $this->equipes = new ArrayCollection();
+        $this->announcements = new ArrayCollection();
     }
 
     /**
@@ -356,4 +398,147 @@ class Tournament
         return $this->slug;
     }
 
+    /**
+     * @return Collection|Poule[]
+     */
+    public function getPoules(): Collection
+    {
+        return $this->poules;
+    }
+
+    public function addPoule(Poule $poule): self
+    {
+        if (!$this->poules->contains($poule)) {
+            $this->poules[] = $poule;
+            $poule->setTournament($this);
+        }
+        return $this;
+    }
+
+    /**
+     *
+     * @return Collection|Announcement[]
+     */
+    public function getAnnouncements(): Collection
+    {
+        return $this->announcements;
+    }
+
+    public function addAnnouncement(Announcement $announcement): self
+    {
+        if (!$this->announcements->contains($announcement)) {
+            $this->announcements[] = $announcement;
+            $announcement->setTournamentAnnouncement($this);
+        }
+
+        return $this;
+    }
+
+
+    public function removePoule(Poule $poule): self
+    {
+        if ($this->poules->removeElement($poule)) {
+            // set the owning side to null (unless already changed)
+            if ($poule->getTournament() === $this) {
+                $poule->setTournament(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeAnnouncement(Announcement $announcement): self
+    {
+        if ($this->announcements->removeElement($announcement)) {
+            // set the owning side to null (unless already changed)
+            if ($announcement->getTournamentAnnouncement() === $this) {
+                $announcement->setTournamentAnnouncement(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    public function getPouleType(): ?bool
+    {
+        return $this->PouleType;
+    }
+
+    public function setPouleType(bool $PouleType): self
+    {
+        $this->PouleType = $PouleType;
+
+        return $this;
+    }
+
+public function getTournamentChild(): ?self
+{
+    return $this->tournamentChild;
+}
+
+public function setTournamentChild(?self $tournamentChild): self
+{
+    $this->tournamentChild = $tournamentChild;
+
+    return $this;
+}
+
+public function getTournament(): ?self
+{
+    return $this->tournament;
+}
+
+public function setTournament(?self $tournament): self
+{
+    // unset the owning side of the relation if necessary
+    if ($tournament === null && $this->tournament !== null) {
+        $this->tournament->setTournamentChild(null);
+    }
+
+    // set the owning side of the relation if necessary
+    if ($tournament !== null && $tournament->getTournamentChild() !== $this) {
+        $tournament->setTournamentChild($this);
+    }
+
+    $this->tournament = $tournament;
+
+    return $this;
+}
+
+public function getPriceFirst(): ?string
+{
+    return $this->priceFirst;
+}
+
+public function setPriceFirst(?string $priceFirst): self
+{
+    $this->priceFirst = $priceFirst;
+
+    return $this;
+}
+
+public function getPriceSecond(): ?string
+{
+    return $this->priceSecond;
+}
+
+public function setPriceSecond(?string $priceSecond): self
+{
+    $this->priceSecond = $priceSecond;
+
+    return $this;
+}
+
+public function getPriceThird(): ?string
+{
+    return $this->priceThird;
+}
+
+public function setPriceThird(?string $priceThird): self
+{
+    $this->priceThird = $priceThird;
+
+    return $this;
+}
 }

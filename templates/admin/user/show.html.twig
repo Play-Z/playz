@@ -1,52 +1,521 @@
-{% extends 'baseTemplate/admin-base.html.twig' %}
+{% extends 'baseTemplate/play-base.html.twig' %}
 
-{% block title %}Utilisateurs{% endblock %}
+{% set page_title = 'Profil ' ~ user.username %}
 
-{% block body %}
-    <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">{{ user.username }}</h1>
+{% block content %}
+	{# <h1 class="text-5xl font-normal leading-normal mt-0 mb-2 text-indigo-500">{{ user.username }}</h1>
+				
+				    <table class="table">
+				        <tbody>
+				            <tr>
+				                {% if user.path %}
+				                    <th>Image de profil</th>
+				                    <td><img src="{{ vich_uploader_asset(user, 'image') }}" width="180" height="auto" alt="Image de profil de {{ user.username }}"></td>
+				                {% else %}
+				                    <th>Image de profil</th>
+				                    <td>Pas d'image de profil</td>
+				                {% endif %}
+				            </tr>
+				            <tr>
+				                <th>Username</th>
+				                <td>{{ user.username }}</td>
+				            </tr>
+				            <tr>
+				                <th>Ratio</th>
+				                {% if ratio != null %}
+				                    <td>{{ ratio }}% Victoire</td>
+				                {% else %}
+				                    <td>aucune statistique disponible</td>
+				                {% endif %}
+				            </tr>
+				            <tr>
+				                <th>Tournois</th>
+				                {% for tournament in tournaments %}
+				            <tr>
+				                {% if tournament.path %}
+				                    <td><a href="{{ path('play_tournament', {'slug': tournament.slug}) }}"><img src="{{ vich_uploader_asset(tournament, 'logo') }}" width="64" height="auto" alt="Logo de {{ tournament.name }}"></a></td>
+				                {% else %}
+				                    <td>Pas de logo</td>
+				                {% endif %}
+				                <td><a href="{{ path('play_tournament', {'slug': tournament.slug}) }}">{{ tournament.name }}</a></td>
+				            </tr>
+				            {% else %}
+				                <tr>
+				                    <td colspan="8">Ce joueur n'a participer à aucun tournoi</td>
+				                </tr>
+				            {% endfor %}
+				            </tr>
+				                {% if user.team %}
+				                    <tr>
+				                        <th>Equipe</th>
+				                        <td>
+				                            <a href="{{ path('team_show', {'slug': user.team.slug}) }}">
+				                                {% if user.team.path %}
+				                                    <img src="{{ vich_uploader_asset(user.team, 'logo') }}" width="64" height="auto" alt="Logo de l'équipe {{ user.team.name }}">
+				                                {% endif %}
+				                                {{ user.team.name }}
+				                            </a>
+				                        </td>
+				                    </tr>
+				
+				                    <tr>
+				                        <th>Rôle dans l'équipe</th>
+				                        <td>
+				                            {% for role in user.roles %}
+				                                {% if role == 'ROLE_TEAM_CREATOR' or role == 'ROLE_TEAM_MEMBER' %}
+				                                    {{ role|formatRole(role) }}
+				                                {% endif %}
+				                            {% endfor %}
+				                        </td>
+				                    </tr>
+				
+				                    <tr>
+				                        <th>Membres de l'équipe</th>
+				                        <td>
+				                            {% for member in user.team.users %}
+				                                <a href="{{ path('user_profile_show', {'slug': member.slug}) }}">{{ member.username }} </a>
+				                            {% endfor %}
+				                        </td>
+				                    </tr>
+				
+				                        {% if user.team.game is defined and not null %}
+				                            <tr>
+				                                <th>Jeu</th>
+				                                <td>
+				                                    {% if user.team.game.path %}
+				                                        <img src="{{ vich_uploader_asset(user.team.game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ user.team.game.name }}">
+				                                    {% else %}
+				                                        {{ user.team.game.name }}
+				                                    {% endif %}
+				                                </td>
+				                            </tr>
+				                        {% endif %}
+				                {% endif %}
+				
+				            {% if user.games is defined and not null %}
+				                <tr>
+				                    <th>Jeux</th>
+				                    <td>
+				                    {% for game in user.games %}
+				                        {% if game.path %}
+				                            <img src="{{ vich_uploader_asset(game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ game.name }}">
+				                        {% else %}
+				                            {{ game.name }}
+				                        {% endif %}
+				                    {% endfor %}
+				                    </td>
+				                </tr>
+				            {% endif %}
+				            <tr>
+				                <th>Prénom</th>
+				                <td>{{ user.firstname }}</td>
+				            </tr>
+				            <tr>
+				                <th>Nom</th>
+				                <td>{{ user.lastname }}</td>
+				            </tr>
+				            <tr>
+				                <th>Age</th>
+				                <td>{{ user.age }}</td>
+				            </tr>
+				            <tr>
+				                <th>Genre</th>
+				                <td>{{ user.gender }}</td>
+				            </tr>
+				            <tr>
+				                <th>Pays</th>
+				                <td>{{ user.country|country_name }}</td>
+				            </tr>
+				            <tr>
+				                <th>Description</th>
+				                <td>{{ user.description }}</td>
+				            </tr>
+				            <tr>
+				                <th>Réseaux sociaux</th>
+				                <td>
+				                    <ul style="display: inline-block;">
+				                        {% if user.twitterUsername %}
+				                            <li style="display: inline-block; height: 32px; width: 32px;">
+				                                <a href="https://twitter.com/{{ user.twitterUsername }}">
+				                                    <img src="/images/social-media/twitter/logo-blue.svg" alt="Logo twitter" />
+				                                </a>
+				                            </li>
+				                        {% endif %}
+				                        {% if user.twitchUsername %}
+				                            <li style="display: inline-block; height: 32px; width: 32px;">
+				                                <a href="https://www.twitch.tv/{{ user.twitchUsername }}">
+				                                    <img src="/images/social-media/twitch/TwitchGlitchPurple.svg" alt="Logo twitch" />
+				                                </a>
+				                            </li>
+				                        {% endif %}
+				                        {% if user.redditUsername %}
+				                            <li style="display: inline-block; height: 32px; width: 32px;">
+				                                <a href="https://www.reddit.com/user/{{ user.redditUsername }}">
+				                                    <img src="/images/social-media/reddit/Reddit_Mark_OnWhite.png" alt="Logo reddit" />
+				                                </a>
+				                            </li>
+				                        {% endif %}
+				                        {% if user.discordServerToken %}
+				                            <li style="display: inline-block; height: 32px; width: 32px;">
+				                                <a href="https://discord.gg/{{ user.discordServerToken }}">
+				                                    <img src="/images/social-media/discord/Discord-Logo-Color.svg" alt="Logo discord" />
+				                                </a>
+				                            </li>
+				                        {% endif %}
+				                        {% if user.youtubeUsername %}
+				                            <li style="display: inline-block; height: 32px; width: 32px;">
+				                                <a href="https://www.youtube.com/c/{{ user.youtubeUsername }}">
+				                                    <img src="/images/social-media/youtube/youtube_social_icon_red.png" alt="Logo youtube" />
+				                                </a>
+				                            </li>
+				                        {% endif %}
+				                    </ul>
+				                </td>
+				            </tr>
+				        </tbody>
+				    </table>
+				
+				    {% if is_granted('edit', user) %}
+				        <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('user_profile_edit', {'slug': user.slug}) }}">Modifier</a>
+				    {% endif %}
+				
+				    {% if is_granted('ROLE_USER') and app.user != user %}
+				        {{ include('settings/user_relation/_friend.form.html.twig') }}
+				    {% endif %}
+				
+				    {% if is_granted('ROLE_USER') and app.user != user %}
+				        {{ include('settings/user_relation/_block_form.html.twig') }}
+				    {% endif %}
+				
+				    {% if is_granted('ROLE_TEAM_CREATOR') or is_granted('ROLE_TEAM_MANAGER') %}
+				        {% if app.user.team.public == false and user.team is null %}
+				            {{ include('settings/user_relation/_team.form.html.twig') }}
+				        {% endif %}
+				    {% endif %}
+				
+				    <div id="twitch-embed"></div>
+				    <script src="https://embed.twitch.tv/embed/v1.js"></script>
+				    <script type="text/javascript">
+				        new Twitch.Embed("twitch-embed", {
+				            width: 750,
+				            height: 500,
+				            channel: "{{ user.twitchUsername }}",
+				            theme: "dark",
+				        });
+				    </script> #}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>Username</th>
-                <td>{{ user.username }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ user.lastname }}</td>
-            </tr>
-            <tr>
-                <th>Prénom</th>
-                <td>{{ user.firstname }}</td>
-            </tr>
-            <tr>
-                <th>Rôle</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Pays</th>
-                <td>{{ user.country }}</td>
-            </tr>
-            <tr>
-                <th>Position Organisation</th>
-                <td>{{ user.organizationPosition }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ user.description }}</td>
-            </tr>
+	<link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css">
+	<link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
 
 
-        </tbody>
-    </table>
+	<main class="profile-page">
+	
+	{% if app.session.flashbag.has('success') %}
+	    <div class="bg-green-100 border border-green-400 text-green-700 text-center px-4 py-3 rounded relative" role="alert">
+	        <strong class="font-bold">Succes !</strong>
+	        <span class="block sm:inline">{{ app.session.flashbag.get('success')|first }}</span>
+	        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+	        </span>
+	    </div>
+	{% endif %}
+	{% if app.session.flashbag.has('pending') %}
+	    <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 text-center px-4 py-3 rounded relative" role="alert">
+	        <strong class="font-bold">En attente : </strong>
+	        <span class="block sm:inline">{{ app.session.flashbag.get('pending')|first }}</span>
+	        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+	        </span>
+	    </div>
+	{% endif %}
+	{% if app.session.flashbag.has('notice') %}
+	    <div class="bg-blue-100 border border-blue-400 text-blue-700 text-center px-4 py-3 rounded relative" role="alert">
+	        <strong class="font-bold">Information : </strong>
+	        <span class="block sm:inline">{{ app.session.flashbag.get('notice')|first }}</span>
+	        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+	        </span>
+	    </div>
+	{% endif %}
+	{% if app.session.flashbag.has('error') %}
+	    <div class="bg-red-100 border border-red-400 text-red-700 text-center px-4 py-3 rounded relative" role="alert">
+	        <strong class="font-bold">Erreur ! </strong>
+	        <span class="block sm:inline">{{ app.session.flashbag.get('error')|first }}</span>
+	        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+			</span>
+	    </div>
+	{% endif %}
+		<section class="relative block h-500-px">
+			<div class="absolute top-0 w-full h-full bg-center bg-cover" style="
+                background-image: url('/images/profil/cover-playerz.png');
+                ">
+				<span id="blackOverlay" class="w-full h-full absolute opacity-50 bg-black"></span>
+			</div>
+			<div class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden h-70-px" style="transform: translateZ(0px)">
+				<svg class="absolute bottom-0 overflow-hidden" xmlns="http://www.w3.org/2000/svg" preserveaspectratio="none" version="1.1" viewbox="0 0 2560 100" x="0" y="0">
+					<polygon class="text-blueGray-200 fill-current" points="2560 0 2560 100 0 100"></polygon>
+				</svg>
+			</div>
+		</section>
+		<section class="relative py-16 bg-blueGray-200">
+			<div class="container mx-auto px-4">
+				<div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
+					<div class="px-6">
+						<div class="flex flex-wrap justify-center">
+							{% if user.path %}
+								<div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-end mb-20">
+									<img src="{{ vich_uploader_asset(user, 'image') }}" class="shadow-xl rounded-3xl h-auto border-none absolute ml-24 lg:ml-24 max-w-150-px" style="margin: -85px;">
+								</div>
+							{% elseif is_granted('ROLE_ADMIN') %}
+								<div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center mb-20">
+									<img src="/images/profil/admin.png" class="shadow-xl rounded-3xl h-auto border-none absolute ml-24 lg:ml-24 max-w-150-px" style="margin: -85px;">
+							{% else %}
+								<div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center mb-20">
+									<img src="/images/profil/playerz.png" class="shadow-xl rounded-3xl h-auto border-none absolute ml-24 lg:ml-24 max-w-150-px" style="margin: -85px;">
+								</div>
+							{% endif %}
+						</div>
+						<div class="flex flex-wrap justify-center">
+							{% if is_granted('edit', user) %}
+								
+								<div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-center lg:self-center">
+									<div class="py-6 px-3 mt-32 sm:mt-0">
+										<button class="uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150" style=" background: rgb(83,36,110);
+											background: linear-gradient(90deg, rgba(83,36,110,1) 0%, rgba(107,22,214,1) 35%, rgba(183,152,235,1) 100%); " type="submit">
+											<a href="{{ path('user_profile_edit', {'slug': user.slug}) }}">Modifier</a>
+										</button>
+									</div>
+								</div>
+							{% endif %}
+							{% if is_granted('ROLE_USER') and app.user != user %}
+								{{ include('settings/user_relation/_friend.form.html.twig') }}
+							{% endif %}
 
-    <a class="text-indigo-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('users_index') }}">Retour</a>
+							{% if is_granted('ROLE_USER') and app.user != user %}
+								{{ include('settings/user_relation/_block_form.html.twig') }}
+							{% endif %}
 
-    <a class="text-green-500 background-transparent font-bold uppercase px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ path('users_edit', {'id': user.id}) }}">Modifier</a>
+							{% if is_granted('ROLE_TEAM_CREATOR') or is_granted('ROLE_TEAM_MANAGER') %}
+								{% if app.user.team.public == false and user.team is null %}
+									{{ include('settings/user_relation/_team.form.html.twig') }}
+								{% endif %}
+							{% endif %}
+						</div>
+						<div class="text-center mt-12">
+                        {% if user.gender == "Homme" %}
+							<h3 class="text-4xl font-semibold leading-normal mb-2 text-blueGray-700">
+								M. {{ user.lastname }} {{ user.firstname }}
+                                        ({{ user.username }})
+							</h3>
+                        {% else %}
+                            <h3 class="text-4xl font-semibold leading-normal mb-2 text-blueGray-700">
+                                Mme {{ user.lastname }} {{ user.firstname }}
+                                        ({{ user.username }})
+                            </h3>
+                        {% endif %}
+							<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+                                <i class="fas fa-user text-lg text-blueGray-400"></i>
+                                    {{ user.age }}
+								<i class="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
+								    {{ user.country|country_name }}
+							</div>
+                        </div>
+                        <div class="text-center mt-12">
+						{{dump(user)}}
+							{% if ratio != null %}
+								<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+									<i class="fas fa-percentage mr-2 text-lg text-blueGray-400">Victoire</i>
+									{{ ratio }}
+								</div>
+							{% else %}
+								<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+									<i class="fas fa-percentage mr-2 text-lg text-blueGray-400">
+										Aucune statistique disponible</i>
+								</div>
+							{% endif %}
+						</div>
+						<div class="text-center mt-12">
+							<tr>
+								{% for tournament in tournaments %}
+									<tr>
+										{% if tournament.path %}
+											<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+												<i class="fas fa-trophy mr-2 text-lg text-blueGray-400"></i>
+												<a href="{{ path('play_tournament', {'slug': tournament.slug}) }}"><img src="{{ vich_uploader_asset(tournament, 'logo') }}" width="64" height="auto" alt="Logo de {{ tournament.name }}"></a>
+											</div>
+										{% else %}
+											<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+												<i class="fas fa-trophy mr-2 text-lg text-blueGray-400"> Pas de logo</i>
+											</div>
+										{% endif %}
+										<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+											<i class="fas fa-trophy mr-2 text-lg text-blueGray-400"></i>
+											<a href="{{ path('play_tournament', {'slug': tournament.slug}) }}">{{ tournament.name }}</a>
+										</div>
+									</tr>
+								{% else %}
+									<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+										<i class="fas fa-trophy mr-2 text-lg text-blueGray-400"> Ce joueur n'a participer à aucun tournoi</i>
+									</div>
+								{% endfor %}
+							</tr>
+						</div>
+						<div class="text-center mt-12">
+							{% if user.team %}
+								<tr>
+									<th>Equipe</th>
+									<td>
+                                        <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+											<i class="fas fa-group mr-2 text-lg text-blueGray-400"></i>
+											<a href="{{ path('team_show', {'slug': user.team.slug}) }}">
+                                                {% if user.team.path %}
+                                                    <img class="inline-grid" src="{{ vich_uploader_asset(user.team, 'logo') }}" width="64" height="auto" alt="Logo de l'équipe {{ user.team.name }}">
+                                                {% endif %}
+                                                {{ user.team.name }}
+										    </a>
+										</div>
+									</td>
+								</tr>
 
-    {{ include('admin/user/_delete_form.html.twig') }}
+								<tr>
+									<th>Rôle dans l'équipe</th>
+									<td>
+										<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+											<i class="fas fa-user-tag mr-2 text-lg text-blueGray-400"></i>
+											{% for role in user.roles %}
+												{% if role == 'ROLE_TEAM_CREATOR' or role == 'ROLE_TEAM_MEMBER' %}
+													{{ role|formatRole(role) }}
+												{% endif %}
+											{% endfor %}
+										</div>
+									</td>
+								</tr>
+
+								<tr>
+									<th>Membres de l'équipe</th>
+									<td>
+										<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+											<i class="fas fa-users mr-2 text-lg text-blueGray-400"></i>
+											{% for member in user.team.users %}
+												<a href="{{ path('user_profile_show', {'slug': member.slug}) }}">{{ member.username }}
+												</a>
+											{% endfor %}
+										</div>
+									</td>
+								</tr>
+
+								{% if user.team.game is defined and not null %}
+									<tr>
+										<th>Jeu</th>
+										<td>
+											<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+												<i class="fas fa-gamepad mr-2 text-lg text-blueGray-400"></i>
+												{% if user.team.game.path %}
+													<img class="inline-grid" src="{{ vich_uploader_asset(user.team.game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ user.team.game.name }}">
+													{{ user.team.game.name }}
+												{% else %}
+													{{ user.team.game.name }}
+												{% endif %}
+											</div>
+										</td>
+									</tr>
+								{% endif %}
+							{% endif %}
+						</div>
+						<div class="text-center mt-12">
+							{% if user.games is defined and not null %}
+								<tr>
+									<th>Jeux</th>
+								<td>
+										<div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+										<i class="fas fa-gamepad-modern mr-2 text-lg text-blueGray-400"></i>
+										{% for game in user.games %}
+											{% if game.path %}
+												<img src="{{ vich_uploader_asset(game, 'logo') }}" width="64" height="auto" alt="Logo du jeux {{ game.name }}">
+											{% else %}
+												{{ game.name }}
+											{% endif %}
+										{% endfor %}
+									</td>
+								</tr>
+							{% endif %}
+						</div>
+						<div class="text-center mt-12">
+							<tr>
+								<td>
+									<ul style="display: inline-block;">
+										{% if user.twitterUsername %}
+											<li style="display: inline-block; height: 32px; width: 32px;">
+												<a href="https://twitter.com/{{ user.twitterUsername }}">
+													<img src="/images/social-media/twitter/logo-blue.svg" alt="Logo twitter"/>
+												</a>
+											</li>
+										{% endif %}
+										{% if user.twitchUsername %}
+											<li style="display: inline-block; height: 32px; width: 32px;">
+												<a href="https://www.twitch.tv/{{ user.twitchUsername }}">
+													<img src="/images/social-media/twitch/TwitchGlitchPurple.svg" alt="Logo twitch"/>
+												</a>
+											</li>
+										{% endif %}
+										{% if user.redditUsername %}
+											<li style="display: inline-block; height: 32px; width: 32px;">
+												<a href="https://www.reddit.com/user/{{ user.redditUsername }}">
+													<img src="/images/social-media/reddit/Reddit_Mark_OnWhite.png" alt="Logo reddit"/>
+												</a>
+											</li>
+										{% endif %}
+										{% if user.discordServerToken %}
+											<li style="display: inline-block; height: 32px; width: 32px;">
+												<a href="https://discord.gg/{{ user.discordServerToken }}">
+													<img src="/images/social-media/discord/Discord-Logo-Color.svg" alt="Logo discord"/>
+												</a>
+											</li>
+										{% endif %}
+										{% if user.youtubeUsername %}
+											<li style="display: inline-block; height: 32px; width: 32px;">
+												<a href="https://www.youtube.com/c/{{ user.youtubeUsername }}">
+													<img src="/images/social-media/youtube/youtube_social_icon_red.png" alt="Logo youtube"/>
+												</a>
+											</li>
+										{% endif %}
+									</ul>
+								</td>
+							</tr>
+						</div>
+						<div class="mt-10 py-10 border-t border-blueGray-200 text-center">
+							<div class="flex flex-wrap justify-center">
+								<div class="w-full lg:w-9/12 px-4">
+									<p class="mb-4 text-lg leading-relaxed text-blueGray-700 italic">
+										{{user.description}}
+									</p>
+								</div>
+							</div>
+						</div>
+                        <div>
+                            <div id="twitch-embed" style="margin: 3% 17%;"></div>
+                                <script src="https://embed.twitch.tv/embed/v1.js"></script>
+                                <script type="text/javascript">
+                                    new Twitch.Embed("twitch-embed", {
+                                    width: 750,
+                                    height: 500,
+                                    channel: "{{ user.twitchUsername }}",
+                                    theme: "dark"
+                                    });
+                                </script>
+                            </div>
+					</div>
+				</div>
+			</div>
+			<footer class="relative bg-blueGray-200 pt-8 pb-6 mt-8">
+				<div class="container mx-auto px-4">
+					<div class="flex flex-wrap items-center md:justify-between justify-center">
+						<div class="w-full md:w-6/12 px-4 mx-auto text-center">
+							<div
+								class="text-sm text-blueGray-500 font-semibold py-1">PlayZ</a>.
+							</div>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</section>
+	</main>
+
 {% endblock %}

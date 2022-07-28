@@ -3,244 +3,384 @@
 {% set page_title = 'Accueil' %}
 
 {% block content %}
-<!-- section n°1 -->
-<div class="relative bg-white overflow-hidden">
-  <div class="max-w-7xl mx-auto" style="margin-top: 5rem;margin-bottom: 5rem;">
-    <div class="relative pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
-      <svg class="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-white transform translate-x-1/2" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <polygon points="50,0 100,0 50,100 0,100" />
-      </svg>
+	{# <!-- section n°1 -->
+				  
+						<div class="relative bg-white overflow-hidden">
+						  <div class="max-w-7xl mx-auto" style="margin-top: 5rem;margin-bottom: 5rem;">
+						    <div class="relative pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
+						      <svg class="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-white transform translate-x-1/2" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+						        <polygon points="50,0 100,0 50,100 0,100" />
+						      </svg>
+						
+						      <div>
+						        <div class="relative pt-6 px-4 sm:px-6 lg:px-8">
+						          <nav class="relative flex items-center justify-between sm:h-10 lg:justify-start" aria-label="Global">
+						            <div class="flex items-center flex-grow flex-shrink-0 lg:flex-grow-0">
+						              <div class="flex items-center justify-between w-full md:w-auto">
+						                <div class="-mr-2 flex items-center md:hidden">
+						                  <button type="button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-expanded="false">
+						                    <span class="sr-only">Open main menu</span>
+						                    <!-- Heroicon name: outline/menu -->
+						                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+						                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+						                    </svg>
+						                  </button>
+						                </div>
+						              </div>
+						            </div>
+						           
+						          </nav>
+						        </div>
+						
+						        <!--
+						          Mobile menu, show/hide based on menu open state.
+						
+						          Entering: "duration-150 ease-out"
+						            From: "opacity-0 scale-95"
+						            To: "opacity-100 scale-100"
+						          Leaving: "duration-100 ease-in"
+						            From: "opacity-100 scale-100"
+						            To: "opacity-0 scale-95"
+						        -->
+						        <div class="absolute z-10 top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden">
+						          <div class="rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
+						            <div class="px-5 pt-4 flex items-center justify-between">
+						              <div>
+						                <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="">
+						              </div>
+						              <div class="-mr-2">
+						                <button type="button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+						                  <span class="sr-only">Close main menu</span>
+						                  <!-- Heroicon name: outline/x -->
+						                  <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+						                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+						                  </svg>
+						                </button>
+						              </div>
+						            </div>
+						        </div>
+						      </div>
+						
+						      <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+						        <div class="sm:text-center lg:text-left">
+						          <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+						            <span class="block xl:inline">“Playz,</span>
+						            <span class="block text-indigo-600 xl:inline">c’est quoi ?”</span>
+						          </h1>
+						          <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-1 lg:mx-0">En une phrase PlayZ c’est un site d’organisation et de gestion d'événements esport permettant la création de tournois sur les jeux vidéo les plus populaires de la scène esport</p>
+						          <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+						            <div class="rounded-md shadow">
+						              <a href=""{{ path('app_register') }}"" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"> Démarrez maintenant</a>
+						            </div>
+						          </div>
+						        </div>
+						      </main>
+						    </div>
+						  </div>
+						  <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
+						    <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-50 lg:h-50 mt-10" style="margin-top: 10rem; padding-right:5rem;" src="https://media.istockphoto.com/vectors/online-gamers-playing-at-pc-vector-id1299299551?k=20&m=1299299551&s=612x612&w=0&h=UGCyjDtR4V9OhXJ3YEWSl8c5ErwbVCvM9HCxCWvGdIA=" alt="">
+						  </div>
+						</div>
+						
+						
+						<!-- section n°2 -->
+						<div class="relative bg-white overflow-hidden mt-12 mb-12">
+						  <div class="pt-16 pb-80 sm:pt-24 sm:pb-40 lg:pt-40 lg:pb-48">
+						    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 sm:static">
+						      <div class="sm:max-w-lg">
+						        <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-3xl md:text-4xl">
+						            <span class="block xl:inline">Larges sélections</span>
+						            <span class="block text-indigo-600 xl:inline">des jeux</span>
+						          </h1>
+						        <p class="mt-4 text-xl text-gray-500">Inscrivez-vous et rejoingnez la communauté pour avoir accès à des tonnes de tournois sur tous vos jeux favoris
+						        que ce soit des tournois à distance de Rocket League, des LANS amateures de Starcraft ou des gros events professionnels sur League of Legends. Il y en a pour toutes les envies !</p>
+						      </div>
+						      <div>
+						        <div class="mt-10">
+						          <!-- Decorative image grid -->
+						          <div aria-hidden="true" class="pointer-events-none lg:absolute lg:inset-y-0 lg:max-w-7xl lg:mx-auto lg:w-full">
+						            <div class="absolute transform sm:left-1/2 sm:top-0 sm:translate-x-8 lg:left-1/2 lg:top-1/2 lg:-translate-y-1/2 lg:translate-x-8">
+						              <div class="flex items-center space-x-6 lg:space-x-8">
+						                <div class="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
+						                  <div class="w-44 h-64 rounded-lg overflow-hidden sm:opacity-0 lg:opacity-100">
+						                    <img src="https://cdn1.epicgames.com/salesEvent/salesEvent/EGS_LeagueofLegends_RiotGames_S2_1200x1600-7fd64f0f7b674900bdd172967865d545" alt="" class="w-full h-full object-center object-cover">
+						                  </div>
+						                  <div class="w-44 h-64 rounded-lg overflow-hidden">
+						                    <img src="https://media.senscritique.com/media/000020136428/source_big/FIFA_22.jpg" alt="" class="w-full h-full object-center object-cover">
+						                  </div>
+						                </div>
+						                <div class="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
+						                  <div class="w-44 h-64 rounded-lg overflow-hidden">
+						                    <img src="https://e.snmc.io/lk/l/x/ddf2cf192549bd29256e045fa6eb6f65/9651551" alt="" class="w-full h-full object-center object-cover">
+						                  </div>
+						                  <div class="w-44 h-64 rounded-lg overflow-hidden">
+						                    <img src="https://m.media-amazon.com/images/I/71NLpb6-fPL._AC_SX425_.jpg" alt="" class="w-full h-full object-center object-cover">
+						                  </div>
+						                  <div class="w-44 h-64 rounded-lg overflow-hidden">
+						                    <img src="https://www.xtrafondos.com/wallpapers/vertical/valorant-logo-5550.jpg" alt="" class="w-full h-full object-center object-cover">
+						                  </div>
+						                </div>
+						                <div class="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
+						                  <div class="w-44 h-64 rounded-lg overflow-hidden">
+						                    <img src="https://m.media-amazon.com/images/M/MV5BZWYxY2VmN2ItNjNlNi00ZmM0LWEwMjEtMTE1NGQxMGVhMWQxXkEyXkFqcGdeQXVyMTk2OTAzNTI@._V1_FMjpg_UX1000_.jpg" alt="" class="w-full h-full object-center object-cover">
+						                  </div>
+						                  <div class="w-44 h-64 rounded-lg overflow-hidden">
+						                    <img src="https://static.posters.cz/image/750/affiches-et-posters/overwatch-tracer-i30793.jpg" alt="" class="w-full h-full object-center object-cover">
+						                  </div>
+						                </div>
+						              </div>
+						            </div>
+						          </div>
+						
+						          <a href="#" class="inline-block text-center bg-indigo-600 border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-indigo-700">Liste des jeux</a>
+						        </div>
+						      </div>
+						    </div>
+						  </div>
+						</div>
+						
+						
+						<!--section 3-->
+						<div class="container my-24 px-6 mx-auto">
+						  <section class="mb-32 text-gray-800 text-center md:text-left">
+						    <div class="block rounded-lg bg-white">
+						      <div class="flex flex-wrap items-center">
+						        <div class="grow-0 shrink-0 basis-auto block lg:flex w-full lg:w-6/12 xl:w-4/12">
+						          <img src="https://progsoft.net/images/doleague-583e8f8fdbc2f8d09fdd5f9b4dda64a175422cd8.png"
+						            class="w-full rounded-t-lg lg:rounded-tr-none lg:rounded-bl-lg ml-10" />
+						        </div>
+						        <div class="grow-0 shrink-0 basis-auto w-full lg:w-6/12 xl:w-8/12">
+						          <div class="px-6 py-12 md:px-12 ml-60">
+						            <h1 class="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-3xl md:text-4xl">
+						              <span class="block xl:inline">Vos tournois,</span>
+						              <span class="block text-indigo-600 xl:inline">votre PlayZ !</span>
+						            <h1>
+						            <p class="mt-4 text-xl text-gray-500">
+						              Avec PlayZ, gérer toutes les étapes d’un tournoi facilement. Configurez la structure de votre compétition, préparez et supervisez les inscriptions. 
+						              <br>Réglez les paramètres à votre guise, vous êtes le seul à imposez les règles.
+						            </p>
+						            <a href="#" class="inline-block text-center bg-indigo-600 border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-indigo-700 mt-5">En savoir plus sur les tournois</a>
+						          </div>
+						        </div>
+						      </div>
+						    </div>
+						  </section>
+						</div>
+						
+						<!---section 4-->
+						
+						
+						<div class="bg-white dark:bg-gray-800 overflow-hidden relative" style="margin-left:17rem; margin-right:25rem">
+						    <div class="text-start w-1/2 py-12 px-4 sm:px-6 lg:py-16 lg:px-8 z-20">
+						        
+						        <h2 class="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-3xl md:text-4xl">
+						              <span class="block xl:inline">Personnalisation des restrictions</span>
+						              <span class="block text-indigo-600 xl:inline">sur les joueurs</span>
+						            <h2>
+						        <p class="text-xl mt-4 text-gray-400">
+						            Définissez les joueurs qui peuvent participer à vos tournois depuis l'interface de création de tournoi. Les joueurs peuvent saisir le résultat de leurs matchs ou laissez vos arbitres s’en occuper. C'est à vous de faire le choix.
+						        </p>
+						        <div class="lg:mt-0 lg:flex-shrink-0">
+						            <div class="mt-12 inline-flex rounded-md shadow">
+						                <button type="button" class="py-4 px-6  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+						                     En savoir plus les joueurs
+						                </button>
+						            </div>
+						        </div>
+						    </div>
+						    <img src="https://thumbs.dreamstime.com/b/basic-user-interface-icon-set-outline-include-control-option-switch-toggle-user-star-profile-admin-person-account-arrow-basic-user-171419562.jpg" class="absolute h-full max-w-1/2 hidden lg:block right-0 top-0"/>
+						</div>
+						
+						<div class="bg-white dark:bg-gray-800  mt-12 mb-12 ">
+						    <div class="text-center w-full mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 z-20">
+						        <h2 class="text-3xl font-extrabold text-black dark:text-white sm:text-4xl">
+						            <span class="block">
+						                Alors prêt à rejoindre
+						            </span>
+						            <span class="block text-indigo-500">
+						                 the PlayZ to play ?
+						            </span>
+						        </h2>
+						        <p class="text-xl mt-4 max-w-md mx-auto text-gray-400">
+						            Créez un compte gratuitement et commencez vos premiers pas dans la compétition PlayZ ! 
+						        </p>
+						        <div class="lg:mt-0 lg:flex-shrink-0">
+						            <div class="mt-12 inline-flex rounded-md shadow">
+						                <button type="button" class="py-4 px-6  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+						                    Commencer
+						                </button>
+						            </div>
+						        </div>
+						    </div>
+						</div> #}
 
-      <div>
-        <div class="relative pt-6 px-4 sm:px-6 lg:px-8">
-          <nav class="relative flex items-center justify-between sm:h-10 lg:justify-start" aria-label="Global">
-            <div class="flex items-center flex-grow flex-shrink-0 lg:flex-grow-0">
-              <div class="flex items-center justify-between w-full md:w-auto">
-                <div class="-mr-2 flex items-center md:hidden">
-                  <button type="button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-expanded="false">
-                    <span class="sr-only">Open main menu</span>
-                    <!-- Heroicon name: outline/menu -->
-                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-           
-          </nav>
-        </div>
+	<div class="dark">
+		<div class="bg-gray-900 pt-40 pb-40 relative bg-no-repeat bg-cover" style="background-image: url({{ asset('images/home/playz-home.png') }}">
+			<div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
+				<div class="mr-auto place-self-center lg:col-span-7">
+					<h1 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl xl:text-6xl dark:text-white">Bienvenue sur
+						<span class="text-indigo-700">
+							PlayZ !</span>
+					</h1>
+					<p class="max-w-2xl mb-6 font-light text-gray-300 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">Découvrer le tout nouveau outil de création de tournoi E-Sport !</p>
+					<a href="{{ path('app_register') }}" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800 transform hover:translate-x-10 transition duration-300">
+						Démarrer maintenant
+						<svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+						</svg>
+					</a>
 
-        <!--
-          Mobile menu, show/hide based on menu open state.
-
-          Entering: "duration-150 ease-out"
-            From: "opacity-0 scale-95"
-            To: "opacity-100 scale-100"
-          Leaving: "duration-100 ease-in"
-            From: "opacity-100 scale-100"
-            To: "opacity-0 scale-95"
-        -->
-        <div class="absolute z-10 top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden">
-          <div class="rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
-            <div class="px-5 pt-4 flex items-center justify-between">
-              <div>
-                <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="">
-              </div>
-              <div class="-mr-2">
-                <button type="button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                  <span class="sr-only">Close main menu</span>
-                  <!-- Heroicon name: outline/x -->
-                  <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-        </div>
-      </div>
-
-      <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
-        <div class="sm:text-center lg:text-left">
-          <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-            <span class="block xl:inline">“Playz,</span>
-            <span class="block text-indigo-600 xl:inline">c’est quoi ?”</span>
-          </h1>
-          <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-1 lg:mx-0">En une phrase PlayZ c’est un site d’organisation et de gestion d'événements esport permettant la création de tournois sur les jeux vidéo les plus populaires de la scène esport</p>
-          <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-            <div class="rounded-md shadow">
-              <a href=""{{ path('app_register') }}"" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"> Démarrez maintenant</a>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
-  </div>
-  <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-    <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-50 lg:h-50 mt-10" style="margin-top: 10rem; padding-right:5rem;" src="https://media.istockphoto.com/vectors/online-gamers-playing-at-pc-vector-id1299299551?k=20&m=1299299551&s=612x612&w=0&h=UGCyjDtR4V9OhXJ3YEWSl8c5ErwbVCvM9HCxCWvGdIA=" alt="">
-  </div>
-</div>
+				</div>
+			</div>
+		</div>
+		<div class="bg-gray-800 pt-20 pb-20 relative">
+			<div class="sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20 mr-auto ml-auto
+																								pt-16 pr-4 pb-16 pl-4">
+				<div class="sm:p-16 shadow-2xl pt-8 pr-8 pb-8 pl-8">
+					<div class="lg:flex-row flex flex-col">
+						<div class="lg:lg:w-1/2 lg:pr-5 mb-6 ml-0 mr-20"><img class="rounded-lg" src="{{ asset('images/home/coupe.png') }}"/></div>
+						<div class="lg:w-1/2 mt-20">
+							<div class="">
+								<p class="mb-8 max-w-lg font-sans tracking-tight transition-colors duration-200 hover:text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-blue-900 bg-clip-text
+									sm:text-4xl font-extrabold text-4xl leading-none text-white">"C'est quoi "PlayZ" ?</p>
+							</div>
+							<p class=" text-base mb-4 text-left text-xl text-gray-300">PlayZ est un site internet qui organise et gère des événements eSports, permettant la création de tournois sur les jeux vidéos les plus populaires en eSports.</p>
+						</div>
+					</div>
+					<div class="flex justify-end">
+						<a href="#" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800 transform hover:translate-x-10 transition duration-300">
+							En savoir plus
+							<svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+							</svg>
+						</a>
+					</div>
+				</div>
+			</div>
 
 
-<!-- section n°2 -->
-<div class="relative bg-white overflow-hidden mt-12 mb-12">
-  <div class="pt-16 pb-80 sm:pt-24 sm:pb-40 lg:pt-40 lg:pb-48">
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 sm:static">
-      <div class="sm:max-w-lg">
-        <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-3xl md:text-4xl">
-            <span class="block xl:inline">Larges sélections</span>
-            <span class="block text-indigo-600 xl:inline">des jeux</span>
-          </h1>
-        <p class="mt-4 text-xl text-gray-500">Inscrivez-vous et rejoingnez la communauté pour avoir accès à des tonnes de tournois sur tous vos jeux favoris
-        que ce soit des tournois à distance de Rocket League, des LANS amateures de Starcraft ou des gros events professionnels sur League of Legends. Il y en a pour toutes les envies !</p>
-      </div>
-      <div>
-        <div class="mt-10">
-          <!-- Decorative image grid -->
-          <div aria-hidden="true" class="pointer-events-none lg:absolute lg:inset-y-0 lg:max-w-7xl lg:mx-auto lg:w-full">
-            <div class="absolute transform sm:left-1/2 sm:top-0 sm:translate-x-8 lg:left-1/2 lg:top-1/2 lg:-translate-y-1/2 lg:translate-x-8">
-              <div class="flex items-center space-x-6 lg:space-x-8">
-                <div class="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
-                  <div class="w-44 h-64 rounded-lg overflow-hidden sm:opacity-0 lg:opacity-100">
-                    <img src="https://cdn1.epicgames.com/salesEvent/salesEvent/EGS_LeagueofLegends_RiotGames_S2_1200x1600-7fd64f0f7b674900bdd172967865d545" alt="" class="w-full h-full object-center object-cover">
-                  </div>
-                  <div class="w-44 h-64 rounded-lg overflow-hidden">
-                    <img src="https://media.senscritique.com/media/000020136428/source_big/FIFA_22.jpg" alt="" class="w-full h-full object-center object-cover">
-                  </div>
-                </div>
-                <div class="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
-                  <div class="w-44 h-64 rounded-lg overflow-hidden">
-                    <img src="https://e.snmc.io/lk/l/x/ddf2cf192549bd29256e045fa6eb6f65/9651551" alt="" class="w-full h-full object-center object-cover">
-                  </div>
-                  <div class="w-44 h-64 rounded-lg overflow-hidden">
-                    <img src="https://m.media-amazon.com/images/I/71NLpb6-fPL._AC_SX425_.jpg" alt="" class="w-full h-full object-center object-cover">
-                  </div>
-                  <div class="w-44 h-64 rounded-lg overflow-hidden">
-                    <img src="https://www.xtrafondos.com/wallpapers/vertical/valorant-logo-5550.jpg" alt="" class="w-full h-full object-center object-cover">
-                  </div>
-                </div>
-                <div class="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
-                  <div class="w-44 h-64 rounded-lg overflow-hidden">
-                    <img src="https://m.media-amazon.com/images/M/MV5BZWYxY2VmN2ItNjNlNi00ZmM0LWEwMjEtMTE1NGQxMGVhMWQxXkEyXkFqcGdeQXVyMTk2OTAzNTI@._V1_FMjpg_UX1000_.jpg" alt="" class="w-full h-full object-center object-cover">
-                  </div>
-                  <div class="w-44 h-64 rounded-lg overflow-hidden">
-                    <img src="https://static.posters.cz/image/750/affiches-et-posters/overwatch-tracer-i30793.jpg" alt="" class="w-full h-full object-center object-cover">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <a href="#" class="inline-block text-center bg-indigo-600 border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-indigo-700">Liste des jeux</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!--section 3-->
-<div class="container my-24 px-6 mx-auto">
-  <section class="mb-32 text-gray-800 text-center md:text-left">
-    <div class="block rounded-lg bg-white">
-      <div class="flex flex-wrap items-center">
-        <div class="grow-0 shrink-0 basis-auto block lg:flex w-full lg:w-6/12 xl:w-4/12">
-          <img src="https://progsoft.net/images/doleague-583e8f8fdbc2f8d09fdd5f9b4dda64a175422cd8.png"
-            class="w-full rounded-t-lg lg:rounded-tr-none lg:rounded-bl-lg ml-10" />
-        </div>
-        <div class="grow-0 shrink-0 basis-auto w-full lg:w-6/12 xl:w-8/12">
-          <div class="px-6 py-12 md:px-12 ml-60">
-            <h1 class="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-3xl md:text-4xl">
-              <span class="block xl:inline">Vos tournois,</span>
-              <span class="block text-indigo-600 xl:inline">votre PlayZ !</span>
-            <h1>
-            <p class="mt-4 text-xl text-gray-500">
-              Avec PlayZ, gérer toutes les étapes d’un tournoi facilement. Configurez la structure de votre compétition, préparez et supervisez les inscriptions. 
-              <br>Réglez les paramètres à votre guise, vous êtes le seul à imposez les règles.
-            </p>
-            <a href="#" class="inline-block text-center bg-indigo-600 border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-indigo-700 mt-5">En savoir plus sur les tournois</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!---section 4-->
+			<div class="bg-gray-800 pt-20 pb-20 relative">
+				<div class="sm:p-16 shadow-2xl pt-8 pr-8 pb-8 pl-8">
+					<div class="pt-16 pb-80 sm:pt-24 sm:pb-40 mb-40 lg:pt-40 lg:pb-48">
+						<div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 sm:static">
+							<div class="sm:max-w-lg">
+								<h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-3xl md:text-4xl">
+									<span class="max-w-lg font-sans tracking-tight transition-colors duration-200 hover:text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-blue-900 bg-clip-text
+																																														sm:text-4xl font-extrabold text-4xl leading-none text-white">Larges sélections des jeux
+									</span>
+								</h1>
+								<p class="mt-4 text-xl text-gray-400">Inscrivez vous et rejoignez la communauté pour accéder à des tonnes de tournois pour tous vos jeux préférés, qu'il s'agisse de tournois à distance Rocket League, de StarCraft, de FIFA (pour les fan du foot) ou d'événements majeurs de Pro League of Legends. Il y a forcement un jeu qui vous plaira !</p>
+							</div>
+							<div>
+								<div
+									class="mt-10">
+									<!-- Decorative image grid -->
+									<div aria-hidden="true" class="pointer-events-none lg:absolute lg:inset-y-0 lg:max-w-7xl lg:mx-auto lg:w-full">
+										<div class="absolute transform sm:left-1/2 sm:top-0 sm:translate-x-8 lg:left-1/2 lg:top-1/2 lg:-translate-y-1/2 lg:translate-x-8">
+											<div class="flex items-center space-x-6 lg:space-x-8 ">
+												<div class="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8 ">
+													<div class="w-44 h-64 rounded-lg overflow-hidden sm:opacity-0 lg:opacity-100">
+														<img src="https://cdn1.epicgames.com/salesEvent/salesEvent/EGS_LeagueofLegends_RiotGames_S2_1200x1600-7fd64f0f7b674900bdd172967865d545" alt="" class="w-full h-full object-center object-cover">
+													</div>
+													<div class="w-44 h-64 rounded-lg overflow-hidden">
+														<img src="https://media.senscritique.com/media/000020136428/source_big/FIFA_22.jpg" alt="" class="w-full h-full object-center object-cover">
+													</div>
+												</div>
+												<div class="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
+													<div class="w-44 h-64 rounded-lg overflow-hidden">
+														<img src="https://e.snmc.io/lk/l/x/ddf2cf192549bd29256e045fa6eb6f65/9651551" alt="" class="w-full h-full object-center object-cover">
+													</div>
+													<div class="w-44 h-64 rounded-lg overflow-hidden">
+														<img src="https://m.media-amazon.com/images/I/71NLpb6-fPL._AC_SX425_.jpg" alt="" class="w-full h-full object-center object-cover">
+													</div>
+													<div class="w-44 h-64 rounded-lg overflow-hidden">
+														<img src="https://www.xtrafondos.com/wallpapers/vertical/valorant-logo-5550.jpg" alt="" class="w-full h-full object-center object-cover">
+													</div>
+												</div>
+												<div class="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
+													<div class="w-44 h-64 rounded-lg overflow-hidden">
+														<img src="https://m.media-amazon.com/images/M/MV5BZWYxY2VmN2ItNjNlNi00ZmM0LWEwMjEtMTE1NGQxMGVhMWQxXkEyXkFqcGdeQXVyMTk2OTAzNTI@._V1_FMjpg_UX1000_.jpg" alt="" class="w-full h-full object-center object-cover">
+													</div>
+													<div class="w-44 h-64 rounded-lg overflow-hidden">
+														<img src="https://static.posters.cz/image/750/affiches-et-posters/overwatch-tracer-i30793.jpg" alt="" class="w-full h-full object-center object-cover">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<a href="{{ path('game_index') }}" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800 transform hover:translate-x-10 transition duration-300">
+										Liste des jeux
+										<svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+											<path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+										</svg>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
 
-<div class="bg-white dark:bg-gray-800 overflow-hidden relative" style="margin-left:17rem; margin-right:25rem">
-    <div class="text-start w-1/2 py-12 px-4 sm:px-6 lg:py-16 lg:px-8 z-20">
-        
-        <h2 class="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-3xl md:text-4xl">
-              <span class="block xl:inline">Personnalisation des restrictions</span>
-              <span class="block text-indigo-600 xl:inline">sur les joueurs</span>
-            <h2>
-        <p class="text-xl mt-4 text-gray-400">
-            Définissez les joueurs qui peuvent participer à vos tournois depuis l'interface de création de tournoi. Les joueurs peuvent saisir le résultat de leurs matchs ou laissez vos arbitres s’en occuper. C'est à vous de faire le choix.
-        </p>
-        <div class="lg:mt-0 lg:flex-shrink-0">
-            <div class="mt-12 inline-flex rounded-md shadow">
-                <button type="button" class="py-4 px-6  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                     En savoir plus les joueurs
-                </button>
-            </div>
-        </div>
-    </div>
-    <img src="https://thumbs.dreamstime.com/b/basic-user-interface-icon-set-outline-include-control-option-switch-toggle-user-star-profile-admin-person-account-arrow-basic-user-171419562.jpg" class="absolute h-full max-w-1/2 hidden lg:block right-0 top-0"/>
-</div>
+			<div class="shadow-2xl bg-gray-800 md:px-24 lg:px-8 lg:py-20 pt-16 pr-4 pb-16 pl-4">
+				<div class="lg:max-w-screen-xl sm:max-w-xl md:max-w-full mr-auto ml-auto">
+					<div class="max-w-xl md:mx-auto sm:text-center lg:max-w-2xl mr-auto mb-5 ml-auto">
+						<div class="mb-4 ml-0">
+							<div class="inline-block">
+								<p class="max-w-lg font-sans tracking-tight transition-colors duration-200 hover:text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-blue-900 bg-clip-text
+																																					                  sm:text-4xl font-extrabold text-4xl leading-none text-white">Vos règles, votre PlayZ</p>
+							</div>
+						</div>
+						<p class="md:text-lg text-base text-gray-300">Avec notre outil de gestion de tournois, vous pouvez créer votre propre style de tournois à votre guise. Des tournois simples aux tournois de snooker, décidez qui sera le vainqueur de chaque tournoi. Vous pouvez gérer tous vos matchs en un seul endroit, quels que soient la structure et le format des matchs. Décidez comment afficher vos résultats.</p>
+					</div>
+					<div class="sm:text-center mb-10 ml-0">
+						<div class="Author inline-block mb-1"></div>
+						<div class=""></div>
+						<img class="rounded-lg" src="{{ asset('images/home/PlayZ-Tournois-gestion.png') }}"/></div>
+				</div>
+			</div>
+		</div>
 
-{# <div>
-    <h2 class="text-center">
-        Description
-    </h2>
-    <p class="text-center">
+		<section>
+			<div class="px-4 py-16 mx-auto max-w-screen-2xl bg-gray-800 sm:px-6 lg:px-8">
+				<div class="grid grid-cols-1 lg:grid-cols-2 shadow-2xl lg:h-screen">
+					<div class="relative z-10 lg:py-16">
+						<div class="relative h-64 sm:h-80 lg:h-full">
+						<img
+							class="absolute inset-0 object-cover w-full h-full"
+							src="{{ asset('images/home/tournoi.png') }}"
+							alt="Indoors house"
+						/>
+						</div>
+					</div>
 
-        Mais PlayZ c’est surtout THE PLAYZ TO BE pour :
-    </p>
+					<div class="relative flex items-center bg-gray-200">
+						<span
+						class="hidden lg:inset-y-0 lg:absolute lg:w-16 lg:bg-gray-200 lg:block lg:-left-16"
+						></span>
 
-        <ul class="text-center">
-            <li>Suivre et parciper à tes tournois favoris</li>
-            <li>Suivre ou rejoindre tes équipes favorites</li>
-            <li>Suivre et confronter tes joueurs favoris</li>
-            <li>Suivre des actus esport de qualités</li>
-        </ul>
+						<div class="p-8 sm:p-16 lg:p-24">
+							<div class="inline-block">
+								<p class="max-w-lg font-sans tracking-tight transition-colors duration-200 hover:text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-blue-900 bg-clip-text
+																																					                  sm:text-4xl font-extrabold text-4xl leading-none text-gray-700">Faite équipe avec d'autre PlayerZ !</p>
+							</div>
 
-    <p class="text-center">
-        Donc si on résume en un seul endroit tu peux suivre toutes les actualités e-sport que tu souhaites en un claquement de doigt et avec une intégration avec des applis comme twitch, discord ou twitter il n’a jamais été aussi simple d’être un fan d’esport.
+						<p class="mt-4 text-gray-600">
+							Parcourez les équipes disponible et rejoignez celles qui vous intéressent. 
+							Vous pouvez inviter vos amis à rejoindre votre équipe, ou bien vous créer une nouvelle équipe et affrontez d'autre équipe afin de gagner les tournois PlayZ !
+							
+						</p>
 
-        Mais imaginons que vous vous ne voulez pas vous contenter de suivre l’esport de loin. Vous voulez le vivre car vous êtes un gros proG@merZ. C’est aussi possible sur PlayZ :
-
-        Il suffit juste de se créer un compte et de rejoindre la communauté des PlayerZ. Vous pourrez ainsi avoir accès à des tonnes de tournois sur tous vos jeux favoris
-        que ce soit des tournois à distance de Rocket League, des LANS amateures de Starcraft ou des gros events professionnels sur League of Legends. Il y en a pour toutes les envies.
-
-        Si vous êtes un organisateur de tournoi et que vous n'êtes toujours pas convaincu. Sur PlayZ vous aurez accès à des options de gestion et de création de tournois accrues.
-
-        Alors prêt à rejoindre THE PLAYZ TO PLAY ?
-    </p>
-</div> #}
-
-<div class="bg-white dark:bg-gray-800  mt-12 mb-12 ">
-    <div class="text-center w-full mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 z-20">
-        <h2 class="text-3xl font-extrabold text-black dark:text-white sm:text-4xl">
-            <span class="block">
-                Alors prêt à rejoindre
-            </span>
-            <span class="block text-indigo-500">
-                 the PlayZ to play ?
-            </span>
-        </h2>
-        <p class="text-xl mt-4 max-w-md mx-auto text-gray-400">
-            Créez un compte gratuitement et commencez vos premiers pas dans la compétition PlayZ ! 
-        </p>
-        <div class="lg:mt-0 lg:flex-shrink-0">
-            <div class="mt-12 inline-flex rounded-md shadow">
-                <button type="button" class="py-4 px-6  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                    Commencer
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+						<a href="{{ path('team_index') }}" class="my-10 inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-600 hover:text-white focus:ring-4 focus:ring-gray-700 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800 transform hover:translate-x-10 transition duration-300">
+							Parcourir les équipes
+							<svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+							</svg>
+						</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 
 {% endblock %}
